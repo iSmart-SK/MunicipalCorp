@@ -1,11 +1,16 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom'; // No Router import needed here
-import Navbar from './components/Navbar';
-import Home from './pages/Home';
-import CitizenDashboard from './pages/citizen/CitizenDashboard';
+import React from "react";
+import { Routes, Route } from "react-router-dom"; // No Router import needed here
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
+import CitizenDashboard from "./pages/citizen/CitizenDashboard";
+import MyProperties from "./pages/citizen/MyProperties";
 
-const Login = () => <div className="p-10 text-center text-2xl">Login Page (Coming Soon)</div>;
-const Register = () => <div className="p-10 text-center text-2xl">Register Page (Coming Soon)</div>;
+const Login = () => (
+  <div className="p-10 text-center text-2xl">Login Page (Coming Soon)</div>
+);
+const Register = () => (
+  <div className="p-10 text-center text-2xl">Register Page (Coming Soon)</div>
+);
 
 function App() {
   return (
@@ -18,6 +23,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/citizenDashBoard" element={<CitizenDashboard />} />
+          <Route path="/myproperties" element={<MyProperties />} />
         </Routes>
       </main>
     </div>
