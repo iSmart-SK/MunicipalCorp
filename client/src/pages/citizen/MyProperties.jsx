@@ -15,6 +15,7 @@ const MyProperties = () => {
     { propertyId: "P-1010", zone: "Agricultural", taxDue: 2700 },
   ];
 
+  const totalTax = properties.reduce((sum, p) => sum + p.taxDue, 0);
   const [showModal, setShowModal] = useState(false);
   const [selectedPropertyData, setSelectedPropertyData] = useState(null);
 
@@ -90,9 +91,10 @@ const MyProperties = () => {
           justifyContent: "center",
           alignItems: "center",
           marginTop: "20px",
+          gap: 10,
         }}
       >
-        <p>Total Tax Due: {properties.reduce((sum, p) => sum + p.taxDue, 0)}</p>
+        <p>Total Tax Due:{totalTax} </p>
         <button type="button" className="btn btn-primary">
           Pay All
         </button>
