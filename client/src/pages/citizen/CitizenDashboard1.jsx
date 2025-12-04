@@ -49,61 +49,101 @@ const CitizenDashboard1 = ({ size = "w-20 h-20" }) => {
     {
       id: 1,
       icon: "AlertCircle",
-      message:
-        "Important: Annual water supply maintenance scheduled for Nov 25th.",
+      title: "Water Supply Maintenance",
       timestamp: "2025-12-03T17:00:00Z", // 5 minutes ago
     },
     {
       id: 2,
       icon: "Bell",
-      message:
-        "Reminder: Your Waste Collection request (SR002) is still pending.",
+      title: "Waste Collection Pending",
       timestamp: "2025-12-02T14:00:00Z", // 1 day ago
     },
     {
       id: 3,
       icon: "ArrowRightCircle",
-      message: "New local events in your area! Check them out.",
+      title: "Local Community Event",
       timestamp: "2025-11-30T10:30:00Z", // 3 days ago
     },
     {
       id: 4,
       icon: "ArrowRightCircle",
-      message: "New local events in your area! Check them out.",
+      title: "Street Light Repair Update",
+      timestamp: "2025-11-25T08:15:00Z", // 3 days ago
+    },
+    {
+      id: 5,
+      icon: "ArrowRightCircle",
+      title: "Property Tax Deadline",
+      timestamp: "2025-11-30T10:30:00Z", // 3 days ago
+    },
+    {
+      id: 6,
+      icon: "ArrowRightCircle",
+      title: "New City Mobile App Update",
       timestamp: "2025-11-25T08:15:00Z", // 3 days ago
     },
   ]);
 
   const [services] = useState([
     {
-      id: "SR001",
+      id: "SR-101",
       type: "Road Repair",
       status: "Completed",
       date: "2023-10-26",
     },
     {
-      id: "SR002",
+      id: "SR-102",
       type: "Waste Collection",
       status: "Pending",
       date: "2023-11-01",
     },
     {
-      id: "SR003",
+      id: "SR-103",
       type: "Public Park Maintenance",
       status: "In Progress",
       date: "2023-11-05",
     },
     {
-      id: "SR004",
+      id: "SR-104",
       type: "Water Supply Issue",
       status: "Completed",
       date: "2023-11-10",
     },
     {
-      id: "SR005",
+      id: "SR-105",
       type: "Street Light Outage",
       status: "Pending",
       date: "2023-11-15",
+    },
+    {
+      id: "SR-106",
+      type: "Water Supply Issue",
+      status: "Completed",
+      date: "2023-11-10",
+    },
+    {
+      id: "SR-107",
+      type: "Street Light Outage",
+      status: "Pending",
+      date: "2023-11-15",
+    },
+    {
+      id: "SR-108",
+      type: "Road Repair",
+      status: "Completed",
+      date: "2023-10-26",
+    },
+    {
+      id: "SR-109",
+      type: "Waste Collection",
+      status: "Pending",
+      date: "2023-11-01",
+    },
+    {
+      id: "SR-110",
+      type: "Public Park Maintenance",
+      status: "In Progress",
+      date: "2023-11-05",
     },
   ]);
 
@@ -154,7 +194,9 @@ const CitizenDashboard1 = ({ size = "w-20 h-20" }) => {
       >
         {/* Left: Welcome Text */}
         <div>
-          <h1 className="text-3xl font-bold">Welcome, Nagarik!</h1>
+          <h1 className="text-3xl text-blue-700 font-bold">
+            Welcome, Nagarik!
+          </h1>
           <p className="text-gray-600">
             Your personalized dashboard for managing municipal services and
             interactions.
@@ -203,98 +245,111 @@ const CitizenDashboard1 = ({ size = "w-20 h-20" }) => {
         style={{ marginLeft: "100px", marginRight: "100px" }}
       >
         {/* Profile Summary */}
-        <div className="container" style={{ marginBottom: "20px" }}>
-          <h2 className="text-xl font-semibold mb-4">Profile Summary</h2>
+        <div className="container mb-8">
+          <h2 className="text-xl font-semibold mb-4 text-blue-700">
+            Profile Summary
+          </h2>
+
           <div
-            className="flex items-center gap-3 p-3 rounded-2xl shadow-lg bg-white max-w-xl"
-            // onClick={handleClick}
+            className="
+        flex flex-col md:flex-row items-center md:items-start 
+        gap-6 p-6 rounded-3xl 
+        bg-white border border-gray-100 
+        shadow-[0_6px_18px_rgba(0,0,0,0.08)] 
+        max-w-3xl mx-auto transition-all
+      "
           >
-            <div
-              className={`rounded-full overflow-hidden border-2 border-gray-300 shadow ${size}`}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-            >
-              <img
-                src={
-                  image ||
-                  "https://cdn4.vectorstock.com/i/1000x1000/06/18/male-avatar-profile-picture-vector-10210618.jpg"
-                }
-                alt="Profile"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            {/* <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center rounded-full transition-opacity pointer-events-none">
-              <Camera className="text-white w-8 h-8" />
-            </div> */}
-
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              ref={fileInputRef}
-              onChange={handleUpload}
-            />
-            <div>
-              <h3 className="text-2xl font-semibold">Karan Kadam</h3>
-              <p className="text-gray-600 mt-2">karankadam@gmail.com</p>
-            </div>
-            {/* Stats Section */}
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              <div>
-                <p className="text-gray-500">Total Requests</p>
-                <p className="font-semibold">12</p>
-              </div>
-              <div>
-                <p className="text-gray-500">Pending Requests</p>
-                <p className="font-semibold">2</p>
-              </div>
-
-              <div>
-                <p className="text-gray-500">Completed Requests</p>
-                <p className="font-semibold">10</p>
-              </div>
-
-              <div>
-                <p className="text-gray-500">Last Activity</p>
-                <p className="flex items-center gap-2 font-semibold">
-                  <Clock size={16} /> 2 hours ago
-                </p>
+            {/* Avatar */}
+            <div className="relative group">
+              <div
+                className="
+          w-28 h-28 rounded-full overflow-hidden 
+          border-4 border-white shadow-xl ring-2 ring-blue-100
+          transition-transform duration-200 group-hover:scale-105
+        "
+              >
+                <img
+                  src={
+                    image ||
+                    "https://cdn4.vectorstock.com/i/1000x1000/06/18/male-avatar-profile-picture-vector-10210618.jpg"
+                  }
+                  alt="Profile"
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
-            {/* End Stats Section */}
+
+            {/* Main Info */}
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold text-gray-900">Karan Kadam</h3>
+              <p className="text-gray-600 mt-1">karankadam@gmail.com</p>
+
+              {/* Divider */}
+              <div className="my-4 h-px bg-gray-200 w-full"></div>
+
+              {/* Stats */}
+              <div className="grid grid-cols-2 gap-6 text-sm">
+                <div>
+                  <p className="text-gray-500">Total Requests</p>
+                  <p className="font-semibold text-gray-900 text-lg">12</p>
+                </div>
+
+                <div>
+                  <p className="text-gray-500">Pending Requests</p>
+                  <p className="font-semibold text-orange-600 text-lg">2</p>
+                </div>
+
+                <div>
+                  <p className="text-gray-500">Completed Requests</p>
+                  <p className="font-semibold text-green-700 text-lg">10</p>
+                </div>
+
+                <div>
+                  <p className="text-gray-500">Last Activity</p>
+                  <p className="flex items-center gap-2 font-semibold text-gray-900 text-lg">
+                    <Clock size={18} /> 2 hours ago
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Right: Recent Activities */}
         <div className="p-4">
-          <h2 className="text-xl font-semibold mb-4">Recent Activities</h2>
-
-          <div
-            //className="max-h-64 overflow-y-auto rounded-xl border border-gray-200 shadow-sm"
-            style={{ maxHeight: "200px", overflowY: "auto" }}
-          >
-            <table className="min-w-full text-sm table-auto">
-              <thead className="bg-gray-100 text-left text-gray-700 uppercase text-xs">
+          <h2 className="text-xl font-semibold mb-4 text-blue-700">
+            Recent Activities
+          </h2>
+          <div className="rounded-xl border border-gray-200 shadow-sm">
+            {/* Fixed Header */}
+            <table className="min-w-full text-sm table-fixed">
+              <thead className="bg-gray-100 text-left text-gray-700 uppercase text-xs sticky top-0 z-10">
                 <tr>
-                  <th className="p-3">Activity</th>
-                  <th className="p-3">Time</th>
+                  <th className="p-3 w-3/4">Activity</th>
+                  <th className="p-3 w-1/4">Time</th>
                 </tr>
               </thead>
-
-              <tbody>
-                {activities.map((item) => (
-                  <tr
-                    key={item.id}
-                    className="border-b last:border-none hover:bg-gray-50"
-                  >
-                    <td className="p-3">{item.activity}</td>
-                    <td className="p-3 text-gray-500">
-                      {getTimeAgo(item.timestamp)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
             </table>
+
+            {/* Scrollable Body */}
+            <div className="max-h-64 overflow-y-auto">
+              <table className="min-w-full text-sm table-fixed">
+                <tbody>
+                  {activities.map((item) => (
+                    <tr
+                      key={item.id}
+                      onClick={() => navigate(`/activity/${item.id}`)}
+                      className="border-b last:border-none hover:bg-blue-50 cursor-pointer transition-colors"
+                    >
+                      <td className="p-3 w-3/4">{item.activity}</td>
+                      <td className="p-3 text-gray-500 w-1/4">
+                        {getTimeAgo(item.timestamp)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
         {/* End recent activity*/}
@@ -302,71 +357,92 @@ const CitizenDashboard1 = ({ size = "w-20 h-20" }) => {
         {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-20"> */}
         {/* Service Requests */}
         <div className="md:col-span-1">
-          <h2 className="text-xl font-semibold mb-4">Your Service Requests</h2>
-          <div style={{ maxHeight: "400px", overflowY: "auto" }}>
-            <table className="w-full text-sm border-collapse">
-              <thead>
-                <tr className="text-left text-gray-500 border-b">
-                  <th className="py-2">Request ID</th>
-                  <th className="py-2">Type</th>
-                  <th className="py-2">Status</th>
-                  <th className="py-2">Date Submitted</th>
+          <h2 className="text-xl font-semibold mb-4 text-blue-700">
+            Your Service Requests
+          </h2>
+
+          <div className="rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+            {/* Sticky Header */}
+            <table className="w-full text-sm table-fixed">
+              <thead className="bg-gray-100 text-gray-600 uppercase text-xs sticky top-0 z-10">
+                <tr>
+                  <th className="py-3 px-4">Request ID</th>
+                  <th className="py-3 px-4">Type</th>
+                  <th className="py-3 px-4">Status</th>
+                  <th className="py-3 px-4">Date</th>
                 </tr>
               </thead>
-              <tbody>
-                {services.map((req) => (
-                  <tr key={req.id} className="border-b">
-                    <td className="py-2">{req.id}</td>
-                    <td>{req.type}</td>
-                    <td>
-                      <span
-                        className={`px-2 py-1 text-xs rounded-full ${
-                          req.status === "Completed"
-                            ? "bg-green-100 text-green-700"
-                            : req.status === "In Progress"
-                            ? "bg-yellow-100 text-yellow-700"
-                            : "bg-gray-200 text-gray-700"
-                        }`}
-                      >
-                        {req.status}
-                      </span>
-                    </td>
-                    <td>{req.date}</td>
-                  </tr>
-                ))}
-              </tbody>
             </table>
+
+            {/* Scrollable section */}
+            <div className="max-h-64 overflow-y-auto">
+              <table className="w-full text-sm table-fixed">
+                <tbody>
+                  {services.map((req) => (
+                    <tr
+                      key={req.id}
+                      onClick={() => navigate(`/service/${req.id}`)}
+                      className="cursor-pointer border-b hover:bg-blue-50 transition"
+                    >
+                      <td className="py-3 px-4">{req.id}</td>
+                      <td className="px-4">{req.type}</td>
+                      <td className="px-4">
+                        <span
+                          className={`px-2 py-1 text-xs rounded-full ${
+                            req.status === "Completed"
+                              ? "bg-green-100 text-green-700"
+                              : req.status === "In Progress"
+                              ? "bg-yellow-100 text-yellow-700"
+                              : "bg-gray-200 text-gray-700"
+                          }`}
+                        >
+                          {req.status}
+                        </span>
+                      </td>
+                      <td className="px-4">{req.date}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
         {/* Notifications */}
         {/* <div className="md:col-span-1"> */}
         <div className="p-4">
-          <h2 className="text-xl font-semibold mb-4">Notifications</h2>
+          <h2 className="text-xl font-semibold mb-4 text-blue-700">
+            Notifications
+          </h2>
 
-          <div style={{ maxHeight: "200px", overflowY: "auto" }}>
-            <table className="min-w-full text-sm table-auto">
-              <thead className="bg-gray-100 text-left text-gray-700 uppercase text-xs">
+          <div className="rounded-xl border border-gray-200 shadow-sm">
+            <table className="min-w-full text-sm table-fixed">
+              <thead className="bg-gray-100 text-left text-gray-700 uppercase text-xs sticky top-0 z-10">
                 <tr>
-                  <th className="p-3">Message</th>
-                  <th className="p-3">Time</th>
+                  <th className="p-3 w-3/4">Message</th>
+                  <th className="p-3 w-1/4">Time</th>
                 </tr>
               </thead>
-
-              <tbody>
-                {notifications.map((item) => (
-                  <tr
-                    key={item.id}
-                    className="border-b last:border-none hover:bg-gray-50"
-                  >
-                    <td className="p-3">{item.message}</td>
-                    <td className="p-3 text-gray-500">
-                      {getTimeAgo(item.timestamp)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
             </table>
+
+            <div className="max-h-64 overflow-y-auto">
+              <table className="min-w-full text-sm table-fixed">
+                <tbody>
+                  {notifications.map((item) => (
+                    <tr
+                      key={item.id}
+                      onClick={() => navigate(`/notification/${item.id}`)}
+                      className="border-b last:border-none hover:bg-blue-50 cursor-pointer transition"
+                    >
+                      <td className="p-3 w-3/4">{item.title}</td>
+                      <td className="p-3 text-gray-500 w-1/4">
+                        {getTimeAgo(item.timestamp)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
         {/* </div> */}

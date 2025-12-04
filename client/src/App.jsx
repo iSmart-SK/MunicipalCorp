@@ -8,6 +8,9 @@ import MyProperties1 from "./pages/citizen/MyProperties1";
 import BirthCertificateForm from "./pages/citizen/BirthCertificateForm";
 import DeathCertificateForm from "./pages/citizen/DeathCertificateForm";
 import CitizenDashboard1 from "./pages/citizen/CitizenDashboard1";
+import ActivityDetails from "./pages/citizen/ActivityDetails";
+import NotificationDetails from "./pages/citizen/NotificationDetails";
+import ServiceDetails from "./pages/citizen/ServiceDetails";
 
 const Login = () => (
   <div className="p-10 text-center text-2xl">Login Page (Coming Soon)</div>
@@ -30,6 +33,9 @@ function App() {
           <Route path="/citizenDashBoard1" element={<CitizenDashboard1 />} />
           <Route path="/myProperties" element={<MyProperties />} />
           <Route path="/myProperties1" element={<MyProperties1 />} />
+          <Route path="/activity/:id" element={<ActivityDetails />} />
+          <Route path="/notification/:id" element={<NotificationDetails />} />
+          <Route path="/service/:id" element={<ServiceDetails />} />
           <Route
             path="/applyBirthCertificate"
             element={<BirthCertificateForm />}
