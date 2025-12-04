@@ -2,16 +2,8 @@ import React from "react";
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { formatDistanceToNow } from "date-fns";
-import {
-  Camera,
-  CheckCircle,
-  Clock,
-  Shield,
-  Pencil,
-  Bell,
-  AlertCircle,
-  ArrowRightCircle,
-} from "lucide-react";
+import { Camera, Clock } from "lucide-react";
+import { useNavigate } from "react-router";
 
 const CitizenDashboard1 = ({ size = "w-20 h-20" }) => {
   const [activities] = useState([
@@ -133,21 +125,81 @@ const CitizenDashboard1 = ({ size = "w-20 h-20" }) => {
     return formatDistanceToNow(new Date(date), { addSuffix: true });
   }
 
+  const navigate = useNavigate();
+
+  const navMyProperties = () => {
+    navigate("/myProperties1");
+  };
+
+  const navBirthCert = () => {
+    navigate("/applyBirthCertificate");
+  };
+
+  const navDeathCert = () => {
+    navigate("/applyDeathCertificate");
+  };
+
   return (
     <div>
       {/* Welcome Section */}
+      {/* Header Row: Welcome + Quick Links */}
       <div
-        style={{ marginLeft: "100px", marginTop: "20px", marginBottom: "40px" }}
+        className="grid grid-cols-1 md:grid-cols-2 items-center justify-between gap-1"
+        style={{
+          marginLeft: "100px",
+          marginRight: "100px",
+          marginTop: "20px",
+          marginBottom: "40px",
+        }}
       >
-        <h1 className="text-3xl font-bold">Welcome, Nagarik!</h1>
-        <p className="text-gray-600">
-          Your personalized dashboard for managing municipal services and
-          interactions.
-        </p>
+        {/* Left: Welcome Text */}
+        <div>
+          <h1 className="text-3xl font-bold">Welcome, Nagarik!</h1>
+          <p className="text-gray-600">
+            Your personalized dashboard for managing municipal services and
+            interactions.
+          </p>
+        </div>
+
+        {/* Right: Quick Links */}
+        {/* <div className="flex flex-wrap gap-4 justify-start md:justify-end"> */}
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-2 justify-start md:justify-end">
+          <button
+            onClick={navMyProperties}
+            className="px-2.5 py-2.5 rounded-lg bg-white border border-gray-200 
+            shadow-md hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50 
+            transition-all duration-300 text-sm font-semibold text-blue-700"
+          >
+            Pay Tax
+          </button>
+          <button
+            onClick={navBirthCert}
+            className="px-2.5 py-2.5 rounded-lg bg-white border border-gray-200 
+            shadow-md hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50 
+            transition-all duration-300 text-sm font-semibold text-blue-700"
+          >
+            Apply Birth Certificate
+          </button>
+          <button
+            onClick={navDeathCert}
+            className="px-2.5 py-2.5 rounded-lg bg-white border border-gray-200 
+            shadow-md hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50 
+            transition-all duration-300 text-sm font-semibold text-blue-700"
+          >
+            Apply Death Certificate
+          </button>
+          <button
+            className="px-2.5 py-2.5 rounded-lg bg-white border border-gray-200 
+            shadow-md hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50 
+            transition-all duration-300 text-sm font-semibold text-blue-700"
+          >
+            Contact Support
+          </button>
+        </div>
       </div>
       {/* Profile + Activities */}
       <div
-        className="grid grid-cols-1 md:grid-cols-2 gap-12"
+        className="grid grid-cols-2 md:grid-cols-2 gap-12"
         style={{ marginLeft: "100px", marginRight: "100px" }}
       >
         {/* Profile Summary */}
@@ -171,9 +223,9 @@ const CitizenDashboard1 = ({ size = "w-20 h-20" }) => {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center rounded-full transition-opacity">
+            {/* <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center rounded-full transition-opacity pointer-events-none">
               <Camera className="text-white w-8 h-8" />
-            </div>
+            </div> */}
 
             <input
               type="file"
@@ -251,7 +303,7 @@ const CitizenDashboard1 = ({ size = "w-20 h-20" }) => {
         {/* Service Requests */}
         <div className="md:col-span-1">
           <h2 className="text-xl font-semibold mb-4">Your Service Requests</h2>
-          <div style={{ maxHeight: "200px", overflowY: "auto" }}>
+          <div style={{ maxHeight: "400px", overflowY: "auto" }}>
             <table className="w-full text-sm border-collapse">
               <thead>
                 <tr className="text-left text-gray-500 border-b">
@@ -292,7 +344,7 @@ const CitizenDashboard1 = ({ size = "w-20 h-20" }) => {
         <div className="p-4">
           <h2 className="text-xl font-semibold mb-4">Notifications</h2>
 
-          <div className="max-h-64 overflow-y-auto rounded-xl border border-gray-200 shadow-sm">
+          <div style={{ maxHeight: "200px", overflowY: "auto" }}>
             <table className="min-w-full text-sm table-auto">
               <thead className="bg-gray-100 text-left text-gray-700 uppercase text-xs">
                 <tr>
@@ -321,24 +373,10 @@ const CitizenDashboard1 = ({ size = "w-20 h-20" }) => {
         {/* </div> */}
         {/* End Notifications */}
         {/* Quick Access Buttons */}
-        <div className="col-start-2 p-6 bg-white rounded-2xl shadow-md border border-gray-100">
+        {/* <div className="col-start-2 p-6 bg-white rounded-2xl shadow-md border border-gray-100">
           <h2 className="text-xl font-semibold mb-6">Quick Access</h2>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {/* {[
-              "New Request",
-              "Pay Bill",
-              "Announcements",
-              "Contact Support",
-            ].map((item) => (
-              <button
-                key={item}
-                className="p-4 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 flex items-center justify-center text-sm font-medium"
-              >
-                {item}
-              </button>
-              
-            ))} */}
             <button className="p-4 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 flex items-center justify-center text-sm font-medium">
               Pay Tax
             </button>
@@ -352,7 +390,7 @@ const CitizenDashboard1 = ({ size = "w-20 h-20" }) => {
               Contact Support
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
