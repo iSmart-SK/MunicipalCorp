@@ -179,6 +179,10 @@ const CitizenDashboard1 = ({ size = "w-20 h-20" }) => {
     navigate("/applyDeathCertificate");
   };
 
+  const navServiceReq = () => {
+    navigate("/servicerequest");
+  };
+
   return (
     <div>
       {/* Welcome Section */}
@@ -207,6 +211,14 @@ const CitizenDashboard1 = ({ size = "w-20 h-20" }) => {
         {/* <div className="flex flex-wrap gap-4 justify-start md:justify-end"> */}
         <div className="grid grid-cols-2 gap-4 md:grid-cols-2 justify-start md:justify-end">
           <button
+            onClick={navServiceReq}
+            className="px-2.5 py-2.5 rounded-lg bg-white border border-gray-200 
+            shadow-md hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50 
+            transition-all duration-300 text-sm font-semibold text-blue-700"
+          >
+            Service Request
+          </button>
+          <button
             onClick={navMyProperties}
             className="px-2.5 py-2.5 rounded-lg bg-white border border-gray-200 
             shadow-md hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50 
@@ -229,13 +241,6 @@ const CitizenDashboard1 = ({ size = "w-20 h-20" }) => {
             transition-all duration-300 text-sm font-semibold text-blue-700"
           >
             Apply Death Certificate
-          </button>
-          <button
-            className="px-2.5 py-2.5 rounded-lg bg-white border border-gray-200 
-            shadow-md hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50 
-            transition-all duration-300 text-sm font-semibold text-blue-700"
-          >
-            Contact Support
           </button>
         </div>
       </div>
@@ -296,7 +301,7 @@ const CitizenDashboard1 = ({ size = "w-20 h-20" }) => {
 
                 <div>
                   <p className="text-gray-500">Pending Requests</p>
-                  <p className="font-semibold text-orange-600 text-lg">2</p>
+                  <p className="font-semibold text-orange-600 text-lg">4</p>
                 </div>
 
                 <div>

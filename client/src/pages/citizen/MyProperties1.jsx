@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import PayTaxModal1 from "./PayTaxModal1";
 
 const MyProperties1 = () => {
+  const navigate = useNavigate();
   const properties = [
     { propertyId: "P-1001", zone: "Residential", taxDue: 1250 },
     { propertyId: "P-1002", zone: "Commercial", taxDue: 980 },
@@ -33,6 +36,14 @@ const MyProperties1 = () => {
     <div className="flex flex-col items-center mt-10 px-4">
       {/* MATERIAL CARD */}
       <div className="bg-white shadow-md shadow-gray-300 rounded-xl p-6 w-full max-w-4xl">
+        {/* Back Button */}
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-6"
+        >
+          <ArrowLeft size={18} />
+          Back
+        </button>
         <h2 className="text-xl font-semibold mb-4 text-gray-700">
           My Properties
         </h2>

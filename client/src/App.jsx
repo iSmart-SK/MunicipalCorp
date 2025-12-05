@@ -11,6 +11,7 @@ import CitizenDashboard1 from "./pages/citizen/CitizenDashboard1";
 import ActivityDetails from "./pages/citizen/ActivityDetails";
 import NotificationDetails from "./pages/citizen/NotificationDetails";
 import ServiceDetails from "./pages/citizen/ServiceDetails";
+import CreateServiceRequest from "./pages/citizen/CreateServiceRequest";
 
 const Login = () => (
   <div className="p-10 text-center text-2xl">Login Page (Coming Soon)</div>
@@ -31,6 +32,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/citizenDashBoard" element={<CitizenDashboard />} />
           <Route path="/citizenDashBoard1" element={<CitizenDashboard1 />} />
+          <Route path="/servicerequest" element={<CreateServiceRequest />} />
           <Route path="/myProperties" element={<MyProperties />} />
           <Route path="/myProperties1" element={<MyProperties1 />} />
           <Route path="/activity/:id" element={<ActivityDetails />} />

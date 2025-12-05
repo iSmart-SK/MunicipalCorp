@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
 export default function BirthCertificateForm1() {
   const [form, setForm] = useState({
@@ -9,6 +11,8 @@ export default function BirthCertificateForm1() {
     placeOfBirth: "",
     proof: null,
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -36,6 +40,14 @@ export default function BirthCertificateForm1() {
         fontFamily: "Inter, sans-serif",
       }}
     >
+      {/* Back Button */}
+      <button
+        onClick={() => navigate(-1)}
+        className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-6"
+      >
+        <ArrowLeft size={18} />
+        Back
+      </button>
       <h2
         style={{
           marginBottom: "25px",
@@ -172,10 +184,10 @@ export default function BirthCertificateForm1() {
           />
         </div>
 
-        {/* Upload Proof Document */}
+        {/* Supporting Document */}
         <div style={{ marginBottom: "25px" }}>
           <label style={{ fontWeight: "500", color: "#555" }}>
-            Upload Proof Document
+            Supporting Document
           </label>
           <input
             type="file"
@@ -188,21 +200,22 @@ export default function BirthCertificateForm1() {
 
         <button
           type="submit"
-          style={{
-            width: "100%",
-            padding: "14px",
-            background: "#3f51b5",
-            color: "white",
-            border: "none",
-            borderRadius: "8px",
-            fontSize: "16px",
-            fontWeight: "500",
-            cursor: "pointer",
-            boxShadow: "0 3px 10px rgba(63,81,181,0.3)",
-            transition: "0.2s",
-          }}
-          onMouseEnter={(e) => (e.target.style.background = "#303f9f")}
-          onMouseLeave={(e) => (e.target.style.background = "#3f51b5")}
+          className="w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 shadow-md transition-all"
+          // style={{
+          //   width: "100%",
+          //   padding: "14px",
+          //   background: "#3f51b5",
+          //   color: "white",
+          //   border: "none",
+          //   borderRadius: "8px",
+          //   fontSize: "16px",
+          //   fontWeight: "500",
+          //   cursor: "pointer",
+          //   boxShadow: "0 3px 10px rgba(63,81,181,0.3)",
+          //   transition: "0.2s",
+          // }}
+          // onMouseEnter={(e) => (e.target.style.background = "#303f9f")}
+          // onMouseLeave={(e) => (e.target.style.background = "#3f51b5")}
         >
           Submit Application
         </button>
