@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Building2, FileText, LogOut } from 'lucide-react';
+import { LayoutDashboard, Building2, FileText, LogOut, Megaphone, Clock } from 'lucide-react';
 
 const CitizenSidebar = () => {
   const location = useLocation();
@@ -19,6 +19,8 @@ const CitizenSidebar = () => {
     { name: 'Dashboard', path: '/citizen/dashboard', icon: LayoutDashboard },
     { name: 'My Properties', path: '/citizen/properties', icon: Building2 },
     { name: 'Apply Services', path: '/citizen/apply', icon: FileText },
+    { name: 'Lodge Grievance', path: '/citizen/grievance', icon: Megaphone }, // Import Megaphone from lucide-react
+    { name: 'Track Status', path: '/citizen/track', icon: Clock },
   ];
 
   return (

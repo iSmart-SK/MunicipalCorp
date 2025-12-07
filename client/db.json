@@ -61,6 +61,74 @@
       "lastPaid": "2024-01-10"
     }
   ],
-  "birth_applications": [],
-  "death_applications": []
+  "birth_applications": [
+    {
+      "childName": "Yami",
+      "dob": "2025-12-02",
+      "gender": "Female",
+      "fatherName": "Rames",
+      "motherName": "Savita",
+      "placeOfBirth": "Municipal hospital Pimpri",
+      "citizenId": 2,
+      "status": "APPROVED",
+      "appliedDate": "2025-12-07",
+      "id": 1
+    },
+    {
+      "childName": "io,9im",
+      "dob": "2025-12-19",
+      "gender": "Male",
+      "fatherName": "kjmomo",
+      "motherName": "nuu9nun",
+      "placeOfBirth": "yufc7vr7tcry",
+      "citizenId": 2,
+      "status": "APPROVED",
+      "appliedDate": "2025-12-07",
+      "id": 2
+    }
+  ],
+  "death_applications": [],
+  "grievances": [
+    {
+      "type": "Garbage",
+      "description": "sgijoerg",
+      "ward": "A",
+      "citizenId": 2,
+      "citizenName": "shubham",
+      "status": "RESOLVED",
+      "date": "2025-12-07",
+      "id": 1
+    },
+    {
+      "type": "Garbage",
+      "description": "sefger",
+      "ward": "A",
+      "citizenId": 2,
+      "citizenName": "shubham",
+      "status": "RESOLVED",
+      "date": "2025-12-07",
+      "id": 2
+    }
+  ],
+  "tax_payments": [],
+  "water_connections": [
+    {
+      "id": 1,
+      "consumerNo": "WAT-1001",
+      "name": "Shubham Kadam",
+      "address": "Flat 101, Galaxy Apt",
+      "billAmount": 450,
+      "dueDate": "2025-12-30",
+      "status": "UNPAID"
+    },
+    {
+      "id": 2,
+      "consumerNo": "WAT-1002",
+      "name": "Amit Patil",
+      "address": "Plot 45, Shivaji Nagar",
+      "billAmount": 1200,
+      "dueDate": "2025-12-15",
+      "status": "UNPAID"
+    }
+  ]
 }

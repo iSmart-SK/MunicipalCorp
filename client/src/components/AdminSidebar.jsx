@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, FileCheck, Skull, CreditCard, LogOut } from 'lucide-react';
+import { LayoutDashboard, FileCheck, Skull, CreditCard, LogOut, Megaphone } from 'lucide-react';
 
 const AdminSidebar = () => {
   const location = useLocation();
@@ -18,6 +18,7 @@ const AdminSidebar = () => {
     { name: 'Birth Applications', path: '/admin/births', icon: FileCheck },
     { name: 'Death Applications', path: '/admin/deaths', icon: Skull },
     { name: 'Tax Payments', path: '/admin/payments', icon: CreditCard },
+    { name: 'Manage Grievances', path: '/admin/grievances', icon: Megaphone },
   ];
 
   return (
