@@ -25,6 +25,16 @@
       "aadharNo": "786412326786",
       "address": "Yellapur",
       "id": 3
+    },
+    {
+      "email": "raj@gmail.com",
+      "password": "$2a$10$pAEqNILfiBuZAL5eM8zcueoaIYNcs2eCo.rXui4SRzSqFDCo4QDwm",
+      "role": "CITIZEN",
+      "fullName": "Raj",
+      "mobileNo": "9876534567",
+      "aadharNo": "305068939866",
+      "address": "Yeola Pune",
+      "id": 4
     }
   ],
   "citizens": [],
@@ -33,10 +43,24 @@
     {
       "id": 1,
       "citizenId": 1,
-      "ward": "A",
+      "ownerName": "Shubham Kadam",
+      "address": "Flat 101, Galaxy Apt, Ward A",
       "type": "RESIDENTIAL",
       "areaSqft": 1200,
-      "taxAmount": 4500
+      "taxDue": 4500,
+      "lastPaid": "2024-03-15"
+    },
+    {
+      "id": 2,
+      "citizenId": 1,
+      "ownerName": "Shubham Kadam",
+      "address": "Shop No 5, Market Yard, Ward B",
+      "type": "COMMERCIAL",
+      "areaSqft": 450,
+      "taxDue": 12000,
+      "lastPaid": "2024-01-10"
     }
-  ]
+  ],
+  "birth_applications": [],
+  "death_applications": []
 }

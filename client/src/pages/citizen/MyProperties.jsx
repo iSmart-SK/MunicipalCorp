@@ -1,103 +1,127 @@
-import React, { useState } from "react";
-import PayTaxModal from "./PayTaxModal";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import CitizenSidebar from '../../components/CitizenSidebar';
+import { Building2, MapPin, Calendar, IndianRupee, ArrowRight, Loader } from 'lucide-react';
 
 const MyProperties = () => {
-  const properties = [
-    { propertyId: "P-1001", zone: "Residential", taxDue: 1250 },
-    { propertyId: "P-1002", zone: "Commercial", taxDue: 980 },
-    { propertyId: "P-1003", zone: "Industrial", taxDue: 0 },
-    { propertyId: "P-1004", zone: "Residential", taxDue: 760 },
-    { propertyId: "P-1005", zone: "Agricultural", taxDue: 3150 },
-    { propertyId: "P-1006", zone: "Commercial", taxDue: 0 },
-    { propertyId: "P-1007", zone: "Industrial", taxDue: 1875 },
-    { propertyId: "P-1008", zone: "Agricultural", taxDue: 4220 },
-    { propertyId: "P-1009", zone: "Residential", taxDue: 0 },
-    { propertyId: "P-1010", zone: "Agricultural", taxDue: 2700 },
-  ];
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const totalTax = properties.reduce((sum, p) => sum + p.taxDue, 0);
-  const [showModal, setShowModal] = useState(false);
-  const [selectedPropertyData, setSelectedPropertyData] = useState(null);
+  // Fetch properties on load
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        // In a real app, we would pass the User ID token. 
+        // For json-server, we just fetch the array.
+        const response = await axios.get('http://localhost:8080/properties');
+        setProperties(response.data);
+      } catch (error) {
+        console.error("Error fetching properties:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const handleOpenModal = (propertyData) => {
-    setSelectedPropertyData(propertyData);
-    setShowModal(true);
-  };
+    fetchProperties();
+  }, []);
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setSelectedPropertyData(null); // Clear selected data when closing
+  // Placeholder for Razorpay Logic
+  const handlePayTax = (property) => {
+    alert(`Starting Razorpay for Property ID: ${property.id}\nAmount: ₹${property.taxDue}`);
+    // Later: We will call backend /payment/create-order here
   };
 
   return (
-    <div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "20px",
-        }}
-      >
-        <table>
-          <thead>
-            <tr className="text-left text-gray-500 border-b ">
-              <th className="">Property ID</th>
-              <th className="p-3">Zone</th>
-              <th className="p-3">Tax Due</th>
-            </tr>
-          </thead>
-          <tbody>
-            {properties.map((prop) => (
-              <tr key={prop.propertyId} className="border-b">
-                <td className="">{prop.propertyId}</td>
-                <td className="">{prop.zone}</td>
-                <td className="px-3">
-                  {prop.taxDue == 0 ? (
-                    <p className="bg-green-100 text-green-700">Paid</p>
-                  ) : (
-                    <p className="bg-red-100 text-red-700">{prop.taxDue}</p>
-                  )}
-                </td>
-                <td>
-                  {prop.taxDue > 0 && (
-                    <button
-                      id="pay"
-                      type="button"
-                      className="btn btn-primary"
-                      data-bs-toggle="modal"
-                      data-bs-target="#reactModals"
-                      onClick={() => handleOpenModal(prop)}
-                    >
-                      Pay
-                    </button>
-                  )}{" "}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {showModal && (
-          <PayTaxModal
-            show={showModal}
-            onClose={handleCloseModal}
-            propertyData={selectedPropertyData}
-          />
+    <div className="min-h-screen bg-gray-50 pt-16">
+      <CitizenSidebar />
+      
+      <div className="md:ml-64 p-6">
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800">My Properties</h1>
+            <p className="text-gray-600">View your registered properties and pay pending taxes.</p>
+          </div>
+          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition shadow-md">
+            + Register New Property
+          </button>
+        </div>
+
+        {/* Loading State */}
+        {loading && (
+          <div className="flex justify-center items-center h-64">
+            <Loader className="w-8 h-8 text-blue-600 animate-spin" />
+          </div>
         )}
-      </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "20px",
-          gap: 10,
-        }}
-      >
-        <p>Total Tax Due:{totalTax} </p>
-        <button type="button" className="btn btn-primary">
-          Pay All
-        </button>
+
+        {/* Empty State */}
+        {!loading && properties.length === 0 && (
+          <div className="text-center py-20 bg-white rounded-xl shadow-sm">
+            <Building2 className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <h3 className="text-xl font-medium text-gray-600">No Properties Found</h3>
+            <p className="text-gray-500">Register a property to see it here.</p>
+          </div>
+        )}
+
+        {/* Properties Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {properties.map((prop) => (
+            <div key={prop.id} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
+              
+              {/* Card Header */}
+              <div className="bg-gray-50 p-4 border-b flex justify-between items-center">
+                <div className="flex items-center space-x-2">
+                  <div className={`p-2 rounded-lg ${prop.type === 'RESIDENTIAL' ? 'bg-blue-100 text-blue-600' : 'bg-orange-100 text-orange-600'}`}>
+                    <Building2 className="w-5 h-5" />
+                  </div>
+                  <span className="font-bold text-gray-700">{prop.type}</span>
+                </div>
+                <span className="text-xs font-mono bg-gray-200 text-gray-600 px-2 py-1 rounded">
+                  ID: {prop.id}
+                </span>
+              </div>
+
+              {/* Card Body */}
+              <div className="p-6">
+                <div className="flex items-start space-x-3 mb-4">
+                  <MapPin className="w-5 h-5 text-gray-400 mt-1" />
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">{prop.address}</p>
+                    <p className="text-xs text-gray-500">Owner: {prop.ownerName}</p>
+                  </div>
+                </div>
+
+                <div className="flex justify-between items-center text-sm text-gray-600 mb-6">
+                  <div className="flex items-center">
+                    <Calendar className="w-4 h-4 mr-1" />
+                    Last Paid: {prop.lastPaid}
+                  </div>
+                  <div>Area: {prop.areaSqft} sqft</div>
+                </div>
+
+                {/* Payment Section */}
+                <div className="bg-red-50 p-4 rounded-lg flex justify-between items-center">
+                  <div>
+                    <p className="text-xs text-red-500 font-bold uppercase tracking-wide">Tax Due</p>
+                    <p className="text-2xl font-bold text-gray-800">₹ {prop.taxDue.toLocaleString()}</p>
+                  </div>
+                  
+                  {prop.taxDue > 0 ? (
+                    <button 
+                      onClick={() => handlePayTax(prop)}
+                      className="flex items-center bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition"
+                    >
+                      Pay Now <ArrowRight className="w-4 h-4 ml-2" />
+                    </button>
+                  ) : (
+                    <span className="flex items-center text-green-600 font-bold px-4 py-2 bg-green-100 rounded-lg">
+                      Paid <FileCheck className="w-4 h-4 ml-2" />
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

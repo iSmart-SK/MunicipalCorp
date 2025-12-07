@@ -1,10 +1,17 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom'; 
+import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
-
-const Login = () => <div className="p-10 text-center text-2xl">Login Page (Coming Soon)</div>;
-const Register = () => <div className="p-10 text-center text-2xl">Register Page (Coming Soon)</div>;
+import Login from './pages/auth/Login';
+import Register from './pages/auth/Register';
+import CitizenDashboard from './pages/citizen/CitizenDashboard';
+import MyProperties from './pages/citizen/MyProperties';
+import Services from './pages/citizen/Services';
+import ApplyBirth from './pages/citizen/ApplyBirth';
+import ApplyDeath from './pages/citizen/ApplyDeath';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import ManageBirth from './pages/admin/ManageBirth';
+import ManageDeath from './pages/admin/ManageDeath';
 
 function App() {
   return (
@@ -13,24 +20,22 @@ function App() {
       <main className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login/>} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/citizenDashBoard" element={<CitizenDashboard />} />
-          <Route path="/citizenDashBoard1" element={<CitizenDashboard1 />} />
-          <Route path="/servicerequest" element={<CreateServiceRequest />} />
-          <Route path="/myProperties" element={<MyProperties />} />
-          <Route path="/myProperties1" element={<MyProperties1 />} />
-          <Route path="/activity/:id" element={<ActivityDetails />} />
-          <Route path="/notification/:id" element={<NotificationDetails />} />
-          <Route path="/service/:id" element={<ServiceDetails />} />
-          <Route
-            path="/applyBirthCertificate"
-            element={<BirthCertificateForm />}
-          />
-          <Route
-            path="/applyDeathCertificate"
-            element={<DeathCertificateForm />}
-          />
+          
+          {/* Citizen Routes */}
+          <Route path="/citizen/dashboard" element={<CitizenDashboard />} />
+          <Route path="/citizen/properties" element={<MyProperties />} />
+          <Route path="/citizen/apply" element={<Services />} />
+          <Route path="/citizen/apply/birth" element={<ApplyBirth />} />
+          <Route path="/citizen/apply/death" element={<ApplyDeath />} />
+          
+          {/* Admin Routes */}
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/births" element={<ManageBirth />} />
+          <Route path="/admin/deaths" element={<ManageDeath />} />
+
+        
         </Routes>
       </main>
     </div>
