@@ -1,0 +1,42 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "test@test.com",
+      "password": "test",
+      "role": "CITIZEN"
+    },
+    {
+      "email": "shubham@gmail.com",
+      "password": "$2a$10$eeVeP135HW7Mwr7a9Yk1leNMH0.3l3O8W8gY7.gli3JpMGBXaMvHS",
+      "role": "CITIZEN",
+      "fullName": "shubham",
+      "mobileNo": "3456789876",
+      "aadharNo": "987654356789",
+      "address": "sfjrflrjg",
+      "id": 2
+    },
+    {
+      "email": "ykale0660@gmail.com",
+      "password": "$2a$10$VQo95Dt2t/hwz8b9hFdfcOl.np0sCvHRBpW2WcX3hb2NjR0.ctLZa",
+      "role": "CITIZEN",
+      "fullName": "yogesh k",
+      "mobileNo": "7558663096",
+      "aadharNo": "786412326786",
+      "address": "Yellapur",
+      "id": 3
+    }
+  ],
+  "citizens": [],
+  "admins": [],
+  "properties": [
+    {
+      "id": 1,
+      "citizenId": 1,
+      "ward": "A",
+      "type": "RESIDENTIAL",
+      "areaSqft": 1200,
+      "taxAmount": 4500
+    }
+  ]
+}
