@@ -4,7 +4,8 @@
       "id": 1,
       "email": "test@test.com",
       "password": "test",
-      "role": "CITIZEN"
+      "role": "CITIZEN",
+      "status": "ACTIVE"
     },
     {
       "email": "shubham@gmail.com",
@@ -14,7 +15,8 @@
       "mobileNo": "3456789876",
       "aadharNo": "987654356789",
       "address": "sfjrflrjg",
-      "id": 2
+      "id": 2,
+      "status": "ACTIVE"
     },
     {
       "email": "ykale0660@gmail.com",
@@ -24,7 +26,8 @@
       "mobileNo": "7558663096",
       "aadharNo": "786412326786",
       "address": "Yellapur",
-      "id": 3
+      "id": 3,
+      "status": "ACTIVE"
     },
     {
       "email": "raj@gmail.com",
@@ -34,7 +37,8 @@
       "mobileNo": "9876534567",
       "aadharNo": "305068939866",
       "address": "Yeola Pune",
-      "id": 4
+      "id": 4,
+      "status": "ACTIVE"
     }
   ],
   "citizens": [],
