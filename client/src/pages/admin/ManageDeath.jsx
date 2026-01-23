@@ -1,5 +1,7 @@
 import React, { useState, useMemo } from "react";
+import AdminSidebar from "../../components/AdminSidebar";
 import {
+// import AdminDashboard from "src\pages\admin\AdminDashboard";
   Download,
   Filter,
   MoreHorizontal,
@@ -153,14 +155,16 @@ export default function ManageDeath() {
   };
 
   return (
-    <div className="p-6 space-y-4">
+    
+    <div className="ml-64 p-6 space-y-4">
+    <AdminSidebar />
       {/* ----------------------------------------------------
           Title + Actions
       ---------------------------------------------------- */}
-      <div className="flex flex-col md:flex-row justify-between gap-3">
+      <div className="flex flex-col mt-5 md:flex-row justify-between gap-3">
         <h1 className="text-2xl font-semibold">Manage Death Applications</h1>
 
-        <div className="flex gap-3">
+        <div className="flex gap-3 md:mt-0">
           <button
             onClick={exportCSV}
             className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg"
@@ -322,6 +326,8 @@ export default function ManageDeath() {
           </button>
         </div>
       </div>
+      
     </div>
+    
   );
 }

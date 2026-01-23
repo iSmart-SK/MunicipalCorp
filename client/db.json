@@ -35,6 +35,16 @@
       "aadharNo": "305068939866",
       "address": "Yeola Pune",
       "id": 4
+    },
+    {
+      "email": "ak@gmail.com",
+      "password": "$2a$10$Rdzn9r6DrDjUeiw5/plxLerODB4FAd13X24HsGjoA8kXWP.15ocAq",
+      "role": "CITIZEN",
+      "fullName": "Avi ",
+      "mobileNo": "1234567890",
+      "aadharNo": "212325254136",
+      "address": "indira gandhi ward",
+      "id": 5
     }
   ],
   "citizens": [],
