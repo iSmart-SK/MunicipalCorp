@@ -10,8 +10,8 @@ const ApplyBirth = () => {
   
   const [formData, setFormData] = useState({
     childName: '',
-    dob: '',
-    gender: 'Male',
+    dateOfBirth: '',
+    gender: 'MALE',
     fatherName: '',
     motherName: '',
     placeOfBirth: 'Hospital'
@@ -35,8 +35,9 @@ const ApplyBirth = () => {
         status: 'PENDING',
         appliedDate: new Date().toISOString().split('T')[0]
       };
+console.log("Payload:", payload);
 
-      await axios.post('http://localhost:8080/birth_applications', payload);
+      await axios.post('http://localhost:8080/birth-certificates', payload);
       
       alert('Application Submitted Successfully!');
       navigate('/citizen/dashboard');
@@ -81,17 +82,21 @@ const ApplyBirth = () => {
               {/* DOB */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
-                <input name="dob" required type="date" className="w-full border border-gray-300 p-2 rounded-lg" 
-                  onChange={handleChange} />
-              </div>
+                {/* <input name="dateOfBirth" required type="date" className="w-full border border-gray-300 p-2 rounded-lg" 
+                  onChange={handleChange} /> */}
+                                        <input type="date"  name="dateOfBirth"   value={formData.dateOfBirth}
+                            required className="w-full border border-gray-300 p-2 rounded-lg"
+                            onChange={handleChange}
+                          />
+                          </div>
 
               {/* Gender */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
                 <select name="gender" className="w-full border border-gray-300 p-2 rounded-lg" onChange={handleChange}>
-                  <option>Male</option>
-                  <option>Female</option>
-                  <option>Other</option>
+                  <option>MALE</option>
+                  <option>FEMALE</option>
+                  <option>OTHER</option>
                 </select>
               </div>
 

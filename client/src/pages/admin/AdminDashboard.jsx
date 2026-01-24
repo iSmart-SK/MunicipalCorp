@@ -170,7 +170,7 @@ const AdminDashboard = () => {
   // 9. Render Component
   // -----------------------------
   return (
-    <div className={`min-h-screen pt-16 ${darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-800"}`}>
+    <div className={`min-h-screen pt-16 ${darkMode ? "bg-gray-900 text-black" : "bg-gray-100 text-gray-800"}`}>
       <AdminSidebar />
 
       <div className="md:ml-64 p-8 space-y-8">
@@ -236,10 +236,10 @@ const AdminDashboard = () => {
             </div>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={monthlyRequests}>
-                <XAxis dataKey="month" stroke={darkMode ? "#fff" : "#888"} />
-                <YAxis stroke={darkMode ? "#fff" : "#888"} />
+                <XAxis dataKey="month" stroke={darkMode ? "text-black" : "#888"} />
+                <YAxis stroke={darkMode ? "text-black" : "#888"} />
                 <Tooltip />
-                <Bar dataKey="count" fill="#0088FE" />
+                <Bar dataKey="count" fill="#00C49F" />
               </BarChart>
             </ResponsiveContainer>
           </div>
