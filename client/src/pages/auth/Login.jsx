@@ -1,41 +1,51 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Import Axios
-import { Mail, Lock, User, ShieldCheck, ArrowRight, AlertCircle } from 'lucide-react';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios"; // Import Axios
+import {
+  Mail,
+  Lock,
+  User,
+  ShieldCheck,
+  ArrowRight,
+  AlertCircle,
+} from "lucide-react";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [role, setRole] = useState('CITIZEN');
-  const [formData, setFormData] = useState({ email: '', password: '' });
-  const [error, setError] = useState('');
+  const [role, setRole] = useState("");
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
 
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     try {
       // 1. Make the API Call (Matches your SRS Endpoint)
-      const response = await axios.post('http://localhost:8080/api/auth/login', {
+      const response = await axios.post("http://localhost:9090/user/login", {
         email: formData.email,
-        password: formData.password
+        password: formData.password,
       });
-
+      console.log(response.data);
+      // window.alert(response.data.UserDTO);
       // 2. Success: JSON Server returns { accessToken: "..." }
-      const token = response.data.accessToken;
-      
+      // const token = response.data.accessToken;
+      const role = response.data.role;
+
       // 3. Store in LocalStorage (Simulating Session)
-      localStorage.setItem('token', token);
-      localStorage.setItem('role', role); 
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+      //localStorage.setItem('token', token);
+      localStorage.setItem("role", role);
+      localStorage.setItem("user_id", response.data.id);
+      localStorage.setItem("name", response.data.name);
 
       console.log("Login Success:", response.data);
 
       // 4. Redirect
-      if (role === 'CITIZEN') navigate('/citizen/dashboard');
-      else navigate('/admin/dashboard');
-
+      if (role === "CITIZEN") navigate("/citizen/dashboard");
+      else navigate("/admin/dashboard");
     } catch (err) {
       // 5. Handle Errors
       console.error("Login Failed", err);
@@ -46,17 +56,32 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
-        
         {/* Header and Tabs are same as before... */}
         <div className="text-center">
-          <h2 className="text-3xl font-extrabold text-gray-900">Welcome Back</h2>
+          <h2 className="text-3xl font-extrabold text-gray-900">
+            Welcome Back
+          </h2>
         </div>
 
         {/* Role Toggle */}
-        <div className="flex bg-gray-200 p-1 rounded-lg">
-          <button className={`flex-1 flex items-center justify-center py-2 rounded-md ${role === 'CITIZEN' ? 'bg-white shadow-sm' : ''}`} onClick={() => setRole('CITIZEN')}>Citizen</button>
-          <button className={`flex-1 flex items-center justify-center py-2 rounded-md ${role === 'ADMIN' ? 'bg-white shadow-sm' : ''}`} onClick={() => setRole('ADMIN')}>Admin</button>
-        </div>
+        {/* <div className="flex bg-gray-200 p-1 rounded-lg">
+          <button
+            className={`flex-1 flex items-center justify-center py-2 rounded-md ${
+              role === "CITIZEN" ? "bg-white shadow-sm" : ""
+            }`}
+            onClick={() => setRole("CITIZEN")}
+          >
+            Citizen
+          </button>
+          <button
+            className={`flex-1 flex items-center justify-center py-2 rounded-md ${
+              role === "ADMIN" ? "bg-white shadow-sm" : ""
+            }`}
+            onClick={() => setRole("ADMIN")}
+          >
+            Admin
+          </button>
+        </div> */}
 
         {/* Error Message */}
         {error && (
@@ -66,10 +91,27 @@ const Login = () => {
         )}
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <input name="email" type="email" required placeholder="Email" onChange={handleChange} className="w-full border p-2 rounded" />
-          <input name="password" type="password" required placeholder="Password" onChange={handleChange} className="w-full border p-2 rounded" />
-          
-          <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+          <input
+            name="email"
+            type="email"
+            required
+            placeholder="Email"
+            onChange={handleChange}
+            className="w-full border p-2 rounded"
+          />
+          <input
+            name="password"
+            type="password"
+            required
+            placeholder="Password"
+            onChange={handleChange}
+            className="w-full border p-2 rounded"
+          />
+
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          >
             Sign In
           </button>
         </form>

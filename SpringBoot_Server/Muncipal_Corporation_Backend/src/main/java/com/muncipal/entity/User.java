@@ -1,5 +1,6 @@
 package com.muncipal.entity;
 
+import com.muncipal.entity.enums.ActInactStatus;
 import com.muncipal.entity.enums.UserRole;
 
 import jakarta.persistence.AttributeOverride;
@@ -36,4 +37,7 @@ public class User extends BaseEntity{
 	private String address;
 	@Enumerated(EnumType.STRING)
 	private UserRole role;
+	@Enumerated(EnumType.STRING)
+	@Column(name="act_status")
+	private ActInactStatus actStatus;
 }
