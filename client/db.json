@@ -124,7 +124,16 @@
       "id": 2
     }
   ],
-  "tax_payments": [],
+  "tax_payments": [
+    {
+      "type": "WATER",
+      "amount": 450,
+      "citizenId": 2,
+      "date": "2026-01-24",
+      "refId": "WAT-1001",
+      "id": 1
+    }
+  ],
   "water_connections": [
     {
       "id": 1,
@@ -133,7 +142,7 @@
       "address": "Flat 101, Galaxy Apt",
       "billAmount": 450,
       "dueDate": "2025-12-30",
-      "status": "UNPAID"
+      "status": "PAID"
     },
     {
       "id": 2,
