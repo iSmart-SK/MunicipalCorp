@@ -37,7 +37,8 @@
       "mobileNo": "9876534567",
       "aadharNo": "305068939866",
       "address": "Yeola Pune",
-      "id": 4
+      "id": 4,
+      "status": "ACTIVE"
     },
     {
       "email": "ak@gmail.com",
