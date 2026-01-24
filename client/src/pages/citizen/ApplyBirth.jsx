@@ -24,7 +24,13 @@ const ApplyBirth = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+     const today = new Date().toISOString().split("T")[0];
 
+  if (formData.dateOfBirth > today) {
+    alert("Date of Birth cannot be in the future");
+    setLoading(false);
+    return; // ⛔ stop submission
+  }
     try {
       // Get current user from storage to link application
       const user = JSON.parse(localStorage.getItem('user'));
@@ -34,6 +40,7 @@ const ApplyBirth = () => {
         citizenId: user ? user.id : 1, // Fallback to 1 if testing
         status: 'PENDING',
         appliedDate: new Date().toISOString().split('T')[0]
+        
       };
 console.log("Payload:", payload);
 
