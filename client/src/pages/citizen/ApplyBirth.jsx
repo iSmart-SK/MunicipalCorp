@@ -9,12 +9,12 @@ const ApplyBirth = () => {
   const [loading, setLoading] = useState(false);
   
   const [formData, setFormData] = useState({
-    childName: '',
-    dateOfBirth: '',
+    personName: '',
+    eventDate: '',
     gender: 'MALE',
     fatherName: '',
     motherName: '',
-    placeOfBirth: 'Hospital'
+    eventPlace: 'Hospital'
   });
 
   const handleChange = (e) => {
@@ -26,7 +26,7 @@ const ApplyBirth = () => {
     setLoading(true);
      const today = new Date().toISOString().split("T")[0];
 
-  if (formData.dateOfBirth > today) {
+  if (formData.eventDate > today) {
     alert("Date of Birth cannot be in the future");
     setLoading(false);
     return; // ⛔ stop submission
@@ -39,12 +39,13 @@ const ApplyBirth = () => {
         ...formData,
         citizenId: user ? user.id : 1, // Fallback to 1 if testing
         status: 'PENDING',
+        eventType: 'BIRTH',
         appliedDate: new Date().toISOString().split('T')[0]
         
       };
 console.log("Payload:", payload);
 
-      await axios.post('http://localhost:8080/birth-certificates', payload);
+      await axios.post('http://localhost:8080/certificateController', payload);
       
       alert('Application Submitted Successfully!');
       navigate('/citizen/dashboard');
@@ -82,7 +83,7 @@ console.log("Payload:", payload);
               {/* Child Name */}
               <div className="col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Full Name of Child</label>
-                <input name="childName" required type="text" className="w-full border border-gray-300 p-2 rounded-lg" 
+                <input name="personName" required type="text" className="w-full border border-gray-300 p-2 rounded-lg" 
                   onChange={handleChange} />
               </div>
 
@@ -91,7 +92,7 @@ console.log("Payload:", payload);
                 <label className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
                 {/* <input name="dateOfBirth" required type="date" className="w-full border border-gray-300 p-2 rounded-lg" 
                   onChange={handleChange} /> */}
-                                        <input type="date"  name="dateOfBirth"   value={formData.dateOfBirth}
+                                        <input type="date"  name="eventDate"   value={formData.dateOfBirth}
                             required className="w-full border border-gray-300 p-2 rounded-lg"
                             onChange={handleChange}
                           />
@@ -122,7 +123,7 @@ console.log("Payload:", payload);
               {/* Place */}
               <div className="col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Place of Birth (Hospital/Home Address)</label>
-                <textarea name="placeOfBirth" required rows="2" className="w-full border border-gray-300 p-2 rounded-lg" 
+                <textarea name="eventPlace" required rows="2" className="w-full border border-gray-300 p-2 rounded-lg" 
                   onChange={handleChange}></textarea>
               </div>
             </div>

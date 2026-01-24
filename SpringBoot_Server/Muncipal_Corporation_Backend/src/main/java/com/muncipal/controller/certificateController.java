@@ -6,16 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.muncipal.entity.BirthCertificate;
-import com.muncipal.service.BirthCertificateService;
+import com.muncipal.entity.Certificate;
+import com.muncipal.service.CertificateService;
 
 @RestController
-@RequestMapping("/birth-certificates")
+@RequestMapping("/certificateController")
 @CrossOrigin(origins = "http://localhost:5173")
-public class BirthCertificateController {
+public class certificateController {
 
 	@Autowired
-	private final BirthCertificateService service = null;
+	private final CertificateService service = null;
 
 //    public BirthCertificateController(BirthCertificateService service) {
 //        this.service = service;
@@ -23,14 +23,14 @@ public class BirthCertificateController {
 
     // Create
     @PostMapping
-    public ResponseEntity<BirthCertificate> create(
-            @RequestBody BirthCertificate certificate) {
+    public ResponseEntity<Certificate> create(
+            @RequestBody Certificate certificate) {
         return ResponseEntity.ok(service.createCertificate(certificate));
     }
 
     // Get by enrollment
     @GetMapping("/{enrollment}")
-    public ResponseEntity<BirthCertificate> getByEnrollment(
+    public ResponseEntity<Certificate> getByEnrollment(
             @PathVariable Long enrollment) {
 
         return service.getByEnrollment(enrollment)
@@ -40,15 +40,15 @@ public class BirthCertificateController {
 
     // Get all
     @GetMapping
-    public ResponseEntity<List<BirthCertificate>> getAll() {
+    public ResponseEntity<List<Certificate>> getAll() {
         return ResponseEntity.ok(service.getAllCertificates());
     }
 
     // Update
     @PutMapping("/{enrollment}")
-    public ResponseEntity<BirthCertificate> update(
+    public ResponseEntity<Certificate> update(
             @PathVariable Long enrollment,
-            @RequestBody BirthCertificate certificate) {
+            @RequestBody Certificate certificate) {
 
         return ResponseEntity.ok(
                 service.updateCertificate(enrollment, certificate));

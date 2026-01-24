@@ -1,0 +1,19 @@
+/*table is altered so all null containing column 
+appers on right side of table and table looks more 
+cleaner and readable*/
+
+ALTER TABLE certificate
+MODIFY person_name VARCHAR(255) NOT NULL AFTER enrollment_no,
+MODIFY gender VARCHAR(20) NOT NULL AFTER person_name,
+MODIFY event_type VARCHAR(20) NOT NULL AFTER gender,
+MODIFY event_date DATE NOT NULL AFTER event_type,
+MODIFY event_place VARCHAR(255) NOT NULL AFTER event_date,
+MODIFY citizen_id INT NOT NULL AFTER event_place,
+MODIFY status VARCHAR(20) NOT NULL AFTER citizen_id,
+modify applied_date date Not null after status,
+modify last_modified_date date Not null after applied_date,
+
+MODIFY father_name VARCHAR(255) AFTER last_modified_date,
+MODIFY mother_name VARCHAR(255) AFTER father_name,
+MODIFY relation VARCHAR(50) AFTER mother_name,
+MODIFY cause_of_death VARCHAR(255) AFTER relation;

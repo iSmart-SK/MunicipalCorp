@@ -9,12 +9,12 @@ const ApplyDeath = () => {
   const [loading, setLoading] = useState(false);
   
   const [formData, setFormData] = useState({
-    deceasedName: '',
-    dod: '', // Date of Death
-    gender: 'Male',
-    placeOfDeath: '',
+    personName: '',
+    eventDate: '', // Date of Death
+    gender: 'MALE',
+    eventPlace: '',
     causeOfDeath: '',
-    relation: 'Son/Daughter' // Relation of applicant to deceased
+    relation: 'Son' // Relation of applicant to deceased
   });
 
   const handleChange = (e) => {
@@ -24,7 +24,13 @@ const ApplyDeath = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+     const today = new Date().toISOString().split("T")[0];
 
+  if (formData.eventDate > today) {
+    alert("Date of cannot be in the future");
+    setLoading(false);
+    return; // ⛔ stop submission
+  }
     try {
       const user = JSON.parse(localStorage.getItem('user'));
 
@@ -32,11 +38,12 @@ const ApplyDeath = () => {
         ...formData,
         citizenId: user ? user.id : 1,
         status: 'PENDING',
+        eventType: 'DEATH',
         appliedDate: new Date().toISOString().split('T')[0]
       };
 
       // Post to 'death_applications' in db.json
-      await axios.post('http://localhost:8080/death_applications', payload);
+      await axios.post('http://localhost:8080/certificateController', payload);
       
       alert('Death Certificate Application Submitted.');
       navigate('/citizen/dashboard');
@@ -72,14 +79,14 @@ const ApplyDeath = () => {
               {/* Deceased Name */}
               <div className="col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Full Name of Deceased</label>
-                <input name="deceasedName" required type="text" className="w-full border border-gray-300 p-2 rounded-lg" 
+                <input name="personName" required type="text" className="w-full border border-gray-300 p-2 rounded-lg" 
                   onChange={handleChange} />
               </div>
 
               {/* DOD */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Date of Death</label>
-                <input name="dod" required type="date" className="w-full border border-gray-300 p-2 rounded-lg" 
+                <input name="eventDate" required type="date" className="w-full border border-gray-300 p-2 rounded-lg" 
                   onChange={handleChange} />
               </div>
 
@@ -87,16 +94,31 @@ const ApplyDeath = () => {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
                 <select name="gender" className="w-full border border-gray-300 p-2 rounded-lg" onChange={handleChange}>
-                  <option>Male</option>
-                  <option>Female</option>
-                  <option>Other</option>
+                  <option>MALE</option>
+                  <option>FEMALE</option>
+                  <option>OTHERS</option>
+                </select>
+              </div>
+              
+              {/* Relation */}
+              <div className="col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">Relation</label>
+                <select name="relation" className="w-full border border-gray-300 p-2 rounded-lg" onChange={handleChange}>
+                  <option>Son</option>
+                  <option>Daughter</option>
+                  <option>Father</option>
+                  <option>Mother</option>
+                  <option>Spouse</option>
+                  <option>Brother</option>
+                  <option>Sister</option>
+                  <option>Someone known</option>
                 </select>
               </div>
 
               {/* Place */}
               <div className="col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Place of Death</label>
-                <input name="placeOfDeath" required type="text" className="w-full border border-gray-300 p-2 rounded-lg" 
+                <input name="eventPlace" required type="text" className="w-full border border-gray-300 p-2 rounded-lg" 
                   placeholder="Hospital Name or Home Address"
                   onChange={handleChange} />
               </div>

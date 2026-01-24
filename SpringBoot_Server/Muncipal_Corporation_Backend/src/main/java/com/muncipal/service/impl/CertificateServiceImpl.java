@@ -6,54 +6,54 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.muncipal.entity.BirthCertificate;
-import com.muncipal.repository.BirthCertificateRepository;
-import com.muncipal.service.BirthCertificateService;
+import com.muncipal.entity.Certificate;
+import com.muncipal.repository.CertificateRepository;
+import com.muncipal.service.CertificateService;
 
 import jakarta.transaction.Transactional;
 
 @Transactional
 @Service
-public class BirthCertificateServiceImpl
-        implements BirthCertificateService {
+public class CertificateServiceImpl
+        implements CertificateService {
 	
 	@Autowired
-    private final BirthCertificateRepository repository= null;
+    private final CertificateRepository repository= null;
 
 //    public BirthCertificateServiceImpl(BirthCertificateRepository repository) {
 //        this.repository = repository;
 //    }
 
     @Override
-    public BirthCertificate createCertificate(BirthCertificate certificate) {
+    public Certificate createCertificate(Certificate certificate) {
         return repository.save(certificate);
     }
 
     @Override
-    public Optional<BirthCertificate> getByEnrollment(Long enrollment) {
+    public Optional<Certificate> getByEnrollment(Long enrollment) {
         return repository.findById(enrollment);
     }
 
     @Override
-    public List<BirthCertificate> getAllCertificates() {
+    public List<Certificate> getAllCertificates() {
         return repository.findAll();
     }
 
     @Override
-    public BirthCertificate updateCertificate(Long enrollment,
-                                              BirthCertificate certificate) {
+    public Certificate updateCertificate(Long enrollment,
+                                              Certificate certificate) {
 
-        BirthCertificate existing =
+        Certificate existing =
                 repository.findById(enrollment)
                         .orElseThrow(() ->
                                 new RuntimeException("Birth Certificate not found"));
 
-        existing.setChildName(certificate.getChildName());
+        existing.setPersonName(certificate.getPersonName());
         existing.setFatherName(certificate.getFatherName());
         existing.setMotherName(certificate.getMotherName());
         existing.setGender(certificate.getGender());
-        existing.setPlaceOfBirth(certificate.getPlaceOfBirth());
-        existing.setDateOfBirth(certificate.getDateOfBirth());
+        existing.setEventPlace(certificate.getEventPlace());
+        existing.setEventDate(certificate.getEventDate());
 
         return repository.save(existing);
     }
