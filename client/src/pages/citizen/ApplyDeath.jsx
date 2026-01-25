@@ -43,7 +43,7 @@ const ApplyDeath = () => {
       };
 
       // Post to 'death_applications' in db.json
-      await axios.post('http://localhost:8080/certificateController', payload);
+      await axios.post('http://localhost:9090/certificateController', payload);
       
       alert('Death Certificate Application Submitted.');
       navigate('/citizen/dashboard');

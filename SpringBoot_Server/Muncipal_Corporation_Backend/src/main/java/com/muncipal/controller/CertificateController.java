@@ -12,7 +12,7 @@ import com.muncipal.service.CertificateService;
 @RestController
 @RequestMapping("/certificateController")
 @CrossOrigin(origins = "http://localhost:5173")
-public class certificateController {
+public class CertificateController {
 
 	@Autowired
 	private final CertificateService service = null;

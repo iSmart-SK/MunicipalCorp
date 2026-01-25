@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.muncipal.dto.ApiResponse;
+import com.muncipal.dto.StatusDTO;
 import com.muncipal.entity.Grievance;
 import com.muncipal.entity.enums.Status;
 import com.muncipal.service.GrievanceService;
-import com.municipal.dto.ApiResponse;
-import com.municipal.dto.StatusDTO;
 
 @RestController
 @RequestMapping("/grievances")

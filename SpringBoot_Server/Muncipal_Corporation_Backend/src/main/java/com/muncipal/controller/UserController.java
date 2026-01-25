@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.muncipal.dto.ApiResponse;
+import com.muncipal.dto.LoginDTO;
 import com.muncipal.entity.User;
 import com.muncipal.service.UserService;
-import com.municipal.dto.ApiResponse;
-import com.municipal.dto.LoginDTO;
 
 @RestController
 @RequestMapping("/user")

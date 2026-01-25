@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.muncipal.custom_exceptions.ResourceNotFoundException;
+import com.muncipal.dto.ApiResponse;
 import com.muncipal.entity.Grievance;
 import com.muncipal.entity.enums.Status;
 import com.muncipal.repository.GrievanceRepository;
 import com.muncipal.service.GrievanceService;
-import com.municipal.dto.ApiResponse;
 
 @Service
 @Transactional

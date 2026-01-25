@@ -45,7 +45,7 @@ const ApplyBirth = () => {
       };
 console.log("Payload:", payload);
 
-      await axios.post('http://localhost:8080/certificateController', payload);
+      await axios.post('http://localhost:9090/certificateController', payload);
       
       alert('Application Submitted Successfully!');
       navigate('/citizen/dashboard');

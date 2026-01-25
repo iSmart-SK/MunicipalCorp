@@ -1,8 +1,8 @@
 package com.muncipal.service;
 
+import com.muncipal.dto.ApiResponse;
+import com.muncipal.dto.UserDTO;
 import com.muncipal.entity.User;
-import com.municipal.dto.ApiResponse;
-import com.municipal.dto.UserDTO;
 
 public interface UserService {
 

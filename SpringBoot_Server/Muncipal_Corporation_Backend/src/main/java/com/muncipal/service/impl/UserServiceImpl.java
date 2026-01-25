@@ -5,11 +5,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.muncipal.custom_exceptions.ApiException;
+import com.muncipal.dto.ApiResponse;
+import com.muncipal.dto.UserDTO;
 import com.muncipal.entity.User;
 import com.muncipal.repository.UserRepository;
 import com.muncipal.service.UserService;
-import com.municipal.dto.ApiResponse;
-import com.municipal.dto.UserDTO;
 
 @Service
 @Transactional

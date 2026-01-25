@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import PropertyRegistration from "../addProperty/PropertyRegistration" ;
 import CitizenSidebar from '../../components/CitizenSidebar';
 import { Building2, MapPin, Calendar, IndianRupee, ArrowRight, Loader } from 'lucide-react';
 
 const MyProperties = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
 
   // Fetch properties on load
   useEffect(() => {
@@ -36,12 +38,15 @@ const MyProperties = () => {
       <CitizenSidebar />
       
       <div className="md:ml-64 p-6">
+        {!showForm && ( 
+          <>
         <div className="flex justify-between items-center mb-6">
           <div>
             <h1 className="text-2xl font-bold text-gray-800">My Properties</h1>
             <p className="text-gray-600">View your registered properties and pay pending taxes.</p>
           </div>
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition shadow-md">
+
+          <button onClick={() => setShowForm(true)} className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition shadow-md">
             + Register New Property
           </button>
         </div>
@@ -122,6 +127,9 @@ const MyProperties = () => {
             </div>
           ))}
         </div>
+        </>
+        )}
+        {showForm && ( <PropertyRegistration onCancel={() => setShowForm(false)} /> )}
       </div>
     </div>
   );

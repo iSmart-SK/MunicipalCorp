@@ -129,7 +129,7 @@ const Register = () => {
                   type="text"
                   required
                   className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500"
-                  placeholder="Shubham Kadam"
+                  placeholder="   Shubham Kadam"
                   onChange={handleChange}
                 />
               </div>
@@ -149,7 +149,7 @@ const Register = () => {
                   type="email"
                   required
                   className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500"
-                  placeholder="name@example.com"
+                  placeholder="    name@example.com"
                   onChange={handleChange}
                 />
               </div>
@@ -170,7 +170,7 @@ const Register = () => {
                   maxLength="10"
                   required
                   className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500"
-                  placeholder="9876543210"
+                  placeholder="    9876543210"
                   onChange={handleChange}
                 />
               </div>
@@ -190,7 +190,7 @@ const Register = () => {
                   type="password"
                   required
                   className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500"
-                  placeholder="••••••••"
+                  placeholder="    ••••••••"
                   onChange={handleChange}
                 />
               </div>
@@ -210,7 +210,7 @@ const Register = () => {
                   type="password"
                   required
                   className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500"
-                  placeholder="••••••••"
+                  placeholder="    ••••••••"
                   onChange={handleChange}
                 />
               </div>
@@ -231,7 +231,7 @@ const Register = () => {
                   maxLength="12"
                   required
                   className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500"
-                  placeholder="1234 5678 9012"
+                  placeholder="    1234 5678 9012"
                   onChange={handleChange}
                 />
               </div>
@@ -251,7 +251,7 @@ const Register = () => {
                   required
                   rows="3"
                   className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500"
-                  placeholder="Flat No, Building, Ward, City..."
+                  placeholder="    Flat No, Building, Ward, City..."
                   onChange={handleChange}
                 ></textarea>
               </div>
