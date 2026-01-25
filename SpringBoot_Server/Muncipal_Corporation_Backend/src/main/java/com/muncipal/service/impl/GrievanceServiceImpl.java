@@ -1,11 +1,14 @@
 package com.muncipal.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.muncipal.custom_exceptions.ResourceNotFoundException;
 import com.muncipal.entity.Grievance;
+import com.muncipal.entity.enums.Status;
 import com.muncipal.repository.GrievanceRepository;
 import com.muncipal.service.GrievanceService;
 import com.municipal.dto.ApiResponse;
@@ -31,5 +34,20 @@ public class GrievanceServiceImpl implements GrievanceService {
 		grievanceRepository.save(g);
 		return new ApiResponse("Grievance updated","Success");
 	}
+
+	@Override
+	public ApiResponse updateGrievanceStatus(Long id, Status st) {
+		Grievance g = grievanceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Invalid user id !!!!!!!"));
+		g.setStatus(st);
+		grievanceRepository.save(g);
+		return new ApiResponse("Grievance Status updated","Success");
+	}
+
+	@Override
+	public List<Grievance> findGrievance() {	
+		return grievanceRepository.findPendingGrievance();
+	}
+	
+	
 
 }

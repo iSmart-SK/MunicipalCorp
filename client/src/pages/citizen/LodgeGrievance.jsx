@@ -21,7 +21,7 @@ const LodgeGrievance = () => {
       role: localStorage.getItem("role"),
       name: localStorage.getItem("name"),
     };
-    await axios.post("http://localhost:9090/grievance", {
+    await axios.post("http://localhost:9090/grievances", {
       ...formData,
       status: "PENDING",
       user: useridrolename,
