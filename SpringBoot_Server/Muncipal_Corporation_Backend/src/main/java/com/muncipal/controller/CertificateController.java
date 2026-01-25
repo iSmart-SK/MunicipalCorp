@@ -62,4 +62,19 @@ public class CertificateController {
         service.deleteCertificate(enrollment);
         return ResponseEntity.noContent().build();
     }
+    
+    @GetMapping("/{userid}")
+    public ResponseEntity<?> findUserCertificate(@PathVariable Long userid) {
+    	return ResponseEntity.ok(service.getUserCertificate(userid));
+    }
+    
+    @GetMapping("/birth/{userid}")
+    public ResponseEntity<?> findUserBirthCertificate(@PathVariable Long userid) {
+    	return ResponseEntity.ok(service.getUserBirthCertificate(userid));
+    }
+    
+    @GetMapping("/death/{userid}")
+    public ResponseEntity<?> findUserDeathCertificate(@PathVariable Long userid) {
+    	return ResponseEntity.ok(service.getUserDeathCertificate(userid));
+    }
 }

@@ -16,4 +16,10 @@ public interface CertificateService {
     Certificate updateCertificate(Long enrollment, Certificate certificate);
 
     void deleteCertificate(Long enrollment);
+    
+    List<Certificate> getUserCertificate(Long citizenId);
+    
+    List<Certificate> getUserBirthCertificate(Long citizenId);
+    
+    List<Certificate> getUserDeathCertificate(Long citizenId);
 }

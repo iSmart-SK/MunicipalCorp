@@ -7,7 +7,7 @@ import { Megaphone, Save, AlertTriangle } from "lucide-react";
 const LodgeGrievance = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    complaint: "",
+    complaint: "GARBAGE_COLLECTION",
     description: "",
     zone: "",
   });

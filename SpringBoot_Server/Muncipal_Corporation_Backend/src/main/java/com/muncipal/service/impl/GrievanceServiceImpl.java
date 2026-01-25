@@ -47,6 +47,11 @@ public class GrievanceServiceImpl implements GrievanceService {
 	public List<Grievance> findGrievance() {	
 		return grievanceRepository.findPendingGrievance();
 	}
+
+	@Override
+	public List<Grievance> findUserGrievance(Long userId) {
+		return grievanceRepository.findUserGrievance(userId);
+	}
 	
 	
 

@@ -70,4 +70,10 @@ public class GrievanceController {
 		List<Grievance> gl = grievanceService.findGrievance();
 		return ResponseEntity.ok(gl);
 	}
+	
+	@GetMapping("/{userid}")
+	ResponseEntity<?> getUserGrievances(@PathVariable Long userid) {
+		List<Grievance> gl = grievanceService.findUserGrievance(userid);
+		return ResponseEntity.ok(gl);
+	}
 }

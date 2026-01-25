@@ -62,4 +62,19 @@ public class CertificateServiceImpl
     public void deleteCertificate(Long enrollment) {
         repository.deleteById(enrollment);
     }
+
+	@Override
+	public List<Certificate> getUserCertificate(Long citizenId) {
+		return repository.findUserCertificate(citizenId);
+	}
+
+	@Override
+	public List<Certificate> getUserBirthCertificate(Long citizenId) {
+		return repository.findUserBirthCertificate(citizenId);
+	}
+
+	@Override
+	public List<Certificate> getUserDeathCertificate(Long citizenId) {
+		return repository.findUserDeathCertificate(citizenId);
+	}
 }

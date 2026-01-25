@@ -11,4 +11,5 @@ public interface GrievanceService {
 	ApiResponse updateGrievance(Grievance grievance);
 	ApiResponse updateGrievanceStatus(Long id,Status st);
 	List<Grievance> findGrievance();
+	List<Grievance> findUserGrievance(Long userId);
 }

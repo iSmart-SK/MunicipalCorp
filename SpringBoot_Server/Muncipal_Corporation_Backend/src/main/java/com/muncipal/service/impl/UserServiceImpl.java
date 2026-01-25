@@ -21,6 +21,9 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public UserDTO login(String email, String password) {
 		UserDTO udto = userRepository.findUser(email,password);
+		if(udto==null) {
+			throw new ApiException("Invalid email or password");
+		}
 		return udto;
 	}
 
