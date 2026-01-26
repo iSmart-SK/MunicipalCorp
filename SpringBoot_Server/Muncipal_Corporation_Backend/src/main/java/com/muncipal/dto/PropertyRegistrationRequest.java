@@ -1,5 +1,5 @@
 package com.muncipal.dto;
-
+import com.muncipal.entity.enums.*;
 import java.time.LocalDate;
 
 import jakarta.validation.constraints.*;
@@ -41,5 +41,8 @@ public class PropertyRegistrationRequest {
     private LocalDate registrationDate;
     
     @NotNull
-    private String status;
+    private Status status;
+    
+    @NotNull
+    private int citizenId;
 }

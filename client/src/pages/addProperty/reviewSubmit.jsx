@@ -1,4 +1,4 @@
-// import{ useNavigate}  from "react-router";
+import{ useNavigate}  from "react-router";
 
 
 
@@ -14,7 +14,7 @@ const ReviewItem = ({ label, value }) => (
 
 
 const ReviewSubmit = ({ formData, prevStep, onSubmit }) => {
-//  const navigate = useNavigate();
+ const navigate = useNavigate();
     const validateData = () => {
     for (const [key, value] of Object.entries(formData)) {
       if (!value) {
@@ -60,7 +60,7 @@ const ReviewSubmit = ({ formData, prevStep, onSubmit }) => {
 
     onSubmit(formData); // 🔥 send to MyProperties
     alert("Property Registered Successfully and Under Verification!");
-    // navigate("/citizen/dashboard");
+    navigate("/citizen/track");
   };
 
   return (

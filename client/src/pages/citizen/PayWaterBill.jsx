@@ -28,7 +28,7 @@ const PayWaterBill = () => {
         toast.error("Invalid Consumer Number");
       }
     } catch (error) {
-      toast.error("Server Error");
+      toast.error("Server Error",error);
     } finally {
       setLoading(false);
     }
@@ -59,7 +59,7 @@ const PayWaterBill = () => {
       toast.success("Payment Successful!");
       navigate('/citizen/dashboard');
     } catch (error) {
-      toast.error("Payment Failed");
+      toast.error("Payment Failed",error);
     }
   };
 
