@@ -25,9 +25,13 @@ public interface CertificateService {
     
     List<Certificate> getUserDeathCertificate(Long citizenId);
     
+    List<Certificate> getBirthCertificate();
+    
+    List<Certificate> getDeathCertificate();
+    
+    ApiResponse updateCertificateStatus(Long certId, CertificateDTO certificateDTO);
+    
     List<Certificate> getPendingBirthCertificate();
     
     List<Certificate> getPendingDeathCertificate();
-    
-    ApiResponse updateCertificateStatus(Long certId, CertificateDTO certificateDTO);
 }

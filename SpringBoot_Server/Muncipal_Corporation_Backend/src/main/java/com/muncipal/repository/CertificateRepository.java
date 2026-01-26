@@ -24,8 +24,14 @@ public interface CertificateRepository
 	List<Certificate> findUserDeathCertificate(@Param("id") Long userid);
 	
 	@Query("select c from Certificate c where c.eventType=\"BIRTH\"")
-	List<Certificate> findPendingBirthCertificate();
+	List<Certificate> findBirthCertificate();
 	
 	@Query("select c from Certificate c where c.eventType=\"DEATH\"")
+	List<Certificate> findDeathCertificate();
+	
+	@Query("select c from Certificate c where c.eventType=\"BIRTH\" and c.status=\"PENDING\"")
+	List<Certificate> findPendingBirthCertificate();
+	
+	@Query("select c from Certificate c where c.eventType=\"DEATH\" and c.status=\"PENDING\"")
 	List<Certificate> findPendingDeathCertificate();
 }
