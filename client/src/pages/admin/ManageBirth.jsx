@@ -58,7 +58,7 @@ const ManageBirth = () => {
 
   const fetchApplications = async () => {
     try {
-      const res = await axios.get("http://localhost:9090/certificates");
+      const res = await axios.get("http://localhost:9090/certificateController/birth");
       setApps(res.data); // save data to UI list
     } catch (err) {
       console.error("Error fetching applications", err);
