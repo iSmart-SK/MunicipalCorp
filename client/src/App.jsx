@@ -13,6 +13,7 @@ import ApplyDeath from './pages/citizen/ApplyDeath';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import ManageBirth from './pages/admin/ManageBirth';
 import ManageDeath from './pages/admin/ManageDeath';
+import ManageDeath1 from './pages/admin/ManageDeath1';
 import LodgeGrievance from './pages/citizen/LodgeGrievance';
 import TrackApplications from './pages/citizen/TrackApplications';
 import ManageGrievance from './pages/admin/ManageGrievance';
@@ -46,6 +47,7 @@ function App() {
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/births" element={<ManageBirth />} />
           <Route path="/admin/deaths" element={<ManageDeath />} />
+          <Route path="/admin/deaths1" element={<ManageDeath1 />} />
           <Route path="/admin/grievances" element={<ManageGrievance />} />
 
         

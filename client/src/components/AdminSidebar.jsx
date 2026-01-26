@@ -16,7 +16,7 @@ const AdminSidebar = () => {
   const navItems = [
     { name: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
     { name: 'Birth Applications', path: '/admin/births', icon: FileCheck },
-    { name: 'Death Applications', path: '/admin/deaths', icon: Skull },
+    { name: 'Death Applications', path: '/admin/deaths1', icon: Skull },
     { name: 'Tax Payments', path: '/admin/payments', icon: CreditCard },
     { name: 'Manage Grievances', path: '/admin/grievances', icon: Megaphone },
   ];

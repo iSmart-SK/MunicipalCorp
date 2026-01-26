@@ -107,6 +107,14 @@ const TrackApplications = () => {
                   <p className="text-sm text-gray-500">
                     Applied on: {app.appliedDate}
                   </p>
+                  <p className="text-sm text-gray-500">
+                    Name : {app.personName}
+                  </p>
+                  {app.status === "CANCELED" && (
+                    <p className="text-sm text-gray-500">
+                      Reason: {app.reason}
+                    </p>
+                  )}
                   <span
                     className={`px-2 py-0.5 rounded text-xs font-bold ${
                       app.status === "COMPLETED"
