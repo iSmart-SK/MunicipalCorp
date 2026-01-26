@@ -1,119 +1,153 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios"; // Import Axios
+import axios from "axios";
 import {
   Mail,
   Lock,
-  User,
-  ShieldCheck,
   ArrowRight,
   AlertCircle,
 } from "lucide-react";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [role, setRole] = useState("");
-  const [formData, setFormData] = useState({ email: "", password: "" });
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleChange = (e) =>
+  const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError("");
+  };
+
+  // 🔑 Decode JWT payload (no external lib)
+  const getRoleFromToken = (token) => {
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      return payload.role; // ROLE_CITIZEN / ROLE_ADMIN
+    } catch (err) {
+      return null;
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
-      // 1. Make the API Call (Matches your SRS Endpoint)
-      const response = await axios.post("http://localhost:9090/user/login", {
-        email: formData.email,
-        password: formData.password,
-      });
-      console.log(response.data);
-      // window.alert(response.data.UserDTO);
-      // 2. Success: JSON Server returns { accessToken: "..." }
-      // const token = response.data.accessToken;
-      const role = response.data.role;
+      const response = await axios.post(
+        "http://localhost:9090/user/login",
+        {
+          email: formData.email,
+          password: formData.password,
+        }
+      );
 
-      // 3. Store in LocalStorage (Simulating Session)
-      //localStorage.setItem('token', token);
-      localStorage.setItem("role", role);
-      localStorage.setItem("user_id", response.data.id);
-      localStorage.setItem("name", response.data.name);
+      const token = response.data; // backend returns JWT string
 
-      console.log("Login Success:", response.data);
+      if (!token) {
+        throw new Error("Token not received");
+      }
 
-      // 4. Redirect
-      if (role === "CITIZEN") navigate("/citizen/dashboard");
-      else navigate("/admin/dashboard");
+      // ✅ Store JWT
+      localStorage.setItem("token", token);
+
+      // ✅ Decode role from JWT
+      const role = getRoleFromToken(token);
+
+      toast.success("Login successful 🎉");
+
+      // ✅ Redirect based on role
+      setTimeout(() => {
+        if (role === "ROLE_ADMIN") {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/citizen/dashboard");
+        }
+      }, 1000);
     } catch (err) {
-      // 5. Handle Errors
       console.error("Login Failed", err);
-      setError("Invalid Email or Password");
+      setError("Invalid email or password");
+      toast.error("Invalid email or password");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
-        {/* Header and Tabs are same as before... */}
         <div className="text-center">
           <h2 className="text-3xl font-extrabold text-gray-900">
             Welcome Back
           </h2>
         </div>
 
-        {/* Role Toggle */}
-        {/* <div className="flex bg-gray-200 p-1 rounded-lg">
-          <button
-            className={`flex-1 flex items-center justify-center py-2 rounded-md ${
-              role === "CITIZEN" ? "bg-white shadow-sm" : ""
-            }`}
-            onClick={() => setRole("CITIZEN")}
-          >
-            Citizen
-          </button>
-          <button
-            className={`flex-1 flex items-center justify-center py-2 rounded-md ${
-              role === "ADMIN" ? "bg-white shadow-sm" : ""
-            }`}
-            onClick={() => setRole("ADMIN")}
-          >
-            Admin
-          </button>
-        </div> */}
-
         {/* Error Message */}
         {error && (
           <div className="bg-red-50 text-red-700 p-3 rounded flex items-center">
-            <AlertCircle className="w-5 h-5 mr-2" /> {error}
+            <AlertCircle className="w-5 h-5 mr-2" />
+            {error}
           </div>
         )}
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <input
-            name="email"
-            type="email"
-            required
-            placeholder="Email"
-            onChange={handleChange}
-            className="w-full border p-2 rounded"
-          />
-          <input
-            name="password"
-            type="password"
-            required
-            placeholder="Password"
-            onChange={handleChange}
-            className="w-full border p-2 rounded"
-          />
+          {/* Email */}
+          <div className="relative">
+            {!formData.email && (
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Mail className="h-5 w-5 text-gray-400" />
+              </div>
+            )}
+            <input
+              name="email"
+              type="email"
+              required
+              className="pl-10 w-full border p-2 rounded"
+              placeholder="Email"
+              onChange={handleChange}
+            />
+          </div>
+
+          {/* Password */}
+          <div className="relative">
+            {!formData.password && (
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Lock className="h-5 w-5 text-gray-400" />
+              </div>
+            )}
+            <input
+              name="password"
+              type="password"
+              required
+              className="pl-10 w-full border p-2 rounded"
+              placeholder="Password"
+              onChange={handleChange}
+            />
+          </div>
 
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+            disabled={loading}
+            className={`w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 flex items-center justify-center ${loading ? "opacity-70 cursor-not-allowed" : ""
+              }`}
           >
-            Sign In
+            <ArrowRight className="w-5 h-5 mr-2" />
+            {loading ? "Signing In..." : "Sign In"}
           </button>
+
+          <p className="text-center text-sm text-gray-600">
+            Don’t have an account?{" "}
+            <Link to="/register" className="text-blue-600 font-medium">
+              Register
+            </Link>
+          </p>
         </form>
       </div>
     </div>

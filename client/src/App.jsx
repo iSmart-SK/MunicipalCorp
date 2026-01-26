@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Login from './pages/auth/Login';
@@ -29,7 +29,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          
+
           {/* Citizen Routes */}
           <Route path="/citizen/dashboard" element={<CitizenDashboard />} />
           <Route path="/citizen/properties" element={<MyProperties />} />
@@ -37,12 +37,12 @@ function App() {
           <Route path="/citizen/apply/birth" element={<ApplyBirth />} />
           <Route path="/citizen/apply/death" element={<ApplyDeath />} />
           <Route path="/citizen/grievance" element={<LodgeGrievance />} />
-          <Route path='/citizen/track' element={<TrackApplications />}/>
-          <Route path='/citizen/water-bill' element={<PayWaterBill />}/>
-          
-          
+          <Route path='/citizen/track' element={<TrackApplications />} />
+          <Route path='/citizen/water-bill' element={<PayWaterBill />} />
 
-          
+
+
+
           {/* Admin Routes */}
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/births" element={<ManageBirth />} />
@@ -50,7 +50,7 @@ function App() {
           <Route path="/admin/deaths1" element={<ManageDeath1 />} />
           <Route path="/admin/grievances" element={<ManageGrievance />} />
 
-        
+
         </Routes>
       </main>
     </div>

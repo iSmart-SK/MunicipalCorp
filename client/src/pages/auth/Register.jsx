@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios"; // Import Axios
+import toast from "react-hot-toast";
+import axios from "axios";
 import {
   User,
   Mail,
@@ -9,7 +10,6 @@ import {
   MapPin,
   CreditCard,
   ArrowRight,
-  AlertCircle,
 } from "lucide-react";
 
 const Register = () => {
@@ -25,66 +25,63 @@ const Register = () => {
     address: "",
   });
 
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // To show loading state
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError("");
   };
 
   const validateForm = () => {
-    if (formData.password !== formData.confirmPassword)
-      return "Passwords do not match.";
-    if (!/^\d{10}$/.test(formData.mobileNo))
-      return "Mobile number must be exactly 10 digits.";
-    if (!/^\d{12}$/.test(formData.aadharNo))
-      return "Aadhar number must be exactly 12 digits.";
-    return null;
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match");
+      return false;
+    }
+    if (!/^\d{10}$/.test(formData.mobileNo)) {
+      toast.error("Mobile number must be exactly 10 digits");
+      return false;
+    }
+    if (!/^\d{12}$/.test(formData.aadharNo)) {
+      toast.error("Aadhar number must be exactly 12 digits");
+      return false;
+    }
+    return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const validationError = validateForm();
-    if (validationError) {
-      setError(validationError);
-      return;
-    }
+    if (!validateForm()) return;
 
     setLoading(true);
 
     try {
-      // Prepare Payload (Exclude confirmPassword)
+      // ✅ BACKEND-ALIGNED PAYLOAD
       const payload = {
+        fullName: formData.fullName,
         email: formData.email,
         password: formData.password,
-        role: "CITIZEN", // SRS Requirement
-        name: formData.fullName,
-        mobnum: formData.mobileNo,
+        mobileNo: formData.mobileNo,
         aadharNumber: formData.aadharNo,
         address: formData.address,
-        actStatus: "ACTIVE",
       };
-      // API Call to JSON Server (Matches your server.js route)
+
       const response = await axios.post(
         "http://localhost:9090/user/register",
         payload
       );
 
-      console.log("Registration Success:", response.data);
+      toast.success("Registration successful 🎉");
+      console.log("Registration Response:", response.data);
 
-      // Optional: Auto-login logic could go here, but redirecting to login is standard
-      navigate("/login");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
     } catch (err) {
-      console.error("Registration Error:", err);
+      console.error(err);
       if (err.response && err.response.data) {
-        // json-server-auth usually returns string errors
-        setError(
-          err.response.data || "Registration failed. Email might already exist."
-        );
+        toast.error(err.response.data.message || "Registration failed");
       } else {
-        setError("Server error. Is the backend running?");
+        toast.error("Server error. Please try again later.");
       }
     } finally {
       setLoading(false);
@@ -103,33 +100,26 @@ const Register = () => {
           </p>
         </div>
 
-        {/* Error Alert */}
-        {error && (
-          <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
-            <div className="flex items-center">
-              <AlertCircle className="h-5 w-5 text-red-500 mr-2" />
-              <p className="text-red-700 text-sm">{error}</p>
-            </div>
-          </div>
-        )}
-
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
             {/* Full Name */}
             <div className="col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Full Name
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-gray-400" />
-                </div>
+                {!formData.fullName && (
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <User className="h-5 w-5 text-gray-400" />
+                  </div>
+                )}
                 <input
                   name="fullName"
                   type="text"
                   required
                   className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500"
-                  placeholder="   Shubham Kadam"
+                  placeholder="Shubham Kadam"
                   onChange={handleChange}
                 />
               </div>
@@ -141,36 +131,40 @@ const Register = () => {
                 Email Address
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
-                </div>
+                {!formData.email && (
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Mail className="h-5 w-5 text-gray-400" />
+                  </div>
+                )}
                 <input
                   name="email"
                   type="email"
                   required
                   className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500"
-                  placeholder="    name@example.com"
+                  placeholder="name@example.com"
                   onChange={handleChange}
                 />
               </div>
             </div>
 
-            {/* Mobile Number */}
+            {/* Mobile */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Mobile Number
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Phone className="h-5 w-5 text-gray-400" />
-                </div>
+                {!formData.mobileNo && (
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Phone className="h-5 w-5 text-gray-400" />
+                  </div>
+                )}
                 <input
                   name="mobileNo"
                   type="text"
                   maxLength="10"
                   required
                   className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500"
-                  placeholder="    9876543210"
+                  placeholder="9876543210"
                   onChange={handleChange}
                 />
               </div>
@@ -182,15 +176,17 @@ const Register = () => {
                 Password
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
-                </div>
+                {!formData.password && (
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Lock className="h-5 w-5 text-gray-400" />
+                  </div>
+                )}
                 <input
                   name="password"
                   type="password"
                   required
                   className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500"
-                  placeholder="    ••••••••"
+                  placeholder="••••••••"
                   onChange={handleChange}
                 />
               </div>
@@ -202,36 +198,40 @@ const Register = () => {
                 Confirm Password
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
-                </div>
+                {!formData.confirmPassword && (
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Lock className="h-5 w-5 text-gray-400" />
+                  </div>
+                )}
                 <input
                   name="confirmPassword"
                   type="password"
                   required
                   className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500"
-                  placeholder="    ••••••••"
+                  placeholder="••••••••"
                   onChange={handleChange}
                 />
               </div>
             </div>
 
-            {/* Aadhar Number */}
+            {/* Aadhaar */}
             <div className="col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Aadhar Number
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <CreditCard className="h-5 w-5 text-gray-400" />
-                </div>
+                {!formData.aadharNo && (
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <CreditCard className="h-5 w-5 text-gray-400" />
+                  </div>
+                )}
                 <input
                   name="aadharNo"
                   type="text"
                   maxLength="12"
                   required
                   className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500"
-                  placeholder="    1234 5678 9012"
+                  placeholder="123456789012"
                   onChange={handleChange}
                 />
               </div>
@@ -243,15 +243,17 @@ const Register = () => {
                 Residential Address
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 pt-3 pointer-events-none">
-                  <MapPin className="h-5 w-5 text-gray-400" />
-                </div>
+                {!formData.address && (
+                  <div className="absolute inset-y-0 left-0 pl-3 pt-3 pointer-events-none">
+                    <MapPin className="h-5 w-5 text-gray-400" />
+                  </div>
+                )}
                 <textarea
                   name="address"
-                  required
                   rows="3"
+                  required
                   className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500"
-                  placeholder="    Flat No, Building, Ward, City..."
+                  placeholder="Flat no, building, ward, city"
                   onChange={handleChange}
                 ></textarea>
               </div>
@@ -261,9 +263,8 @@ const Register = () => {
           <button
             type="submit"
             disabled={loading}
-            className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors ${
-              loading ? "opacity-70 cursor-not-allowed" : ""
-            }`}
+            className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 ${loading ? "opacity-70 cursor-not-allowed" : ""
+              }`}
           >
             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
               <ArrowRight className="h-5 w-5 text-blue-200 group-hover:text-blue-100" />
@@ -274,10 +275,7 @@ const Register = () => {
           <div className="text-center mt-4">
             <p className="text-sm text-gray-600">
               Already have an account?{" "}
-              <Link
-                to="/login"
-                className="font-medium text-blue-600 hover:text-blue-500"
-              >
+              <Link to="/login" className="font-medium text-blue-600">
                 Sign in
               </Link>
             </p>

@@ -2,7 +2,9 @@ package com.muncipal.service.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,47 +12,65 @@ import com.muncipal.custom_exceptions.ApiException;
 import com.muncipal.custom_exceptions.ResourceNotFoundException;
 import com.muncipal.dto.ActInactStatusDTO;
 import com.muncipal.dto.ApiResponse;
-import com.muncipal.dto.UserDTO;
 import com.muncipal.entity.User;
+import com.muncipal.entity.enums.UserRole;
 import com.muncipal.repository.UserRepository;
+import com.muncipal.security.JwtUtil;
 import com.muncipal.service.UserService;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional
-public class UserServiceImpl implements UserService{
+@RequiredArgsConstructor
+public class UserServiceImpl implements UserService {
 
-	@Autowired
-	private UserRepository userRepository;
-	
+	private final UserRepository userRepository;
+	private final PasswordEncoder passwordEncoder;
+	private final AuthenticationManager authenticationManager;
+	private final JwtUtil jwtUtil;
+
 	@Override
-	public UserDTO login(String email, String password) {
-		UserDTO udto = userRepository.findUser(email,password);
-		if(udto==null) {
-			throw new ApiException("Invalid email or password");
-		}
-		return udto;
+	public String login(String email, String password) {
+
+		authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(email, password)
+		);
+
+		User user = userRepository.findByEmail(email)
+				.orElseThrow(() -> new ApiException("Invalid email or password"));
+
+		return jwtUtil.generateToken(user.getEmail(), user.getRole().name());
 	}
 
 	@Override
 	public ApiResponse register(User user) {
+
 		if (userRepository.existsByEmail(user.getEmail())) {
-			throw new ApiException("Email already exists!!!!!!!");
+			throw new ApiException("Email already exists!");
 		}
-		User savedUser = userRepository.save(user);
-		return new ApiResponse("New user added with ID=" + savedUser.getId(), "Success");
+
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setRole(UserRole.CITIZEN);
+
+		userRepository.save(user);
+		return new ApiResponse("User registered successfully", "SUCCESS");
 	}
 
 	@Override
-	public List<User> getRegisteredCitizens() {	
-		return userRepository.getRegisteredCitizens();
+	public List<User> getRegisteredCitizens() {
+		return userRepository.findByRole(UserRole.CITIZEN);
 	}
 
 	@Override
-	public ApiResponse updateUserStatus(Long userid, ActInactStatusDTO actInactStatusDTO) {
-		User u = userRepository.findById(userid).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-		u.setActStatus(actInactStatusDTO.getStatus());
-		userRepository.save(u);
-		return new ApiResponse("User Status updated","Success");
-	}
+	public ApiResponse updateUserStatus(Long userId, ActInactStatusDTO actInactStatusDTO) {
 
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+		user.setActStatus(actInactStatusDTO.getStatus());
+		userRepository.save(user);
+
+		return new ApiResponse("User status updated successfully", "SUCCESS");
+	}
 }
