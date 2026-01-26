@@ -32,10 +32,55 @@ const MyProperties = () => {
   }, []);
 
   // Placeholder for Razorpay Logic
-  const handlePayTax = (property) => {
-    alert(`Starting Razorpay for Property ID: ${property.id}\nAmount: ₹${1}`);
-    // Later: We will call backend /payment/create-order here
-  };
+  const handlePayTax = async (property) => {
+  try {
+    const orderRes = await axios.post(
+      "http://localhost:9090/payment/create-order",
+      { amount: 1000}, // ₹1 test
+      {
+    headers: {
+      "Content-Type": "application/json"
+    }
+   
+  }
+   
+    );
+console.log("Order Response:", orderRes);
+    const { orderId, amount, key } = orderRes.data;
+
+    const options = {
+      key: key,
+      amount: amount,
+      currency: "INR",
+      name: "Municipal Corporation",
+      description: "Property Tax Payment",
+      order_id: orderId,
+
+      handler: function (response) {
+        alert("Payment Successful");
+        console.log(response);
+        // later: call backend to mark tax paid
+      },
+
+      prefill: {
+        name: property.ownerName,
+        contact: property.mobile,
+      },
+
+      theme: {
+        color: "#2563EB",
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+
+  } catch (err) {
+    console.error(err);
+    alert("Payment failed");
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gray-50 pt-16">
