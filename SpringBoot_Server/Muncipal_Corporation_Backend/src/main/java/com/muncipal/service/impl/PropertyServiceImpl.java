@@ -2,6 +2,8 @@ package com.muncipal.service.impl;
 
 import com.muncipal.entity.enums.*;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -44,8 +46,22 @@ public class PropertyServiceImpl implements PropertyService {
         property.setSurveyNumber(request.getSurveyNumber());
         property.setPropertyNumber(request.getPropertyNumber());
         property.setRegistrationDate(request.getRegistrationDate());
-        property.setStatus(Status.PENDING);
+        property.setStatus(request.getStatus());
+        property.setCitizenId(request.getCitizenId());
+       
 
         return propertyRepository.save(property);
     }
+    
+    @Override
+    public List<Property> getPropertiesByCitizen(int citizenId) {
+
+        return propertyRepository.findByCitizenIdAndStatus(
+                citizenId,
+                Status.APPROVED
+        );
+    }
+
+	
+  
 }

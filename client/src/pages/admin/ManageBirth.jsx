@@ -58,9 +58,7 @@ const ManageBirth = () => {
 
   const fetchApplications = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:9090/certificateController/birth"
-      );
+      const res = await axios.get("http://localhost:9090/certificates");
       setApps(res.data); // save data to UI list
     } catch (err) {
       console.error("Error fetching applications", err);
@@ -77,6 +75,7 @@ const ManageBirth = () => {
   const updateStatus = async (id, newStatus, newReason = "") => {
     try {
       await axios.patch(`http://localhost:9090/certificateController/${id}`, {
+        
         status: newStatus,
         reason: newReason,
       });
@@ -94,7 +93,7 @@ const ManageBirth = () => {
           : "Application Rejected"
       );
     } catch (err) {
-      showToast("Failed to update status", "error");
+      showToast("Failed to update status", err);
     }
   };
 

@@ -20,6 +20,9 @@ public class Property extends BaseEntity {
     @Column( nullable = false, length = 10)
     private String mobile;
 
+    @Column(name="citizen_id", nullable = false)
+    private int citizenId;
+    
     @Column(name="property_type",nullable = false)
     private String propertyType;
 
@@ -42,5 +45,9 @@ public class Property extends BaseEntity {
     private LocalDate registrationDate;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Status status; //PENDING,COMPLETED,CANCELED;
+
+    
+    
 }

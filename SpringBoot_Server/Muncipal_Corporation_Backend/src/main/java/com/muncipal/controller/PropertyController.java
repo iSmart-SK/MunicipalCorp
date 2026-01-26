@@ -1,5 +1,7 @@
 package com.muncipal.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +14,9 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/properties")
-@RequiredArgsConstructor
+
 @CrossOrigin(origins = "http://localhost:5173")
+@RequiredArgsConstructor
 public class PropertyController {
 
     private final PropertyService propertyService;
@@ -25,4 +28,8 @@ public class PropertyController {
         Property savedProperty = propertyService.registerProperty(request);
         return ResponseEntity.ok(savedProperty);
     }
+    @GetMapping("/{citizenId}")
+    public List<Property> getMyProperties(@PathVariable int citizenId) {
+        return propertyService.getPropertiesByCitizen(citizenId);
+    } 
 }

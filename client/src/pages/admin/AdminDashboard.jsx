@@ -138,7 +138,7 @@ const AdminDashboard = () => {
       setUsers((prev) => prev.map((u) => (u.id === userId ? { ...u, status: newStatus } : u)));
       showToast(`User ${newStatus.toLowerCase()}`, "success");
     } catch (err) {
-      showToast("Failed to update user status", "error");
+      showToast("Failed to update user status", err);
     }
   };
 
