@@ -2,8 +2,17 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AdminSidebar from "../../components/AdminSidebar";
 import { IndianRupee, FileText, Users, Activity, Download } from "lucide-react";
-import { 
-  BarChart, Bar, XAxis, YAxis, Tooltip, PieChart, Pie, Cell, Legend, ResponsiveContainer 
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+  ResponsiveContainer,
 } from "recharts";
 
 // Simple toast notification helper
@@ -76,20 +85,23 @@ const AdminDashboard = () => {
     fetchStats();
     fetchUsers();
     // Auto-refresh stats every 30 seconds
-    const interval = setInterval(fetchStats, 30000); 
+    const interval = setInterval(fetchStats, 30000);
     return () => clearInterval(interval);
   }, []);
 
   const fetchStats = async () => {
     try {
       const [usersReq, birthReq, deathReq, propReq] = await Promise.all([
-        axios.get("http://localhost:8080/users?role=CITIZEN"),
+        axios.get("http://localhost:9090/user"),
         axios.get("http://localhost:8080/birth_applications?status=PENDING"),
         axios.get("http://localhost:8080/death_applications?status=PENDING"),
         axios.get("http://localhost:8080/properties"),
       ]);
 
-      const totalTax = propReq.data.reduce((acc, curr) => acc + (Number(curr.taxDue) || 0), 0);
+      const totalTax = propReq.data.reduce(
+        (acc, curr) => acc + (Number(curr.taxDue) || 0),
+        0
+      );
 
       setStats({
         totalCitizens: usersReq.data.length,
@@ -104,7 +116,7 @@ const AdminDashboard = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/users");
+      const res = await axios.get("http://localhost:9090/user");
       setUsers(res.data);
     } catch (err) {
       console.error("Error fetching users", err);
@@ -118,7 +130,9 @@ const AdminDashboard = () => {
     if (!data || !data.length) return;
     const headers = Object.keys(data[0]).join(",");
     const rows = data.map((row) => Object.values(row).join(",")).join("\n");
-    const blob = new Blob([headers + "\n" + rows], { type: "text/csv;charset=utf-8;" });
+    const blob = new Blob([headers + "\n" + rows], {
+      type: "text/csv;charset=utf-8;",
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -133,9 +147,13 @@ const AdminDashboard = () => {
   const toggleUserStatus = async (userId, currentStatus) => {
     try {
       const newStatus = currentStatus === "ACTIVE" ? "INACTIVE" : "ACTIVE";
-      await axios.patch(`http://localhost:8080/users/${userId}`, { status: newStatus });
+      await axios.patch(`http://localhost:9090/user/${userId}`, {
+        status: newStatus,
+      });
 
-      setUsers((prev) => prev.map((u) => (u.id === userId ? { ...u, status: newStatus } : u)));
+      setUsers((prev) =>
+        prev.map((u) => (u.id === userId ? { ...u, status: newStatus } : u))
+      );
       showToast(`User ${newStatus.toLowerCase()}`, "success");
     } catch (err) {
       showToast("Failed to update user status", err);
@@ -170,7 +188,11 @@ const AdminDashboard = () => {
   // 9. Render Component
   // -----------------------------
   return (
-    <div className={`min-h-screen pt-16 ${darkMode ? "bg-gray-900 text-black" : "bg-gray-100 text-gray-800"}`}>
+    <div
+      className={`min-h-screen pt-16 ${
+        darkMode ? "bg-gray-900 text-black" : "bg-gray-100 text-gray-800"
+      }`}
+    >
       <AdminSidebar />
 
       <div className="md:ml-64 p-8 space-y-8">
@@ -189,15 +211,21 @@ const AdminDashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border-b-4 border-green-500">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-gray-500 dark:text-gray-300 font-medium">Total Tax Revenue</h3>
+              <h3 className="text-gray-500 dark:text-gray-300 font-medium">
+                Total Tax Revenue
+              </h3>
               <IndianRupee className="text-green-500 w-6 h-6" />
             </div>
-            <p className="text-3xl font-bold">₹ {stats.totalTax.toLocaleString()}</p>
+            <p className="text-3xl font-bold">
+              ₹ {stats.totalTax.toLocaleString()}
+            </p>
           </div>
 
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border-b-4 border-blue-500">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-gray-500 dark:text-gray-300 font-medium">Pending Birth Certs</h3>
+              <h3 className="text-gray-500 dark:text-gray-300 font-medium">
+                Pending Birth Certs
+              </h3>
               <FileText className="text-blue-500 w-6 h-6" />
             </div>
             <p className="text-3xl font-bold">{stats.pendingBirth}</p>
@@ -205,7 +233,9 @@ const AdminDashboard = () => {
 
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border-b-4 border-red-500">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-gray-500 dark:text-gray-300 font-medium">Pending Death Certs</h3>
+              <h3 className="text-gray-500 dark:text-gray-300 font-medium">
+                Pending Death Certs
+              </h3>
               <Activity className="text-red-500 w-6 h-6" />
             </div>
             <p className="text-3xl font-bold">{stats.pendingDeath}</p>
@@ -213,7 +243,9 @@ const AdminDashboard = () => {
 
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border-b-4 border-purple-500">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-gray-500 dark:text-gray-300 font-medium">Registered Citizens</h3>
+              <h3 className="text-gray-500 dark:text-gray-300 font-medium">
+                Registered Citizens
+              </h3>
               <Users className="text-purple-500 w-6 h-6" />
             </div>
             <p className="text-3xl font-bold">{stats.totalCitizens}</p>
@@ -222,13 +254,16 @@ const AdminDashboard = () => {
 
         {/* Charts + Export Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          
           {/* Bar Chart */}
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="font-medium text-gray-700 dark:text-gray-200">Monthly Service Requests</h3>
+              <h3 className="font-medium text-gray-700 dark:text-gray-200">
+                Monthly Service Requests
+              </h3>
               <button
-                onClick={() => exportCSV(monthlyRequests, "monthly_requests.csv")}
+                onClick={() =>
+                  exportCSV(monthlyRequests, "monthly_requests.csv")
+                }
                 className="flex items-center gap-1 px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
               >
                 <Download className="w-4 h-4" /> CSV
@@ -236,7 +271,10 @@ const AdminDashboard = () => {
             </div>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={monthlyRequests}>
-                <XAxis dataKey="month" stroke={darkMode ? "text-black" : "#888"} />
+                <XAxis
+                  dataKey="month"
+                  stroke={darkMode ? "text-black" : "#888"}
+                />
                 <YAxis stroke={darkMode ? "text-black" : "#888"} />
                 <Tooltip />
                 <Bar dataKey="count" fill="#00C49F" />
@@ -247,9 +285,13 @@ const AdminDashboard = () => {
           {/* Pie Chart */}
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="font-medium text-gray-700 dark:text-gray-200">Service Categories</h3>
+              <h3 className="font-medium text-gray-700 dark:text-gray-200">
+                Service Categories
+              </h3>
               <button
-                onClick={() => exportCSV(categoryRequests, "category_requests.csv")}
+                onClick={() =>
+                  exportCSV(categoryRequests, "category_requests.csv")
+                }
                 className="flex items-center gap-1 px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
               >
                 <Download className="w-4 h-4" /> CSV
@@ -281,7 +323,9 @@ const AdminDashboard = () => {
         {/* User Management Table */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="font-medium text-gray-700 dark:text-gray-200">Manage Users</h3>
+            <h3 className="font-medium text-gray-700 dark:text-gray-200">
+              Manage Users
+            </h3>
             <button
               onClick={() => exportCSV(users, "users.csv")}
               className="flex items-center gap-1 px-2 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-sm"
@@ -306,7 +350,8 @@ const AdminDashboard = () => {
                     <th
                       key={field}
                       onClick={() => {
-                        const newOrder = sortUserOrder === "asc" ? "desc" : "asc";
+                        const newOrder =
+                          sortUserOrder === "asc" ? "desc" : "asc";
                         setSortUserField(field);
                         setSortUserOrder(newOrder);
                       }}
@@ -315,34 +360,47 @@ const AdminDashboard = () => {
                       {field.toUpperCase()}
                     </th>
                   ))}
-                  <th className="px-4 py-2 text-gray-500 dark:text-gray-200">ACTIONS</th>
+                  <th className="px-4 py-2 text-gray-500 dark:text-gray-200">
+                    ACTIONS
+                  </th>
                 </tr>
               </thead>
 
               <tbody>
                 {paginatedUsers.map((user) => (
-                  <tr key={user.id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <tr
+                    key={user.id}
+                    className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
+                  >
                     <td className="px-4 py-2">{user.id}</td>
                     <td className="px-4 py-2">{user.name}</td>
                     <td className="px-4 py-2">{user.email}</td>
                     <td className="px-4 py-2">{user.role}</td>
                     <td className="px-4 py-2">
-                       <span className={`px-2 py-1 rounded text-xs ${
-                         user.status === "ACTIVE" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-                       }`}>
-                         {user.status || 'ACTIVE'}
-                       </span>
+                      <span
+                        className={`px-2 py-1 rounded text-xs ${
+                          user.actStatus === "ACTIVE"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
+                        }`}
+                      >
+                        {user.actStatus || "ACTIVE"}
+                      </span>
                     </td>
                     <td className="px-4 py-2">
                       <button
-                        onClick={() => toggleUserStatus(user.id, user.status)}
+                        onClick={() =>
+                          toggleUserStatus(user.id, user.actStatus)
+                        }
                         className={`px-3 py-1 rounded text-xs font-bold ${
-                          user.status === "ACTIVE"
+                          user.actStatus === "ACTIVE"
                             ? "bg-red-500 text-white hover:bg-red-600"
                             : "bg-green-500 text-white hover:bg-green-600"
                         }`}
                       >
-                        {user.status === "ACTIVE" ? "Deactivate" : "Activate"}
+                        {user.actStatus === "ACTIVE"
+                          ? "Deactivate"
+                          : "Activate"}
                       </button>
                     </td>
                   </tr>
@@ -364,7 +422,9 @@ const AdminDashboard = () => {
                 className="border px-2 py-1 rounded dark:bg-gray-700 dark:text-white"
               >
                 {[5, 10, 20, 50].map((n) => (
-                  <option key={n} value={n}>{n}</option>
+                  <option key={n} value={n}>
+                    {n}
+                  </option>
                 ))}
               </select>
             </div>
@@ -386,7 +446,6 @@ const AdminDashboard = () => {
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );

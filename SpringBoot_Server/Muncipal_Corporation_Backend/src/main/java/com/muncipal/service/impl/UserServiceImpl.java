@@ -1,10 +1,14 @@
 package com.muncipal.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.muncipal.custom_exceptions.ApiException;
+import com.muncipal.custom_exceptions.ResourceNotFoundException;
+import com.muncipal.dto.ActInactStatusDTO;
 import com.muncipal.dto.ApiResponse;
 import com.muncipal.dto.UserDTO;
 import com.muncipal.entity.User;
@@ -34,6 +38,19 @@ public class UserServiceImpl implements UserService{
 		}
 		User savedUser = userRepository.save(user);
 		return new ApiResponse("New user added with ID=" + savedUser.getId(), "Success");
+	}
+
+	@Override
+	public List<User> getRegisteredCitizens() {	
+		return userRepository.getRegisteredCitizens();
+	}
+
+	@Override
+	public ApiResponse updateUserStatus(Long userid, ActInactStatusDTO actInactStatusDTO) {
+		User u = userRepository.findById(userid).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+		u.setActStatus(actInactStatusDTO.getStatus());
+		userRepository.save(u);
+		return new ApiResponse("User Status updated","Success");
 	}
 
 }

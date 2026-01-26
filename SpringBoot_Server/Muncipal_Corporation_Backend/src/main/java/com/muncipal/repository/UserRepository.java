@@ -1,5 +1,7 @@
 package com.muncipal.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,6 +17,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	@Query("select new com.muncipal.dto.UserDTO(u.id, u.name, u.role) from User u where u.email=:em and u.password=:pass and u.actStatus=\"ACTIVE\"")
 	UserDTO findUser(@Param("em") String email, @Param("pass") String password);
+	
+	@Query("select u from User u where u.role=\"CITIZEN\"")
+	List<User> getRegisteredCitizens();
 	
 	
 }
