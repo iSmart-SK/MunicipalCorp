@@ -3,8 +3,6 @@ package com.muncipal.service.impl;
 import com.muncipal.entity.enums.*;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Service;
 
 import com.muncipal.dto.PropertyRegistrationRequest;
