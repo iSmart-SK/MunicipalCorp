@@ -10,6 +10,7 @@ import com.muncipal.entity.Property;
 import com.muncipal.repository.PropertyRepository;
 import com.muncipal.service.PropertyService;
 
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -59,6 +60,15 @@ public class PropertyServiceImpl implements PropertyService {
                 Status.APPROVED
         );
     }
+
+	@Override
+	public List<Property> getmyProperties(int citizenId) {
+		// TODO Auto-generated method stub
+		return propertyRepository.findByCitizenIdAndStatus(
+                citizenId,
+                Status.PENDING
+        );
+	}
 
 	
   

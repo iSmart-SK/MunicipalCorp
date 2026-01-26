@@ -32,4 +32,8 @@ public class PropertyController {
     public List<Property> getMyProperties(@PathVariable int citizenId) {
         return propertyService.getPropertiesByCitizen(citizenId);
     } 
+    @GetMapping("/citizen/{citizenId}")
+    public List<Property> trackMyProperties(@PathVariable int citizenId) {
+        return propertyService.getmyProperties(citizenId);
+    } 
 }

@@ -1,151 +1,176 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CitizenSidebar from "../../components/CitizenSidebar";
-import { Download, Clock, CheckCircle, XCircle, FileText } from "lucide-react";
-import jsPDF from "jspdf"; // Import Library
+import { Download, FileText, MapPin, User, Calendar } from "lucide-react";
+import jsPDF from "jspdf";
 
 const TrackApplications = () => {
   const [apps, setApps] = useState([]);
 
-  // ... (Keep your existing useEffect fetch logic) ...
   useEffect(() => {
     const fetchApps = async () => {
       const userId = localStorage.getItem("user_id");
-      const [birth, death] = await Promise.all([
-        axios.get(
-          `http://localhost:9090/certificateController/birth/${userId}`
-        ),
-        axios.get(
-          `http://localhost:9090/certificateController/death/${userId}`
-        ),
+
+      const [birthRes, deathRes, propertyRes] = await Promise.all([
+        axios.get(`http://localhost:9090/certificateController/birth/${userId}`),
+        axios.get(`http://localhost:9090/certificateController/death/${userId}`),
+        axios.get(`http://localhost:9090/properties/citizen/${userId}`)
       ]);
+
       const merged = [
-        ...birth.data.map((i) => ({ ...i, type: "Birth Certificate" })),
-        ...death.data.map((i) => ({ ...i, type: "Death Certificate" })),
+        ...birthRes.data.map(b => ({
+          ...b,
+          type: "Birth Certificate",
+          displayName: b.personName,
+          appliedDate: b.appliedDate || b.createdAt
+        })),
+        ...deathRes.data.map(d => ({
+          ...d,
+          type: "Death Certificate",
+          displayName: d.personName,
+          appliedDate: d.appliedDate || d.createdAt
+        })),
+        ...propertyRes.data.map(p => ({
+          ...p,
+          type: "Property Registration",
+          displayName: p.ownerName,
+          appliedDate: p.registrationDate
+        }))
       ];
+
       setApps(merged);
     };
+
     fetchApps();
   }, []);
 
-  // NEW: PDF Generator Function
+  // PDF Generator
   const generatePDF = (app) => {
     const doc = new jsPDF();
 
-    // Add Logo or Title
-    doc.setFontSize(22);
-    doc.setTextColor(0, 51, 153); // Blue color
+    doc.setFontSize(18);
     doc.text("MahaNagar Municipal Corporation", 105, 20, null, null, "center");
-
-    // Draw Line
-    doc.setLineWidth(1);
-    doc.setDrawColor(0, 0, 0);
     doc.line(20, 25, 190, 25);
 
-    // Certificate Title
-    doc.setFontSize(18);
-    doc.setTextColor(0, 0, 0);
-    doc.text(app.type.toUpperCase(), 105, 40, null, null, "center");
+    doc.setFontSize(14);
+    doc.text(app.type, 105, 40, null, null, "center");
 
-    // Content
     doc.setFontSize(12);
-    doc.text(
-      `Certificate No: MH-${app.id}-${new Date().getFullYear()}`,
-      20,
-      60
-    );
-    doc.text(`Date of Issue: ${new Date().toLocaleDateString()}`, 140, 60);
+    doc.text(`Application ID: ${app.id}`, 20, 60);
+    doc.text(`Issued On: ${new Date().toLocaleDateString()}`, 150, 60);
 
-    doc.text(
-      `This is to certify that the registration has been made for:`,
-      20,
-      80
-    );
+    let y = 80;
 
-    // Dynamic Data based on type
-    if (app.type.includes("Birth")) {
-      doc.text(`Child Name: ${app.personName}`, 30, 95);
-      doc.text(`Date of Birth: ${app.eventDate}`, 30, 105);
-      doc.text(`Parents: ${app.fatherName} & ${app.motherName}`, 30, 115);
-    } else {
-      doc.text(`Deceased Name: ${app.personName}`, 30, 95);
-      doc.text(`Date of Death: ${app.eventDate}`, 30, 105);
-      doc.text(`Place: ${app.eventPlace}`, 30, 115);
+    if (app.type === "Birth Certificate") {
+      doc.text(`Child Name: ${app.personName}`, 30, y); y += 10;
+      doc.text(`Date of Birth: ${app.eventDate}`, 30, y); y += 10;
+      doc.text(`Father Name: ${app.fatherName}`, 30, y); y += 10;
+      doc.text(`Mother Name: ${app.motherName}`, 30, y);
     }
 
-    doc.text(`Registration Status: APPROVED`, 30, 135);
+    if (app.type === "Death Certificate") {
+      doc.text(`Deceased Name: ${app.personName}`, 30, y); y += 10;
+      doc.text(`Date of Death: ${app.eventDate}`, 30, y); y += 10;
+      doc.text(`Place of Death: ${app.eventPlace}`, 30, y);
+    }
 
-    // Footer
-    doc.text("Authorized Signatory", 150, 180);
-    doc.text("(Municipal Commissioner)", 145, 185);
+    if (app.type === "Property Registration") {
+      doc.text(`Owner Name: ${app.ownerName}`, 30, y); y += 10;
+      doc.text(`Property Type: ${app.propertyType}`, 30, y); y += 10;
+      doc.text(`Plot Area: ${app.plotArea} sq.ft`, 30, y); y += 10;
+      doc.text(`Built-up Area: ${app.builtUpArea} sq.ft`, 30, y); y += 10;
+      doc.text(`Registered On: ${app.registrationDate}`, 30, y);
+    }
 
-    // Save
+    doc.text("Status: APPROVED", 30, y + 20);
+    doc.text("Authorized Signatory", 140, 185);
+
     doc.save(`${app.type}_${app.id}.pdf`);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
+    <div className="min-h-screen bg-gray-100 pt-16">
       <CitizenSidebar />
+
       <div className="md:ml-64 p-6">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">
+        <h1 className="text-3xl font-bold mb-8 text-gray-800">
           Track Applications
         </h1>
 
-        <div className="space-y-4">
-          {apps.map((app, index) => (
-            <div
-              key={index}
-              className="bg-white p-6 rounded-xl shadow-sm border flex justify-between items-center"
-            >
-              {/* ... (Keep existing Left side content) ... */}
-              <div className="flex items-center space-x-4">
-                <div className="bg-blue-100 p-3 rounded-full text-blue-600">
-                  <FileText className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-gray-800">{app.type}</h3>
-                  <p className="text-sm text-gray-500">
-                    Applied on: {app.appliedDate}
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    Name : {app.personName}
-                  </p>
-                  {app.status === "CANCELED" && (
-                    <p className="text-sm text-gray-500">
-                      Reason: {app.reason}
-                    </p>
-                  )}
+        <div className="grid gap-6">
+          {apps.map((app, index) => {
+            const isApproved =
+              app.status?.toUpperCase() === "COMPLETED";
+
+            return (
+              <div
+                key={index}
+                className="bg-white rounded-2xl shadow-md border p-6 hover:shadow-lg transition"
+              >
+                {/* Header */}
+                <div className="flex justify-between items-center mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-blue-100 p-3 rounded-full">
+                      <FileText className="text-blue-600" />
+                    </div>
+                    <div>
+                      <h2 className="text-lg font-bold">{app.type}</h2>
+                      <p className="text-sm text-gray-500">
+                        Applied on: {app.appliedDate}
+                      </p>
+                    </div>
+                  </div>
+
                   <span
-                    className={`px-2 py-0.5 rounded text-xs font-bold ${
-                      app.status === "COMPLETED"
+                    className={`px-3 py-1 rounded-full text-xs font-bold ${
+                      isApproved
                         ? "bg-green-100 text-green-700"
                         : app.status === "CANCELED"
                         ? "bg-red-100 text-red-700"
                         : "bg-yellow-100 text-yellow-700"
                     }`}
                   >
-                    {app.status === "COMPLETED"
+                    {isApproved
                       ? "APPROVED"
                       : app.status === "CANCELED"
                       ? "REJECTED"
                       : "PENDING"}
                   </span>
                 </div>
-              </div>
 
-              {/* Updated Right side content with real PDF download */}
-              <div className="flex items-center space-x-4">
-                {app.status === "COMPLETED" && (
-                  <button
-                    onClick={() => generatePDF(app)}
-                    className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition shadow-sm"
-                  >
-                    <Download className="w-4 h-4 mr-2" /> Download PDF
-                  </button>
+                {/* Details */}
+                <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-700">
+                  <p className="flex items-center gap-2">
+                    <User size={16} /> Name: {app.displayName}
+                  </p>
+
+                  {app.type === "Property Registration" && (
+                    <>
+                      <p><MapPin size={16} /> Property Type: {app.propertyType}</p>
+                      <p>Plot Area: {app.plotArea} sq.ft</p>
+                      <p>Built-up Area: {app.builtUpArea} sq.ft</p>
+                      <p>
+                        <Calendar size={16} /> Registered: {app.registrationDate}
+                      </p>
+                    </>
+                  )}
+                </div>
+
+                {/* Action */}
+                {isApproved && (
+                  <div className="mt-6 text-right">
+                    <button
+                      onClick={() => generatePDF(app)}
+                      className="inline-flex items-center bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Download Certificate
+                    </button>
+                  </div>
                 )}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

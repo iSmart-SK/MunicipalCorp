@@ -46,7 +46,7 @@ const ApplyDeath = () => {
       await axios.post('http://localhost:9090/certificateController', payload);
       
       alert('Death Certificate Application Submitted.');
-      navigate('/citizen/dashboard');
+      navigate('/citizen/track');
 
     } catch (error) {
       console.error("Submission failed", error);

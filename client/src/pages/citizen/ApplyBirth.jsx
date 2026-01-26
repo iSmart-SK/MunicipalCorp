@@ -48,7 +48,7 @@ console.log("Payload:", payload);
       await axios.post('http://localhost:9090/certificateController', payload);
       
       alert('Application Submitted Successfully!');
-      navigate('/citizen/dashboard');
+      navigate('/citizen/track');
 
     } catch (error) {
       console.error("Submission failed", error);

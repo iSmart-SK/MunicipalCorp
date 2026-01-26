@@ -11,6 +11,8 @@ public interface PropertyService {
 
     List<Property> getPropertiesByCitizen(int citizenId);
 
+	List<Property> getmyProperties(int citizenId);
+
    
 
 }
