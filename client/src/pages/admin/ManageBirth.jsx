@@ -1,4 +1,4 @@
- import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AdminSidebar from "../../components/AdminSidebar";
 import { Check, X, Search, FileText, Download } from "lucide-react";
@@ -58,7 +58,9 @@ const ManageBirth = () => {
 
   const fetchApplications = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/birth_applications");
+      const res = await axios.get(
+        "http://localhost:9090/certificateController/birth"
+      );
       setApps(res.data); // save data to UI list
     } catch (err) {
       console.error("Error fetching applications", err);
@@ -72,22 +74,22 @@ const ManageBirth = () => {
      - PATCH request updates status and reject reason
      - Updates UI instantly without refetching
   ------------------------------------------------------------ */
-  const updateStatus = async (id, newStatus, reason = "") => {
+  const updateStatus = async (id, newStatus, newReason = "") => {
     try {
-      await axios.patch(`http://localhost:8080/birth_applications/${id}`, {
+      await axios.patch(`http://localhost:9090/certificateController/${id}`, {
         status: newStatus,
-        rejectReason: reason,
+        reason: newReason,
       });
 
       // update UI list locally
       setApps((prev) =>
         prev.map((a) =>
-          a.id === id ? { ...a, status: newStatus, rejectReason: reason } : a
+          a.id === id ? { ...a, status: newStatus, reason: newReason } : a
         )
       );
 
       showToast(
-        newStatus === "APPROVED"
+        newStatus === "COMPLETED"
           ? "Application Approved"
           : "Application Rejected"
       );
@@ -128,10 +130,10 @@ const ManageBirth = () => {
     // Search logic
     const q = searchQuery.toLowerCase();
     const matchesSearch =
-      app.childName.toLowerCase().includes(q) ||
+      app.personName.toLowerCase().includes(q) ||
       app.fatherName.toLowerCase().includes(q) ||
       app.motherName.toLowerCase().includes(q) ||
-      String(app.id).includes(q);
+      String(app.enrollment).includes(q);
 
     return matchesFilter && matchesSearch;
   });
@@ -156,7 +158,7 @@ const ManageBirth = () => {
     const rows = apps
       .map(
         (a) =>
-          `${a.id},${a.childName},${a.dob},${a.fatherName},${a.motherName},${a.status}`
+          `${a.enrollment},${a.personName},${a.eventDate},${a.fatherName},${a.motherName},${a.status}`
       )
       .join("\n");
 
@@ -186,7 +188,7 @@ const ManageBirth = () => {
       return;
     }
 
-    updateStatus(rejectId, "REJECTED", rejectReason);
+    updateStatus(rejectId, "CANCELED", rejectReason);
     setRejectId(null);
     setRejectReason("");
   };
@@ -247,7 +249,7 @@ const ManageBirth = () => {
 
           {/* Filters */}
           <div className="flex space-x-2 mt-3 md:mt-0">
-            {["ALL", "PENDING", "APPROVED", "REJECTED"].map((f) => (
+            {["ALL", "PENDING", "COMPLETED", "CANCELED"].map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
@@ -311,17 +313,17 @@ const ManageBirth = () => {
                    ACTUAL TABLE DATA ROWS
                 -------------------------- */
                 currentApps.map((app) => (
-                  <tr key={app.id} className="hover:bg-gray-50">
+                  <tr key={app.enrollment} className="hover:bg-gray-50">
                     {/* ID */}
                     <td className="px-6 py-4 text-sm font-mono text-gray-600">
-                      #{app.id}
+                      #{app.enrollment}
                     </td>
 
                     {/* Child Name */}
-                    <td className="px-6 py-4">{app.childName}</td>
+                    <td className="px-6 py-4">{app.personName}</td>
 
                     {/* DOB */}
-                    <td className="px-6 py-4">{app.dob}</td>
+                    <td className="px-6 py-4">{app.eventDate}</td>
 
                     {/* Parents */}
                     <td className="px-6 py-4">
@@ -334,9 +336,9 @@ const ManageBirth = () => {
                     <td className="px-6 py-4">
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                          app.status === "APPROVED"
+                          app.status === "COMPLETED"
                             ? "bg-green-100 text-green-700"
-                            : app.status === "REJECTED"
+                            : app.status === "CANCELED"
                             ? "bg-red-100 text-red-700"
                             : "bg-yellow-100 text-yellow-700"
                         }`}
@@ -351,7 +353,13 @@ const ManageBirth = () => {
                         <div className="flex justify-end space-x-2">
                           {/* Approve */}
                           <button
-                            onClick={() => updateStatus(app.id, "APPROVED")}
+                            onClick={() =>
+                              updateStatus(
+                                app.enrollment,
+                                "COMPLETED",
+                                "APPROVED"
+                              )
+                            }
                             className="p-2 bg-green-50 text-green-600 rounded-full"
                           >
                             <Check />
@@ -359,7 +367,7 @@ const ManageBirth = () => {
 
                           {/* Reject */}
                           <button
-                            onClick={() => setRejectId(app.id)}
+                            onClick={() => setRejectId(app.enrollment)}
                             className="p-2 bg-red-50 text-red-600 rounded-full"
                           >
                             <X />
@@ -404,9 +412,7 @@ const ManageBirth = () => {
                 key={i}
                 onClick={() => setCurrentPage(i + 1)}
                 className={`px-3 py-1 rounded ${
-                  currentPage === i + 1
-                    ? "bg-blue-600 text-white"
-                    : "bg-white"
+                  currentPage === i + 1 ? "bg-blue-600 text-white" : "bg-white"
                 }`}
               >
                 {i + 1}

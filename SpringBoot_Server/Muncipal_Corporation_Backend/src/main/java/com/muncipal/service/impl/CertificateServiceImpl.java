@@ -6,6 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.muncipal.custom_exceptions.ResourceNotFoundException;
+import com.muncipal.dto.ApiResponse;
+import com.muncipal.dto.CertificateDTO;
 import com.muncipal.entity.Certificate;
 import com.muncipal.repository.CertificateRepository;
 import com.muncipal.service.CertificateService;
@@ -76,5 +79,26 @@ public class CertificateServiceImpl
 	@Override
 	public List<Certificate> getUserDeathCertificate(Long citizenId) {
 		return repository.findUserDeathCertificate(citizenId);
+	}
+
+	@Override
+	public List<Certificate> getPendingBirthCertificate() {
+		
+		return repository.findPendingBirthCertificate();
+	}
+
+	@Override
+	public List<Certificate> getPendingDeathCertificate() {
+		return repository.findPendingDeathCertificate();
+	}
+
+	@Override
+	public ApiResponse updateCertificateStatus(Long certId, CertificateDTO certificateDTO) {
+		Certificate c = repository.findById(certId).orElseThrow(() -> new ResourceNotFoundException("Invalid certificate id !!!!!!!"));
+		c.setStatus(certificateDTO.getStatus());
+		if(certificateDTO.getReason()!=null && (!certificateDTO.getReason().isBlank()))
+				c.setReason(certificateDTO.getReason());
+		repository.save(c);
+		return new ApiResponse("Certificate Status updated","Success");
 	}
 }

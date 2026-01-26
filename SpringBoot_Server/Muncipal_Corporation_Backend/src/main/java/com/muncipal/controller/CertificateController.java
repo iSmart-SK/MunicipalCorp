@@ -3,9 +3,12 @@ package com.muncipal.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.muncipal.dto.ApiResponse;
+import com.muncipal.dto.CertificateDTO;
 import com.muncipal.entity.Certificate;
 import com.muncipal.service.CertificateService;
 
@@ -76,5 +79,27 @@ public class CertificateController {
     @GetMapping("/death/{userid}")
     public ResponseEntity<?> findUserDeathCertificate(@PathVariable Long userid) {
     	return ResponseEntity.ok(service.getUserDeathCertificate(userid));
+    }
+    
+    @GetMapping("/birth")
+    public ResponseEntity<?> findPendingBirthCertificate() {
+    	return ResponseEntity.ok(service.getPendingBirthCertificate());
+    }
+    
+    @GetMapping("/death/")
+    public ResponseEntity<?> findPendingDeathCertificate() {
+    	return ResponseEntity.ok(service.getPendingDeathCertificate());
+    }
+    
+    @PatchMapping("/{certId}")
+    public ResponseEntity<?> updateCertificateStatus(@PathVariable Long certId,@RequestBody CertificateDTO certificateDTO) {
+    	try {
+    		return ResponseEntity.status(HttpStatus.NO_CONTENT)
+    				.body(service.updateCertificateStatus(certId, certificateDTO));
+    	}
+    	catch (RuntimeException e) {
+    		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new ApiResponse(e.getMessage(),"Failed"));
+		}
     }
 }

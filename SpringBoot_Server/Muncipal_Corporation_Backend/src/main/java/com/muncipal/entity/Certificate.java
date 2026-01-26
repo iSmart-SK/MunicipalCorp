@@ -78,6 +78,9 @@ public class Certificate {
     @UpdateTimestamp
     private LocalDate lastModifiedDate;
     
+    @Column
+    private String reason;
+    
 
     
    

@@ -22,4 +22,10 @@ public interface CertificateRepository
 	
 	@Query("select c from Certificate c where c.eventType=\"DEATH\" and c.citizenId=:id")
 	List<Certificate> findUserDeathCertificate(@Param("id") Long userid);
+	
+	@Query("select c from Certificate c where c.eventType=\"BIRTH\"")
+	List<Certificate> findPendingBirthCertificate();
+	
+	@Query("select c from Certificate c where c.eventType=\"DEATH\"")
+	List<Certificate> findPendingDeathCertificate();
 }

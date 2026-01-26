@@ -3,6 +3,8 @@ package com.muncipal.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.muncipal.dto.ApiResponse;
+import com.muncipal.dto.CertificateDTO;
 import com.muncipal.entity.Certificate;
 
 public interface CertificateService {
@@ -22,4 +24,10 @@ public interface CertificateService {
     List<Certificate> getUserBirthCertificate(Long citizenId);
     
     List<Certificate> getUserDeathCertificate(Long citizenId);
+    
+    List<Certificate> getPendingBirthCertificate();
+    
+    List<Certificate> getPendingDeathCertificate();
+    
+    ApiResponse updateCertificateStatus(Long certId, CertificateDTO certificateDTO);
 }
