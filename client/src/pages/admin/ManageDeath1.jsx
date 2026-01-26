@@ -94,7 +94,7 @@ const ManageDeath1 = () => {
           : "Application Rejected"
       );
     } catch (err) {
-      showToast("Failed to update status", "error");
+      showToast("Failed to update status", err);
     }
   };
 

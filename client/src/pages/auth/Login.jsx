@@ -31,7 +31,7 @@ const Login = () => {
       const payload = JSON.parse(atob(token.split(".")[1]));
       return payload.role; // ROLE_CITIZEN / ROLE_ADMIN
     } catch (err) {
-      return null;
+      return err;
     }
   };
 
@@ -110,7 +110,7 @@ const Login = () => {
               type="email"
               required
               className="pl-10 w-full border p-2 rounded"
-              placeholder="Email"
+              placeholder="      Email"
               onChange={handleChange}
             />
           </div>
@@ -127,7 +127,7 @@ const Login = () => {
               type="password"
               required
               className="pl-10 w-full border p-2 rounded"
-              placeholder="Password"
+              placeholder="      Password"
               onChange={handleChange}
             />
           </div>

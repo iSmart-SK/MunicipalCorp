@@ -18,6 +18,7 @@ const AdminSidebar = () => {
     { name: 'Birth Applications', path: '/admin/births', icon: FileCheck },
     { name: 'Death Applications', path: '/admin/deaths1', icon: Skull },
     { name: 'Tax Payments', path: '/admin/payments', icon: CreditCard },
+    {name: 'Property Check', path: '/admin/property', icon: CreditCard },
     { name: 'Manage Grievances', path: '/admin/grievances', icon: Megaphone },
   ];
 

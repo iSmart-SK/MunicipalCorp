@@ -12,4 +12,5 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
     
     List<Property> findByCitizenIdAndStatus(int citizenId, Status status);
     
+    List<Property> findByCitizenId(int citizenId);
 }

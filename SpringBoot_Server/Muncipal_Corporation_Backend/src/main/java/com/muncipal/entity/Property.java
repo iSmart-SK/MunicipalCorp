@@ -48,6 +48,7 @@ public class Property extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Status status; //PENDING,COMPLETED,CANCELED;
 
-    
+    @Column
+    private String reason;
     
 }

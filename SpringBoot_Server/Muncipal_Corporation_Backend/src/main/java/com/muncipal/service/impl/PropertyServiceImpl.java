@@ -64,11 +64,35 @@ public class PropertyServiceImpl implements PropertyService {
 	@Override
 	public List<Property> getmyProperties(int citizenId) {
 		// TODO Auto-generated method stub
-		return propertyRepository.findByCitizenIdAndStatus(
-                citizenId,
-                Status.PENDING
+		return propertyRepository.findByCitizenId(
+                citizenId
+                
         );
 	}
+
+	@Override
+	public List<Property> getAllProperies() {
+		// TODO Auto-generated method stub
+		return propertyRepository.findAll();
+	}
+
+	@Override
+	public Property updatePropertyStatus(Long id, Status status, String reason) {
+
+	    Property property = propertyRepository.findById(id)
+	        .orElseThrow(() -> new RuntimeException("Property not found with id: " + id));
+
+	    property.setStatus(status);
+
+	    if (status == Status.CANCELED) {
+	        property.setReason(reason);   // only for rejection
+	    } else {
+	        property.setReason(null);     // clear reason if approved
+	    }
+
+	    return propertyRepository.save(property);
+	}
+
 
 	
   

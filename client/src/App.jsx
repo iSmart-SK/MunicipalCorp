@@ -18,6 +18,8 @@ import LodgeGrievance from './pages/citizen/LodgeGrievance';
 import TrackApplications from './pages/citizen/TrackApplications';
 import ManageGrievance from './pages/admin/ManageGrievance';
 import PayWaterBill from './pages/citizen/PayWaterBill';
+import ManageProperties from './pages/admin/ManageProperties';
+import TaxManage from './pages/admin/TaxManage';
 
 function App() {
   return (
@@ -49,7 +51,8 @@ function App() {
           <Route path="/admin/deaths" element={<ManageDeath />} />
           <Route path="/admin/deaths1" element={<ManageDeath1 />} />
           <Route path="/admin/grievances" element={<ManageGrievance />} />
-
+          <Route path="/admin/property" element={<ManageProperties/>} />
+          <Route path="/admin/payments" element={<TaxManage/>} />
 
         </Routes>
       </main>
