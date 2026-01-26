@@ -1,1 +1,82 @@
 /.metadata/
+
+
+#################################
+# OS / Editor
+#################################
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+.vscode/
+.idea/
+*.iml
+
+#################################
+# Node / React (client)
+#################################
+client/node_modules/
+client/dist/
+client/build/
+client/.env
+client/.env.local
+client/.env.development.local
+client/.env.test.local
+client/.env.production.local
+client/npm-debug.log*
+client/yarn-debug.log*
+client/yarn-error.log*
+
+#################################
+# Spring Boot / Java (backend)
+#################################
+backend/target/
+backend/.classpath
+backend/.project
+backend/.settings/
+backend/.env
+backend/*.log
+backend/logs/
+
+#################################
+# Maven / Gradle
+#################################
+**/target/
+**/.gradle/
+**/build/
+
+#################################
+# Java
+#################################
+*.class
+
+#################################
+# .NET Web API (logger-api)
+#################################
+logger-api/bin/
+logger-api/obj/
+logger-api/.vs/
+logger-api/*.user
+logger-api/*.suo
+logger-api/appsettings.Development.json
+logger-api/appsettings.Local.json
+
+#################################
+# Database / Local data
+#################################
+*.db
+*.sqlite
+
+
+#################################
+# Environment / Secrets
+#################################
+.env
+.env.*
+*.key
+*.pem
+
+#################################
+# Misc
+#################################
+coverage/
