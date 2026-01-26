@@ -93,8 +93,8 @@ const AdminDashboard = () => {
     try {
       const [usersReq, birthReq, deathReq, propReq] = await Promise.all([
         axios.get("http://localhost:9090/user"),
-        axios.get("http://localhost:8080/birth_applications?status=PENDING"),
-        axios.get("http://localhost:8080/death_applications?status=PENDING"),
+        axios.get("http://localhost:9090/certificateController/birth/pending"),
+        axios.get("http://localhost:9090/certificateController/death/pending"),
         axios.get("http://localhost:8080/properties"),
       ]);
 

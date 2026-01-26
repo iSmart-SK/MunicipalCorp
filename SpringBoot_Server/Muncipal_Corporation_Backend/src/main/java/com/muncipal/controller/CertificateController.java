@@ -82,11 +82,21 @@ public class CertificateController {
     }
     
     @GetMapping("/birth")
+    public ResponseEntity<?> findBirthCertificate() {
+    	return ResponseEntity.ok(service.getBirthCertificate());
+    }
+    
+    @GetMapping("/death")
+    public ResponseEntity<?> findDeathCertificate() {
+    	return ResponseEntity.ok(service.getDeathCertificate());
+    }
+    
+    @GetMapping("/birth/pending")
     public ResponseEntity<?> findPendingBirthCertificate() {
     	return ResponseEntity.ok(service.getPendingBirthCertificate());
     }
     
-    @GetMapping("/death")
+    @GetMapping("/death/pending")
     public ResponseEntity<?> findPendingDeathCertificate() {
     	return ResponseEntity.ok(service.getPendingDeathCertificate());
     }

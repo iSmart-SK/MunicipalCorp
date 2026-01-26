@@ -82,14 +82,14 @@ public class CertificateServiceImpl
 	}
 
 	@Override
-	public List<Certificate> getPendingBirthCertificate() {
+	public List<Certificate> getBirthCertificate() {
 		
-		return repository.findPendingBirthCertificate();
+		return repository.findBirthCertificate();
 	}
 
 	@Override
-	public List<Certificate> getPendingDeathCertificate() {
-		return repository.findPendingDeathCertificate();
+	public List<Certificate> getDeathCertificate() {
+		return repository.findDeathCertificate();
 	}
 
 	@Override
@@ -100,5 +100,16 @@ public class CertificateServiceImpl
 				c.setReason(certificateDTO.getReason());
 		repository.save(c);
 		return new ApiResponse("Certificate Status updated","Success");
+	}
+	
+	@Override
+	public List<Certificate> getPendingBirthCertificate() {
+		
+		return repository.findPendingBirthCertificate();
+	}
+
+	@Override
+	public List<Certificate> getPendingDeathCertificate() {
+		return repository.findPendingDeathCertificate();
 	}
 }
