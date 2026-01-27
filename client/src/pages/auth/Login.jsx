@@ -55,13 +55,13 @@ const Login = () => {
       localStorage.setItem("token", token);
 
       // ✅ Decode role from JWT
-      const role = getRoleFromToken(token);
+      const role = localStorage.getItem("role");
 
       toast.success("Login successful 🎉");
 
       // ✅ Redirect based on role
       setTimeout(() => {
-        if (role === "ROLE_ADMIN") {
+        if (role === "ADMIN") {
           navigate("/admin/dashboard");
         } else {
           navigate("/citizen/dashboard");
