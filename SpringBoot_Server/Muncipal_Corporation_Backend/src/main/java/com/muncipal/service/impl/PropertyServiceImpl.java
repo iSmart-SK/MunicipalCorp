@@ -57,7 +57,7 @@ public class PropertyServiceImpl implements PropertyService {
 
         return propertyRepository.findByCitizenIdAndStatus(
                 citizenId,
-                Status.APPROVED
+                Status.COMPLETED
         );
     }
 

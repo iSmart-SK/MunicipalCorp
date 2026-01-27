@@ -14,11 +14,11 @@ const PropertyRegistration = ({onCancel}) => {
 const handleSubmitAfterReview = async(data) => {
   console.log("Data received in PropertyRegistration:", data);
 try{  
-  const user = JSON.parse(localStorage.getItem('user'));
+  const uid = localStorage.getItem("user_id");
 
 const payload = {
     ...formData,
-    citizenId :user ? user.id :1,
+    citizenId : uid,
     status :"PENDING",
     appliedDate: new Date().toISOString().split('T')[0]
   };
