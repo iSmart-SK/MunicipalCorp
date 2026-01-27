@@ -20,6 +20,7 @@ import ManageGrievance from './pages/admin/ManageGrievance';
 import PayWaterBill from './pages/citizen/PayWaterBill';
 import ManageProperties from './pages/admin/ManageProperties';
 import TaxManage from './pages/admin/TaxManage';
+import ProtectedRoute from './ProtectedRoute';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/register" element={<Register />} />
 
           {/* Citizen Routes */}
+          <Route element={<ProtectedRoute />}>
           <Route path="/citizen/dashboard" element={<CitizenDashboard />} />
           <Route path="/citizen/properties" element={<MyProperties />} />
           <Route path="/citizen/apply" element={<Services />} />
@@ -41,7 +43,7 @@ function App() {
           <Route path="/citizen/grievance" element={<LodgeGrievance />} />
           <Route path='/citizen/track' element={<TrackApplications />} />
           <Route path='/citizen/water-bill' element={<PayWaterBill />} />
-
+          
 
 
 
@@ -53,7 +55,7 @@ function App() {
           <Route path="/admin/grievances" element={<ManageGrievance />} />
           <Route path="/admin/property" element={<ManageProperties/>} />
           <Route path="/admin/payments" element={<TaxManage/>} />
-
+          </Route>
         </Routes>
       </main>
     </div>

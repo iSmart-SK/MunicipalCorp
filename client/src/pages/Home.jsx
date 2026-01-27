@@ -40,7 +40,7 @@ const Home = () => {
             Pay taxes, apply for certificates, and track grievances from the comfort of your home.
           </p>
           <div className="flex flex-col md:flex-row justify-center gap-4">
-            <Link to="/login" className="bg-yellow-400 text-blue-900 font-bold py-4 px-8 rounded-lg shadow-lg hover:bg-yellow-300 transition transform hover:-translate-y-1">
+            <Link to="/citizen/properties" className="bg-yellow-400 text-blue-900 font-bold py-4 px-8 rounded-lg shadow-lg hover:bg-yellow-300 transition transform hover:-translate-y-1">
               Pay Property Tax
             </Link>
             <Link to="/citizen/apply" className="border-2 border-white text-white font-bold py-4 px-8 rounded-lg hover:bg-white hover:text-blue-700 transition transform hover:-translate-y-1">
