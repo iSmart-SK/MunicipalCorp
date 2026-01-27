@@ -57,10 +57,10 @@ const Register = () => {
     try {
       // ✅ BACKEND-ALIGNED PAYLOAD
       const payload = {
-        fullName: formData.fullName,
+        name: formData.fullName,
         email: formData.email,
         password: formData.password,
-        mobileNo: formData.mobileNo,
+        mobnum: formData.mobileNo,
         aadharNumber: formData.aadharNo,
         address: formData.address,
       };
@@ -102,7 +102,6 @@ const Register = () => {
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
             {/* Full Name */}
             <div className="col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -263,8 +262,9 @@ const Register = () => {
           <button
             type="submit"
             disabled={loading}
-            className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 ${loading ? "opacity-70 cursor-not-allowed" : ""
-              }`}
+            className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 ${
+              loading ? "opacity-70 cursor-not-allowed" : ""
+            }`}
           >
             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
               <ArrowRight className="h-5 w-5 text-blue-200 group-hover:text-blue-100" />

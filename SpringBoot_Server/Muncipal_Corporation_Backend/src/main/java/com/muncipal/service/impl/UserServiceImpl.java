@@ -12,7 +12,9 @@ import com.muncipal.custom_exceptions.ApiException;
 import com.muncipal.custom_exceptions.ResourceNotFoundException;
 import com.muncipal.dto.ActInactStatusDTO;
 import com.muncipal.dto.ApiResponse;
+import com.muncipal.dto.UserDTO;
 import com.muncipal.entity.User;
+import com.muncipal.entity.enums.ActInactStatus;
 import com.muncipal.entity.enums.UserRole;
 import com.muncipal.repository.UserRepository;
 import com.muncipal.security.JwtUtil;
@@ -31,7 +33,7 @@ public class UserServiceImpl implements UserService {
 	private final JwtUtil jwtUtil;
 
 	@Override
-	public String login(String email, String password) {
+	public UserDTO login(String email, String password) {
 
 		authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(email, password)
@@ -39,8 +41,15 @@ public class UserServiceImpl implements UserService {
 
 		User user = userRepository.findByEmail(email)
 				.orElseThrow(() -> new ApiException("Invalid email or password"));
-
-		return jwtUtil.generateToken(user.getEmail(), user.getRole().name());
+		if(ActInactStatus.INACTIVE.equals(user.getActStatus())) {
+			throw new ApiException("Inactive User");
+		}
+		UserDTO userDTO = new UserDTO();
+		userDTO.setId(user.getId());
+		userDTO.setName(user.getName());
+		userDTO.setRole(user.getRole());
+		userDTO.setToken(jwtUtil.generateToken(user.getEmail(), user.getRole().name()));
+		return userDTO;
 	}
 
 	@Override
@@ -52,6 +61,7 @@ public class UserServiceImpl implements UserService {
 
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setRole(UserRole.CITIZEN);
+		user.setActStatus(ActInactStatus.ACTIVE);
 
 		userRepository.save(user);
 		return new ApiResponse("User registered successfully", "SUCCESS");

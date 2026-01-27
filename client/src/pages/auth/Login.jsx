@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import {
-  Mail,
-  Lock,
-  ArrowRight,
-  AlertCircle,
-} from "lucide-react";
+import { Mail, Lock, ArrowRight, AlertCircle } from "lucide-react";
 import toast from "react-hot-toast";
 
 const Login = () => {
@@ -41,19 +36,20 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:9090/user/login",
-        {
-          email: formData.email,
-          password: formData.password,
-        }
-      );
+      const response = await axios.post("http://localhost:9090/user/login", {
+        email: formData.email,
+        password: formData.password,
+      });
 
-      const token = response.data; // backend returns JWT string
+      const token = response.data.token; // backend returns JWT string
 
       if (!token) {
         throw new Error("Token not received");
       }
+
+      localStorage.setItem("role", response.data.role);
+      localStorage.setItem("user_id", response.data.id);
+      localStorage.setItem("name", response.data.name);
 
       // ✅ Store JWT
       localStorage.setItem("token", token);
@@ -135,8 +131,9 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 flex items-center justify-center ${loading ? "opacity-70 cursor-not-allowed" : ""
-              }`}
+            className={`w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 flex items-center justify-center ${
+              loading ? "opacity-70 cursor-not-allowed" : ""
+            }`}
           >
             <ArrowRight className="w-5 h-5 mr-2" />
             {loading ? "Signing In..." : "Sign In"}
