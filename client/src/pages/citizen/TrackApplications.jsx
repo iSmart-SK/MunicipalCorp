@@ -90,8 +90,8 @@ const TrackApplications = () => {
       doc.text(`Date of Birth: ${app.eventDate}`, 30, y); y += 10;
       doc.text(`Father Name: ${app.fatherName}`, 30, y); y += 10;
       doc.text(`Mother Name: ${app.motherName}`, 30, y); y += 10;
-      doc.text(`Place of Birth: ${app.eventPlace}`, 30); y += 10;
-      doc.text(`Gender :${app.gender}`,30,y ); y +=10;
+      doc.text(`Place of Birth: ${app.eventPlace}`, 30,y); y += 10;
+      doc.text(`Gender :${app.gender}`,30,y );
     }
 
     if (app.type === "Death Certificate") {

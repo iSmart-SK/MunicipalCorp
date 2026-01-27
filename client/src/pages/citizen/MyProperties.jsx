@@ -45,7 +45,7 @@ const MyProperties = () => {
     try {
       const orderRes = await axios.post(
         "http://localhost:9090/payment/create-order",
-        { amount: 1000 }, // ₹1 test
+        { amount: 1 }, // ₹1 test
         {
           headers: {
             "Content-Type": "application/json",
@@ -61,7 +61,12 @@ const MyProperties = () => {
         currency: "INR",
         name: "Municipal Corporation",
         description: "Property Tax Payment",
-        order_id: orderId,
+        order_id: orderId,method: {
+        card: true,
+        netbanking: true,
+        upi: true,
+        wallet: true
+    },
 
         handler: function (response) {
           alert("Payment Successful");

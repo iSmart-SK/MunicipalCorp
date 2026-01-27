@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.muncipal.config.RazorpayConfig;
+import com.muncipal.entity.Payment;
+import com.muncipal.repository.PaymentRepo;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
 
@@ -19,8 +21,12 @@ public class PaymentServiceImpl implements com.muncipal.service.PaymentService{
 
 	@Autowired 
     private final RazorpayConfig razorpayConfig;
+	
+	@Autowired
+	private final PaymentRepo paymentRepo;
 
     public Map<String, Object> createOrder(int amount) throws Exception {
+    	
 
         RazorpayClient client = new RazorpayClient(
             razorpayConfig.getKeyId(),
@@ -28,7 +34,7 @@ public class PaymentServiceImpl implements com.muncipal.service.PaymentService{
         );
 
         JSONObject orderRequest = new JSONObject();
-        orderRequest.put("amount", amount * 100);
+        orderRequest.put("amount", amount *100);
         orderRequest.put("currency", "INR");
         orderRequest.put("receipt", "receipt_" + System.currentTimeMillis());
 
@@ -39,7 +45,15 @@ public class PaymentServiceImpl implements com.muncipal.service.PaymentService{
         response.put("amount", amount);
         response.put("currency", "INR");
         response.put("key", razorpayConfig.getKeyId());
+        
+        
+        
+        
 
         return response;
+    }
+    
+    private Payment saveData() {
+    	
     }
 }
