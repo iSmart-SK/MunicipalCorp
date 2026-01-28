@@ -52,13 +52,14 @@ const MyProperties = () => {
           },
         }
       );
-      console.log("Order Response:", orderRes);
+      console.log("Order details:", orderRes);
       const { orderId, amount, key } = orderRes.data;
 
       const options = {
         key: key,
         amount: amount,
         currency: "INR",
+        propertyId: property.id,
         name: "Municipal Corporation",
         description: "Property Tax Payment",
         order_id: orderId,method: {
@@ -67,12 +68,38 @@ const MyProperties = () => {
         upi: true,
         wallet: true
     },
+    
+        handler: async function (response) {
+          console.log("response data :",response);
+          // api to store transaction details after verifying 
+          //data in response in used to verify payment
+          const respData={
+            orderId:response.razorpay_order_id,
+            paymentId:response.razorpay_payment_id,
+            signature:response.razorpay_signature,
+            amount:options.amount,
+            propertyId: options.propertyId,
+            citizenId:localStorage.getItem("user_id"),
+            currency :options.currency,
+            feeType:"PROPERTY_TAX",
 
-        handler: function (response) {
-          alert("Payment Successful");
-          console.log(response);
-          // later: call backend to mark tax paid
-        },
+          }
+          try{
+          await axios.post("http://localhost:9090/payment/verify", respData
+          );
+         console.log("payment done successfully! and updating tax payment status");
+          
+          await axios.patch(`http://localhost:9090/properties/taxUpdate/${options.propertyId}`);
+          console.log("tax update Done" );
+          alert("Tax payment recorded successfully!");
+
+      }
+        catch(err){
+          console.error("Payment verification failed", err);
+          alert("Payment verification failed");
+        }
+      
+      },
 
         prefill: {
           name: property.ownerName,
@@ -83,6 +110,9 @@ const MyProperties = () => {
           color: "#2563EB",
         },
       };
+console.log("Razorpay Options:",options )
+console.log("property id :",property.id)
+console.log("property owner name :",property.ownerName)
 
       const rzp = new window.Razorpay(options);
       rzp.open();
@@ -91,6 +121,7 @@ const MyProperties = () => {
       alert("Payment failed");
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-gray-50 pt-16">
@@ -208,7 +239,7 @@ const MyProperties = () => {
                         <p className="text-2xl font-bold text-gray-800">₹ 1</p>
                       </div>
 
-                      {prop.status === "COMPLETED" ? (
+                      {prop.status === "COMPLETED" && prop.taxPayment ==="PENDING"? (
                         <button
                           onClick={() => handlePayTax(prop)}
                           className="flex items-center bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
@@ -216,8 +247,8 @@ const MyProperties = () => {
                           Pay Now <ArrowRight className="w-4 h-4 ml-2" />
                         </button>
                       ) : (
-                        <span className="text-yellow-700 font-bold">
-                          Pending Approval
+                        <span className="flex items-center bg-green-400 text-white px-4 py-2 rounded-lg hover:bg-green-300">
+                          Tax Paid
                         </span>
                       )}
                     </div>

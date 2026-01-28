@@ -51,4 +51,8 @@ public class Property extends BaseEntity {
     @Column
     private String reason;
     
+    @Enumerated(EnumType.STRING)
+    @Column(name="tax_payment")
+    private Status taxPayment;
+    
 }

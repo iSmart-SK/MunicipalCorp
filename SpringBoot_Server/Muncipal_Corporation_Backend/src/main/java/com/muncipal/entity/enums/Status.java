@@ -1,5 +1,5 @@
 package com.muncipal.entity.enums;
 
 public enum Status {
-	PENDING,COMPLETED,CANCELED,APPROVED;
+	PENDING,COMPLETED,CANCELED,APPROVED,SUCCESSFULL,FAILED;
 }

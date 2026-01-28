@@ -37,9 +37,9 @@ public class Payment extends BaseEntity {
 	@Column(name="currency", nullable = false)
     private String currency;
 	
-	@Enumerated(EnumType.STRING)
+
 	@Column(name = "status", nullable = false)
-	private Status status;
+	private String status;
 
 	
 	@Column(name="payment_method")

@@ -18,6 +18,7 @@ import {
   MapPinned,
 } from "lucide-react";
 import jsPDF from "jspdf";
+import TaxManage from "../admin/TaxManage";
 
 const TrackApplications = () => {
   const [apps, setApps] = useState([]);
@@ -72,6 +73,7 @@ const TrackApplications = () => {
           type: "Property Registration",
           displayName: p.ownerName,
           appliedDate: p.registrationDate,
+          taxPaid :p.taxPayment
         })),
 
         ...grievanceRes.data.map((g) => ({
@@ -291,6 +293,10 @@ const TrackApplications = () => {
                       <p className="flex items-center gap-2">
                         <Calendar size={16} /> Registered:{" "}
                         {app.registrationDate}
+                      </p>
+                      <p className="flex items-center gap-2">
+                        <MapPin size={16} /> Tax:{" "}
+                        {app.taxPaid}
                       </p>
                     </>
                   )}

@@ -20,6 +20,7 @@ const payload = {
     ...formData,
     citizenId : uid,
     status :"PENDING",
+    taxPayment :"PENDING",
     appliedDate: new Date().toISOString().split('T')[0]
   };
   

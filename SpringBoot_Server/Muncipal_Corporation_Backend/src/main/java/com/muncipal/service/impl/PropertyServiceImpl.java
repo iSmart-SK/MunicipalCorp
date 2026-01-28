@@ -1,6 +1,8 @@
 package com.muncipal.service.impl;
 
 import com.muncipal.entity.enums.*;
+
+import java.net.Authenticator.RequestorType;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -47,6 +49,8 @@ public class PropertyServiceImpl implements PropertyService {
         property.setRegistrationDate(request.getRegistrationDate());
         property.setStatus(request.getStatus());
         property.setCitizenId(request.getCitizenId());
+        property.setTaxPayment(request.getTaxPayment());
+        System.out.println(request.getTaxPayment());
        
 
         return propertyRepository.save(property);
@@ -91,6 +95,14 @@ public class PropertyServiceImpl implements PropertyService {
 	    }
 
 	    return propertyRepository.save(property);
+	}
+
+	@Override
+	public Property updatePropertyTaxStatus(Long Id) {
+		// TODO Auto-generated method stub
+		Status taxPayment = Status.COMPLETED;
+		int updated =propertyRepository.updateTaxStatus(taxPayment, Id);
+		return null;
 	}
 
 

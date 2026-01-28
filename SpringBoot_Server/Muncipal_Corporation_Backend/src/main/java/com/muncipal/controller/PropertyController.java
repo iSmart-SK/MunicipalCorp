@@ -59,4 +59,13 @@ public class PropertyController {
 
         return ResponseEntity.ok(updated);
     }
+    
+    @PatchMapping("/taxUpdate/{id}")
+    public ResponseEntity<Property> updateTaxStatus(
+            @PathVariable Long id) {
+
+        Property updated = propertyService.updatePropertyTaxStatus(id);
+
+        return ResponseEntity.ok(updated);
+    }
 }

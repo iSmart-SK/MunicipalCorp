@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.muncipal.dto.PaymentDTO;
 import com.muncipal.service.PaymentService;
-
+import com.razorpay.RazorpayException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,4 +37,12 @@ public class PaymentController {
         int amount = Integer.parseInt(data.get("amount").toString());
         return paymentService.createOrder(amount);
     }
+    
+    @PostMapping("/verify")
+    public  Object verify(@RequestBody   Map<String, Object> response ) throws Exception {
+    	System.out.println("repose data" + response);
+    	return paymentService.verify(response);
+    	
+    }
+   
 }

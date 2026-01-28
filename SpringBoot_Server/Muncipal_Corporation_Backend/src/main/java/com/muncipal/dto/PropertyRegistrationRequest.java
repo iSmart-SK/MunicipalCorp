@@ -45,4 +45,6 @@ public class PropertyRegistrationRequest {
     
     @NotNull
     private int citizenId;
+    
+    private Status taxPayment; 
 }

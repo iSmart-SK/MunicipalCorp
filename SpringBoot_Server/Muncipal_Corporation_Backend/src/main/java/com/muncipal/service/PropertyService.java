@@ -18,6 +18,8 @@ public interface PropertyService {
 
 	Property updatePropertyStatus(Long id , Status status , String reason);
 
+	Property updatePropertyTaxStatus(Long Id);
+
    
 
 }
