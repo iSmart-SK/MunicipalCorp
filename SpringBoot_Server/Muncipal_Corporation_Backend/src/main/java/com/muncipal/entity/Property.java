@@ -55,4 +55,6 @@ public class Property extends BaseEntity {
     @Column(name="tax_payment")
     private Status taxPayment;
     
+    @Column(name="yearly_tax")
+    private double yearlyTax;
 }

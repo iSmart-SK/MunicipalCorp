@@ -47,4 +47,7 @@ public class PropertyRegistrationRequest {
     private int citizenId;
     
     private Status taxPayment; 
+    
+   
+    private double yearlyTax;
 }

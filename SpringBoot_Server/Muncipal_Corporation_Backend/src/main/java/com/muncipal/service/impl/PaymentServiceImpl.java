@@ -88,7 +88,7 @@ public class PaymentServiceImpl implements com.muncipal.service.PaymentService{
         System.out.println("Status: " + status);
         
         Payment payment = new Payment();
-        payment.setAmount(amount);
+        payment.setAmount(amount/100);
         payment.setCitizenId(Integer.parseInt(response.get("citizenId").toString()));
         payment.setCurrency(response.get("currency").toString());
         payment.setFeeType(response.get("feeType").toString());

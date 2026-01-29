@@ -20,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 public class PropertyServiceImpl implements PropertyService {
 
     private final PropertyRepository propertyRepository;
+    
+    
 
     @Override
     public Property registerProperty(PropertyRegistrationRequest request) {
@@ -36,7 +38,10 @@ public class PropertyServiceImpl implements PropertyService {
         if (propertyRepository.existsByPropertyNumber(request.getPropertyNumber())) {
             throw new IllegalArgumentException("Property number already exists");
         }
-
+        
+        double taxAmount=PropertyTaxCalculator.calculateTax(request.getBuiltUpArea(), request.getPropertyType() , request.getUsageType());
+        System.out.println("amount to pay :" +taxAmount);
+        
         Property property = new Property();
         property.setOwnerName(request.getOwnerName());
         property.setMobile(request.getMobile());
@@ -50,6 +55,7 @@ public class PropertyServiceImpl implements PropertyService {
         property.setStatus(request.getStatus());
         property.setCitizenId(request.getCitizenId());
         property.setTaxPayment(request.getTaxPayment());
+        property.setYearlyTax(taxAmount);
         System.out.println(request.getTaxPayment());
        
 
@@ -106,6 +112,5 @@ public class PropertyServiceImpl implements PropertyService {
 	}
 
 
-	
   
 }
