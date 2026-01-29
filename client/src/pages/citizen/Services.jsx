@@ -16,7 +16,8 @@ const Services = () => {
           Select a service to start your application.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"> */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Service 1: Birth Certificate */}
           <div className="bg-white p-6 rounded-xl shadow-sm border hover:shadow-md transition group">
             <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mb-4 group-hover:scale-110 transition">
@@ -56,11 +57,11 @@ const Services = () => {
           </div>
 
           {/* Service 3: Water Bill */}
-          <div className="bg-white p-6 rounded-xl shadow-sm border hover:shadow-md transition group">
+          {/* <div className="bg-white p-6 rounded-xl shadow-sm border hover:shadow-md transition group">
             <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mb-4 group-hover:scale-110 transition">
               <Droplet className="w-6 h-6" />{" "}
               {/* Import Droplet from lucide-react */}
-            </div>
+          {/* </div>
             <h3 className="text-lg font-bold text-gray-800">Water Bill</h3>
             <p className="text-sm text-gray-500 mb-4 mt-2">
               Pay your municipal water connection charges online.
@@ -70,8 +71,8 @@ const Services = () => {
               className="text-blue-600 font-medium flex items-center hover:underline"
             >
               Pay Now <ArrowRight className="w-4 h-4 ml-1" />
-            </Link>
-          </div>
+            </Link> }
+          </div> */}
         </div>
       </div>
     </div>

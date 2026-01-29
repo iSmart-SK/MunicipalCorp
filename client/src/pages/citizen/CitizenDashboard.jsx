@@ -52,7 +52,7 @@ const CitizenDashboard = () => {
         // Fetch Data Parallelly
         // Note: In real app, filtering happens on backend. Here we filter client-side for mock.
         const [props, water, birth, death, grievances] = await Promise.all([
-          axios.get("http://localhost:8080/properties"), // Filter by user.id in real app
+          axios.get(`http://localhost:9090/properties/citizen/${userId}`), // Filter by user.id in real app
           axios.get("http://localhost:8080/water_connections"),
           axios.get(
             `http://localhost:9090/certificateController/birth/${userId}`
@@ -68,18 +68,18 @@ const CitizenDashboard = () => {
           (acc, curr) => acc + (Number(curr.taxDue) || 0),
           0
         );
-        const waterTax = water.data.reduce(
-          (acc, curr) =>
-            acc + (curr.status === "UNPAID" ? Number(curr.billAmount) : 0),
-          0
-        );
+        // const waterTax = water.data.reduce(
+        //   (acc, curr) =>
+        //     acc + (curr.status === "UNPAID" ? Number(curr.billAmount) : 0),
+        //   0
+        // );
         const activeAppsCount =
           birth.data.filter((a) => a.status === "PENDING").length +
           death.data.filter((a) => a.status === "PENDING").length;
 
         setStats({
           propertyDue: propTax,
-          waterDue: waterTax,
+          //waterDue: waterTax,
           activeApps: activeAppsCount,
           pendingGrievances: grievances.data.filter(
             (g) => g.status === "PENDING"
@@ -90,22 +90,31 @@ const CitizenDashboard = () => {
         const activity = [
           ...birth.data.map((i) => ({
             type: "Birth Cert",
+            name: i.personName,
             date: i.appliedDate,
             status: i.status,
           })),
           ...death.data.map((i) => ({
             type: "Death Cert",
+            name: i.personName,
             date: i.appliedDate,
             status: i.status,
           })),
           ...grievances.data.map((i) => ({
             type: "Grievance",
-            date: i.lastUpdated,
+            complain: i.complaint,
+            date: i.createdOn,
+            status: i.status,
+          })),
+          ...props.data.map((i) => ({
+            type: "Property",
+            propType: i.propertyType,
+            date: i.createdOn,
             status: i.status,
           })),
         ]
           .sort((a, b) => new Date(b.date) - new Date(a.date))
-          .slice(0, 10); // Top 3
+          .slice(0, 20); // Top 3
 
         setRecentActivity(activity);
       } catch (error) {
@@ -249,7 +258,7 @@ const CitizenDashboard = () => {
                 </div>
               </Link>
 
-              <Link
+              {/* <Link
                 to="/citizen/water-bill"
                 className="group bg-white p-6 rounded-xl border border-gray-200 hover:border-blue-500 hover:shadow-lg transition flex items-center space-x-4"
               >
@@ -262,10 +271,9 @@ const CitizenDashboard = () => {
                   </h4>
                   <p className="text-xs text-gray-500">Pay Utility Charges</p>
                 </div>
-              </Link>
-
+              </Link> */}
               <Link
-                to="/citizen/apply"
+                to="/citizen/apply/birth"
                 className="group bg-white p-6 rounded-xl border border-gray-200 hover:border-blue-500 hover:shadow-lg transition flex items-center space-x-4"
               >
                 <div className="bg-green-100 p-4 rounded-full text-green-600 group-hover:bg-green-600 group-hover:text-white transition">
@@ -273,9 +281,24 @@ const CitizenDashboard = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-800 group-hover:text-green-600">
-                    Certificates
+                    Birth Certificates
                   </h4>
-                  <p className="text-xs text-gray-500">Birth & Death</p>
+                  <p className="text-xs text-gray-500">Birth</p>
+                </div>
+              </Link>
+
+              <Link
+                to="/citizen/apply/death"
+                className="group bg-white p-6 rounded-xl border border-gray-200 hover:border-blue-500 hover:shadow-lg transition flex items-center space-x-4"
+              >
+                <div className="bg-green-100 p-4 rounded-full text-green-600 group-hover:bg-green-600 group-hover:text-white transition">
+                  <FileText className="w-6 h-6" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-800 group-hover:text-green-600">
+                    Death Certificates
+                  </h4>
+                  <p className="text-xs text-gray-500">Death</p>
                 </div>
               </Link>
 
@@ -299,7 +322,7 @@ const CitizenDashboard = () => {
           {/* Right: Recent Activity Feed (1 col) */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-lg font-bold text-gray-800">
+              <h2 className="text-lg font-bold text-gray-700">
                 Recent Activity
               </h2>
               <Link
@@ -339,6 +362,20 @@ const CitizenDashboard = () => {
                         <p className="text-sm font-bold text-gray-800">
                           {item.type}
                         </p>
+                        {(item.type === "Birth Cert" ||
+                          item.type === "Death Cert") && (
+                          <p className="text-xs text-gray-500">{item.name}</p>
+                        )}
+                        {item.type === "Grievance" && (
+                          <p className="text-xs text-gray-500">
+                            {item.complain}
+                          </p>
+                        )}
+                        {item.type === "Property" && (
+                          <p className="text-xs text-gray-500">
+                            {item.propType}
+                          </p>
+                        )}
                         <p className="text-xs text-gray-500">{item.date}</p>
                         <span
                           className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded ${
