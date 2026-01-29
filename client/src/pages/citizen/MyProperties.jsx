@@ -11,6 +11,7 @@ import {
   Loader,
   FileCheck,
 } from "lucide-react";
+import { reloadResources } from "i18next";
 
 const MyProperties = () => {
   const [properties, setProperties] = useState([]);
@@ -45,7 +46,7 @@ const MyProperties = () => {
     try {
       const orderRes = await axios.post(
         "http://localhost:9090/payment/create-order",
-        { amount: 1 }, // ₹1 test
+        { amount: property.yearlyTax }, // ₹1 test
         {
           headers: {
             "Content-Type": "application/json",
@@ -92,6 +93,7 @@ const MyProperties = () => {
           await axios.patch(`http://localhost:9090/properties/taxUpdate/${options.propertyId}`);
           console.log("tax update Done" );
           alert("Tax payment recorded successfully!");
+        
 
       }
         catch(err){
@@ -236,7 +238,7 @@ console.log("property owner name :",property.ownerName)
                         <p className="text-xs font-bold uppercase tracking-wide">
                           Tax Amount
                         </p>
-                        <p className="text-2xl font-bold text-gray-800">₹ 1</p>
+                        <p className="text-2xl font-bold text-gray-800">₹ {prop.yearlyTax}</p>
                       </div>
 
                       {prop.status === "COMPLETED" && prop.taxPayment ==="PENDING"? (

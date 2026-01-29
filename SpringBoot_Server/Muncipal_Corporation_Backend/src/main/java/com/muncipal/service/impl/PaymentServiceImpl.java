@@ -99,6 +99,7 @@ public class PaymentServiceImpl implements com.muncipal.service.PaymentService{
         payment.setReferenceId(response.get("propertyId").toString());
         payment.setStatus(status);
         
+        
 		return paymentRepo.save(payment);
 	}
     
