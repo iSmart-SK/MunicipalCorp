@@ -23,7 +23,7 @@ const CitizenDashboard = () => {
   // Dashboard State
   const [stats, setStats] = useState({
     propertyDue: 0,
-    waterDue: 0,
+    // waterDue: 0,
     activeApps: 0,
     pendingGrievances: 0,
   });
@@ -51,9 +51,8 @@ const CitizenDashboard = () => {
 
         // Fetch Data Parallelly
         // Note: In real app, filtering happens on backend. Here we filter client-side for mock.
-        const [props, water, birth, death, grievances] = await Promise.all([
+        const [props, birth, death, grievances] = await Promise.all([
           axios.get(`http://localhost:9090/properties/citizen/${userId}`), // Filter by user.id in real app
-          axios.get("http://localhost:8080/water_connections"),
           axios.get(
             `http://localhost:9090/certificateController/birth/${userId}`
           ),
@@ -75,6 +74,8 @@ const CitizenDashboard = () => {
         // );
         const activeAppsCount =
           birth.data.filter((a) => a.status === "PENDING").length +
+          props.data.filter((a) => a.status === "PENDING").length +
+          grievances.data.filter((a) => a.status === "PENDING").length +
           death.data.filter((a) => a.status === "PENDING").length;
 
         setStats({
@@ -159,7 +160,7 @@ const CitizenDashboard = () => {
                 </span>{" "}
                 and{" "}
                 <span className="font-bold text-yellow-300">
-                  ₹{stats.propertyDue + stats.waterDue}
+                  ₹{stats.propertyDue}
                 </span>{" "}
                 in pending dues.
               </p>
@@ -184,7 +185,7 @@ const CitizenDashboard = () => {
                   Total Pending Dues
                 </p>
                 <h3 className="text-3xl font-bold text-gray-800 mt-2">
-                  ₹ {(stats.propertyDue + stats.waterDue).toLocaleString()}
+                  ₹ {stats.propertyDue.toLocaleString()}
                 </h3>
                 <p className="text-xs text-red-500 mt-1 font-medium">
                   Needs Attention
