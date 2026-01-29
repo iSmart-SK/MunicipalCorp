@@ -169,7 +169,7 @@ const ManageProperties = () => {
                     <td className="px-6 py-4">#{p.id}</td>
                     <td className="px-6 py-4">{p.ownerName}</td>
                     <td className="px-6 py-4">{p.propertyNumber}</td>
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-4 flex items-center gap-1">
                       <Home size={14} /> {p.propertyType}
                     </td>
                     <td className="px-6 py-4">

@@ -88,7 +88,7 @@ public class PaymentServiceImpl implements com.muncipal.service.PaymentService{
         System.out.println("Status: " + status);
         
         Payment payment = new Payment();
-        payment.setAmount(amount);
+        payment.setAmount(amount/100);
         payment.setCitizenId(Integer.parseInt(response.get("citizenId").toString()));
         payment.setCurrency(response.get("currency").toString());
         payment.setFeeType(response.get("feeType").toString());
@@ -98,6 +98,7 @@ public class PaymentServiceImpl implements com.muncipal.service.PaymentService{
         payment.setRazorpaySignature(response.get("signature").toString());
         payment.setReferenceId(response.get("propertyId").toString());
         payment.setStatus(status);
+        
         
 		return paymentRepo.save(payment);
 	}

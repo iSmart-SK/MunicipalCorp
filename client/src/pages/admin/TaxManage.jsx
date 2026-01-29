@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AdminSidebar from "../../components/AdminSidebar";
-import {
-  Check,
-  X,
-  Search,
-  FileText,
-  Download,
-  Home,
-  Ruler
-} from "lucide-react";
+import { Search, Home, Ruler } from "lucide-react";
 
 /* Toast */
 const showToast = (msg, type = "success") => {
@@ -29,73 +21,40 @@ const TaxManage = () => {
   const [filter, setFilter] = useState("ALL");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const [rejectId, setRejectId] = useState(null);
-  const [rejectReason, setRejectReason] = useState("");
-
   useEffect(() => {
     fetchProperties();
   }, []);
 
-  /* FETCH */
+  /* FETCH PROPERTIES */
   const fetchProperties = async () => {
     try {
       const res = await axios.get("http://localhost:9090/properties");
       setProperties(res.data);
     } catch (err) {
       console.error(err);
+      showToast("Failed to load properties", "error");
     } finally {
       setLoading(false);
     }
   };
 
-  /* APPROVE / CANCEL */
-  const updateStatus = async (id, status, reason = "") => {
-    try {
-      await axios.patch(`http://localhost:9090/properties/${id}`, {
-        status,
-        reason
-      });
-
-      setProperties((prev) =>
-        prev.map((p) =>
-          p.id === id ? { ...p, status, reason } : p
-        )
-      );
-
-      showToast(
-        status === "COMPLETED"
-          ? "Property Approved"
-          : "Property Rejected"
-      );
-    } catch {
-      showToast("Update failed", "error");
-    }
-  };
-
-  /* FILTER + SEARCH */
+  /* FILTERED DATA (ONLY APPROVED) */
   const filtered = properties.filter((p) => {
-    const matchesFilter =
-      filter === "ALL" || p.status === filter;
+    // show ONLY approved properties
+    if (p.status !== "COMPLETED") return false;
 
+    // tax payment filter
+    const matchesFilter =
+      filter === "ALL" || p.taxPayment === filter;
+
+    // search
     const q = searchQuery.toLowerCase();
     const matchesSearch =
       p.ownerName.toLowerCase().includes(q) ||
-      p.propertyNumber.includes(q);
+      p.propertyNumber.toLowerCase().includes(q);
 
     return matchesFilter && matchesSearch;
   });
-
-  /* SUBMIT REJECTION */
-  const submitReject = () => {
-    if (!rejectReason.trim()) {
-      showToast("Reason required", "error");
-      return;
-    }
-
-    updateStatus(rejectId, "CANCELED", rejectReason);
-    setRejectId(null);
-    setRejectReason("");
-  };
 
   return (
     <div className="min-h-screen bg-gray-100 pt-16">
@@ -103,7 +62,7 @@ const TaxManage = () => {
 
       <div className="md:ml-64 p-8">
         <h1 className="text-2xl font-bold mb-6">
-          Manage Property Registrations
+          Approved Property Taxes
         </h1>
 
         {/* SEARCH + FILTER */}
@@ -145,8 +104,8 @@ const TaxManage = () => {
                 <th className="px-6 py-3">Property No</th>
                 <th className="px-6 py-3">Type</th>
                 <th className="px-6 py-3">Area</th>
-                <th className="px-6 py-3">Status</th>
-                <th className="px-6 py-3 text-right">Actions</th>
+                <th className="px-6 py-3">Tax Status</th>
+                <th className="px-6 py-3">Amount</th>
               </tr>
             </thead>
 
@@ -160,7 +119,7 @@ const TaxManage = () => {
               ) : filtered.length === 0 ? (
                 <tr>
                   <td colSpan="7" className="text-center py-6">
-                    No properties found
+                    No approved properties found
                   </td>
                 </tr>
               ) : (
@@ -169,54 +128,33 @@ const TaxManage = () => {
                     <td className="px-6 py-4">#{p.id}</td>
                     <td className="px-6 py-4">{p.ownerName}</td>
                     <td className="px-6 py-4">{p.propertyNumber}</td>
-                    <td className="px-6 py-4">
+
+                    <td className="px-6 py-4 flex items-center gap-1">
                       <Home size={14} /> {p.propertyType}
                     </td>
-                    <td className="px-6 py-4">
-                      <Ruler size={14} /> {p.plotArea}
-                    </td>
+
+                  <td className="px-6 py-4">
+                   <Ruler size={14} /> {p.plotArea}
+                   </td>
+                    
+                    
+
                     <td className="px-6 py-4">
                       <span
                         className={`px-3 py-1 rounded-full text-xs ${
-                          p.status === "COMPLETED"
+                          p.taxPayment === "COMPLETED"
                             ? "bg-green-100 text-green-700"
-                            : p.status === "CANCELED"
+                            : p.taxPayment === "CANCELED"
                             ? "bg-red-100 text-red-700"
                             : "bg-yellow-100 text-yellow-700"
                         }`}
                       >
-                        {p.status}
+                        {p.taxPayment}
                       </span>
                     </td>
 
-                    <td className="px-6 py-4 text-right">
-                      {p.status === "PENDING" ? (
-                        <div className="flex justify-end gap-2">
-                          <button
-                            onClick={() =>
-                              updateStatus(
-                                p.id,
-                                "COMPLETED",
-                                "Approved"
-                              )
-                            }
-                            className="p-2 bg-green-100 text-green-600 rounded"
-                          >
-                            <Check />
-                          </button>
-
-                          <button
-                            onClick={() => setRejectId(p.id)}
-                            className="p-2 bg-red-100 text-red-600 rounded"
-                          >
-                            <X />
-                          </button>
-                        </div>
-                      ) : (
-                        <em className="text-gray-400 text-xs">
-                          Processed
-                        </em>
-                      )}
+                    <td className="px-6 py-4 font-bold">
+                      ₹ {p.yearlyTax}
                     </td>
                   </tr>
                 ))
@@ -225,42 +163,6 @@ const TaxManage = () => {
           </table>
         </div>
       </div>
-
-      {/* REJECT MODAL */}
-      {rejectId && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-          <div className="bg-white p-6 rounded w-96">
-            <h3 className="font-bold mb-3">
-              Reason for Rejection
-            </h3>
-            <textarea
-              className="w-full border p-2 rounded"
-              rows="3"
-              value={rejectReason}
-              onChange={(e) =>
-                setRejectReason(e.target.value)
-              }
-            />
-            <div className="flex justify-end mt-4 gap-2">
-              <button
-                onClick={() => {
-                  setRejectId(null);
-                  setRejectReason("");
-                }}
-                className="px-4 py-2 bg-gray-200 rounded"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={submitReject}
-                className="px-4 py-2 bg-red-600 text-white rounded"
-              >
-                Reject
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

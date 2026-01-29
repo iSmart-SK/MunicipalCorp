@@ -39,17 +39,17 @@ const AdminDashboard = () => {
     totalCitizens: 0,
   });
   const [events, setEvents] = useState({
-    PropertyCnt: 0,
-    BirthCertCnt: 0,
-    DeathCertCnt: 0,
-    GrievanceCnt: 0,
+    PropertyCnt: 10,
+    BirthCertCnt: 20,
+    DeathCertCnt: 10,
+    GrievanceCnt: 5,
   });
 
   const [grievanceCat, setGrievanceCat] = useState({
-    GARBAGE: 0,
-    ROAD: 0,
-    STREET_LIGHT: 0,
-    WATER: 0,
+    GARBAGE: 10,
+    ROAD: 50,
+    STREET_LIGHT: 20,
+    WATER: 60,
   });
   // -----------------------------
   // 2. User Management State
@@ -105,7 +105,8 @@ const AdminDashboard = () => {
         axios.get(`http://localhost:9090/properties`), // Filter by user.id in real app
         axios.get(`http://localhost:9090/certificateController/birth`),
         axios.get(`http://localhost:9090/certificateController/death`),
-        axios.get(`http://localhost:9090/grievances/all`),
+        axios.get(`http://localhost:9090/grievances/all`)
+        
       ]);
 
       setEvents({
@@ -140,11 +141,11 @@ const AdminDashboard = () => {
         axios.get("http://localhost:9090/user"),
         axios.get("http://localhost:9090/certificateController/birth/pending"),
         axios.get("http://localhost:9090/certificateController/death/pending"),
-        axios.get("http://localhost:8080/properties"),
+        axios.get("http://localhost:9090/properties"),
       ]);
 
       const totalTax = propReq.data.reduce(
-        (acc, curr) => acc + (Number(curr.taxDue) || 0),
+        (acc, curr) => acc + (Number(curr.yearlyTax) || 0),
         0
       );
 

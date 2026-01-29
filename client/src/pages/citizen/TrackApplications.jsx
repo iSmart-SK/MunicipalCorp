@@ -16,6 +16,7 @@ import {
   LayoutGrid,
   AlertTriangle,
   MapPinned,
+  CreditCard,
 } from "lucide-react";
 import jsPDF from "jspdf";
 import TaxManage from "../admin/TaxManage";
@@ -310,7 +311,8 @@ const TrackApplications = () => {
                         </p>
                       )}
                       <p className="flex items-center gap-2">
-                        <MapPin size={16} /> Tax: {app.taxPaid}
+                        <CreditCard size={16} /> Tax:{" "}
+                        {app.taxPaid}
                       </p>
                     </>
                   )}
