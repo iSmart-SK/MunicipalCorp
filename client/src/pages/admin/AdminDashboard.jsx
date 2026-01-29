@@ -14,6 +14,8 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import StatsBarChart from "./StatsBarChart";
+import ComplaintPieChart from "./ComplaintPieChart";
 
 // Simple toast notification helper
 const showToast = (msg, type = "success") => {
@@ -36,7 +38,19 @@ const AdminDashboard = () => {
     pendingDeath: 0,
     totalCitizens: 0,
   });
+  const [events, setEvents] = useState({
+    PropertyCnt: 0,
+    BirthCertCnt: 0,
+    DeathCertCnt: 0,
+    GrievanceCnt: 0,
+  });
 
+  const [grievanceCat, setGrievanceCat] = useState({
+    GARBAGE: 0,
+    ROAD: 0,
+    STREET_LIGHT: 0,
+    WATER: 0,
+  });
   // -----------------------------
   // 2. User Management State
   // -----------------------------
@@ -52,13 +66,8 @@ const AdminDashboard = () => {
   // -----------------------------
   // 3. Charts Data (Mock Data + API placeholder)
   // -----------------------------
-  const [monthlyRequests] = useState([
-    { month: "Jan", count: 20 },
-    { month: "Feb", count: 35 },
-    { month: "Mar", count: 25 },
-    { month: "Apr", count: 40 },
-    { month: "May", count: 30 },
-  ]);
+  const [monthlyRequests, setMonthlyRequests] = useState([]);
+
   const [categoryRequests] = useState([
     { category: "Electricity", count: 50 },
     { category: "Water", count: 30 },
@@ -82,12 +91,48 @@ const AdminDashboard = () => {
   // 5. Fetch Data Logic
   // -----------------------------
   useEffect(() => {
+    fectchEvents();
     fetchStats();
     fetchUsers();
     // Auto-refresh stats every 30 seconds
     const interval = setInterval(fetchStats, 30000);
     return () => clearInterval(interval);
   }, []);
+
+  const fectchEvents = async () => {
+    try {
+      const [props, birth, death, grievances] = await Promise.all([
+        axios.get(`http://localhost:9090/properties`), // Filter by user.id in real app
+        axios.get(`http://localhost:9090/certificateController/birth`),
+        axios.get(`http://localhost:9090/certificateController/death`),
+        axios.get(`http://localhost:9090/grievances/all`),
+      ]);
+
+      setEvents({
+        PropertyCnt: props.data.length,
+        BirthCertCnt: birth.data.length,
+        DeathCertCnt: death.data.length,
+        GrievanceCnt: grievances.data.length,
+      });
+
+      setGrievanceCat({
+        GARBAGE: grievances.data.filter(
+          (g) => g.complaint === "GARBAGE_COLLECTION"
+        ).length,
+        ROAD: grievances.data.filter(
+          (g) => g.complaint === "POTHOLE_ROAD_REPAIR"
+        ).length,
+        STREET_LIGHT: grievances.data.filter(
+          (g) => g.complaint === "STREETLIGHT_FAILURE"
+        ).length,
+        WATER: grievances.data.filter((g) => g.complaint === "WATER_SUPPLY")
+          .length,
+      });
+      // console.log(grievanceCat);
+    } catch (err) {
+      console.error("Error fetching admin events", err);
+    }
+  };
 
   const fetchStats = async () => {
     try {
@@ -109,6 +154,7 @@ const AdminDashboard = () => {
         pendingDeath: deathReq.data.length,
         totalTax: totalTax,
       });
+      // console.log(grievanceCat);
     } catch (err) {
       console.error("Error fetching admin stats", err);
     }
@@ -256,67 +302,12 @@ const AdminDashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Bar Chart */}
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="font-medium text-gray-700 dark:text-gray-200">
-                Monthly Service Requests
-              </h3>
-              <button
-                onClick={() =>
-                  exportCSV(monthlyRequests, "monthly_requests.csv")
-                }
-                className="flex items-center gap-1 px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
-              >
-                <Download className="w-4 h-4" /> CSV
-              </button>
-            </div>
-            <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={monthlyRequests}>
-                <XAxis
-                  dataKey="month"
-                  stroke={darkMode ? "text-black" : "#888"}
-                />
-                <YAxis stroke={darkMode ? "text-black" : "#888"} />
-                <Tooltip />
-                <Bar dataKey="count" fill="#00C49F" />
-              </BarChart>
-            </ResponsiveContainer>
+            <StatsBarChart stats={events} />
           </div>
 
           {/* Pie Chart */}
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="font-medium text-gray-700 dark:text-gray-200">
-                Service Categories
-              </h3>
-              <button
-                onClick={() =>
-                  exportCSV(categoryRequests, "category_requests.csv")
-                }
-                className="flex items-center gap-1 px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
-              >
-                <Download className="w-4 h-4" /> CSV
-              </button>
-            </div>
-            <ResponsiveContainer width="100%" height={250}>
-              <PieChart>
-                <Pie
-                  data={categoryRequests}
-                  dataKey="count"
-                  nameKey="category"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={80}
-                  fill="#00C49F"
-                  label
-                >
-                  {categoryRequests.map((_, index) => (
-                    <Cell key={index} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Legend />
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+            <ComplaintPieChart data={grievanceCat} />
           </div>
         </div>
 

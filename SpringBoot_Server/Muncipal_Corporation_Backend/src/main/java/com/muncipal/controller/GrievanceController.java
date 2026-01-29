@@ -76,4 +76,10 @@ public class GrievanceController {
 		List<Grievance> gl = grievanceService.findUserGrievance(userid);
 		return ResponseEntity.ok(gl);
 	}
+	
+	@GetMapping("/all")
+	ResponseEntity<?> getAllGrievance() {
+		List<Grievance> gl = grievanceService.findAllGrievance();
+		return ResponseEntity.ok(gl);
+	}
 }
