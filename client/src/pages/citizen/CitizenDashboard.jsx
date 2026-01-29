@@ -64,7 +64,8 @@ const CitizenDashboard = () => {
 
         // Calculate Stats
         const propTax = props.data.reduce(
-          (acc, curr) => acc + (Number(curr.yearlyTax) || 0),
+          (acc, curr) => acc + (curr.taxPayment
+            !== "COMPLETED" ? Number(curr.yearlyTax  ) :  0),
           0
         );
         // const waterTax = water.data.reduce(
