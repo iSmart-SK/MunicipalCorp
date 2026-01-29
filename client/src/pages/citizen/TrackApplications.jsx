@@ -73,7 +73,7 @@ const TrackApplications = () => {
           type: "Property Registration",
           displayName: p.ownerName,
           appliedDate: p.registrationDate,
-          taxPaid :p.taxPayment
+          taxPaid: p.taxPayment,
         })),
 
         ...grievanceRes.data.map((g) => ({
@@ -253,6 +253,11 @@ const TrackApplications = () => {
                         <MapPin size={16} />
                         eventPlace : {app.eventPlace}
                       </p>
+                      {app.status === "CANCELED" && (
+                        <p className="flex items-center gap-2">
+                          <FileText size={16} /> Reason: {app.reason}
+                        </p>
+                      )}
                     </>
                   )}
 
@@ -274,6 +279,11 @@ const TrackApplications = () => {
                         <MapPin size={16} />
                         eventPlace : {app.eventPlace}
                       </p>
+                      {app.status === "CANCELED" && (
+                        <p className="flex items-center gap-2">
+                          <FileText size={16} /> Reason: {app.reason}
+                        </p>
+                      )}
                     </>
                   )}
                   {app.type === "Property Registration" && (
@@ -294,9 +304,13 @@ const TrackApplications = () => {
                         <Calendar size={16} /> Registered:{" "}
                         {app.registrationDate}
                       </p>
+                      {app.status === "CANCELED" && (
+                        <p className="flex items-center gap-2">
+                          <FileText size={16} /> Reason: {app.reason}
+                        </p>
+                      )}
                       <p className="flex items-center gap-2">
-                        <MapPin size={16} /> Tax:{" "}
-                        {app.taxPaid}
+                        <MapPin size={16} /> Tax: {app.taxPaid}
                       </p>
                     </>
                   )}
