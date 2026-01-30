@@ -4,7 +4,7 @@ const ProtectedRoute = () => {
   const token = localStorage.getItem("token");
 
   // If not logged in, redirect to login
-  if (!token) {
+  if (!token  ) {
     return <Navigate to="/login" replace />;
   }
 

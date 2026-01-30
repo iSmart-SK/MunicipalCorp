@@ -145,7 +145,7 @@ const AdminDashboard = () => {
       ]);
 
       const totalTax = propReq.data.reduce(
-        (acc, curr) => acc + (Number(curr.yearlyTax) || 0),
+        (acc, curr) => acc + (curr.taxPayment ==="PENDING"? Number(curr.yearlyTax) : 0),
         0
       );
 
