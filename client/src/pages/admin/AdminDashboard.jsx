@@ -34,6 +34,7 @@ const AdminDashboard = () => {
   // -----------------------------
   const [stats, setStats] = useState({
     totalTax: 0,
+    totalcompletdTax:0,
     pendingBirth: 0,
     pendingDeath: 0,
     totalCitizens: 0,
@@ -148,9 +149,14 @@ const AdminDashboard = () => {
         (acc, curr) => acc + (curr.taxPayment ==="PENDING"? Number(curr.yearlyTax) : 0),
         0
       );
+      const totalcompletdTax = propReq.data.reduce(
+        (acc, curr) => acc + (curr.taxPayment ==="COMPLETED"? Number(curr.yearlyTax) : 0),
+        0
+      );
 
       setStats({
         totalCitizens: usersReq.data.length,
+        totalcompletdTax:totalcompletdTax,
         pendingBirth: birthReq.data.length,
         pendingDeath: deathReq.data.length,
         totalTax: totalTax,
@@ -245,7 +251,10 @@ const AdminDashboard = () => {
       <div className="md:ml-64 p-8 space-y-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+         <h1
+    className={`text-3xl font-bold ${
+      darkMode ? "text-white" : "text-gray-900"
+    }`}> Admin Dashboard</h1>
           <button
             onClick={toggleDarkMode}
             className="px-4 py-2 bg-gray-800 text-white rounded-lg shadow hover:bg-black transition"
@@ -259,12 +268,13 @@ const AdminDashboard = () => {
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border-b-4 border-green-500">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-gray-500 dark:text-gray-300 font-medium">
-                Total Tax Revenue
+                Total Tax Collected : <span className="text-green-500 w-6 h-6" > ₹ {stats.totalcompletdTax} </span>
               </h3>
-              <IndianRupee className="text-green-500 w-6 h-6" />
+              {/* <IndianRupee className="text-green-500 w-6 h-6" /> */}
             </div>
-            <p className="text-3xl font-bold">
-              ₹ {stats.totalTax.toLocaleString()}
+            <p className="text-gray-500 dark:text-gray-300 font-medium">Pending Tax : 
+             <span className="text-3xl text-red-600 font-bold"> ₹ {stats.totalTax.toLocaleString()} !!!
+            </span>
             </p>
           </div>
 
