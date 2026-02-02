@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import CitizenSidebar from "../../components/CitizenSidebar";
 import { ArrowLeft, Save, Skull } from "lucide-react";
+import Footer from "../../components/Footer";
 
 const ApplyDeath = () => {
   const navigate = useNavigate();
@@ -56,7 +57,8 @@ const ApplyDeath = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
+       <div className="min-h-screen flex flex-col bg-gray-100 pt-16">
+      <div className="flex-grow">
       <CitizenSidebar />
 
       <div className="md:ml-64 p-6">
@@ -189,6 +191,8 @@ const ApplyDeath = () => {
           </form>
         </div>
       </div>
+      </div>
+      <Footer />
     </div>
   );
 };

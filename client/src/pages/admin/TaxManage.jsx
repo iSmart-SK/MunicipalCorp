@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AdminSidebar from "../../components/AdminSidebar";
 import { Search, Home, Ruler } from "lucide-react";
+import Footer from "../../components/Footer";
 
 /* Toast */
 const showToast = (msg, type = "success") => {
@@ -57,7 +58,8 @@ const TaxManage = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gray-100 pt-16">
+    <div className="min-h-screen flex flex-col bg-gray-100 pt-16">
+      <div className="flex-grow">
       <AdminSidebar />
 
       <div className="md:ml-64 p-8">
@@ -163,6 +165,10 @@ const TaxManage = () => {
           </table>
         </div>
       </div>
+    </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

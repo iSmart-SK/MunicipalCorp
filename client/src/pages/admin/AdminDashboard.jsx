@@ -16,6 +16,7 @@ import {
 } from "recharts";
 import StatsBarChart from "./StatsBarChart";
 import ComplaintPieChart from "./ComplaintPieChart";
+import Footer from "../../components/Footer";
 
 // Simple toast notification helper
 const showToast = (msg, type = "success") => {
@@ -449,6 +450,8 @@ const AdminDashboard = () => {
           </div>
         </div>
       </div>
+         {/* Footer */}
+      <Footer />
     </div>
   );
 };

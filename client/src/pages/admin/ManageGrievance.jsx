@@ -3,6 +3,7 @@ import axios from "axios";
 import AdminSidebar from "../../components/AdminSidebar";
 import { CheckCircle, CircleX } from "lucide-react";
 import toast from "react-hot-toast";
+import Footer from "../../components/Footer";
 
 const ManageGrievance = () => {
   const [issues, setIssues] = useState([]);
@@ -34,7 +35,8 @@ const ManageGrievance = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 pt-16">
+    <div className="min-h-screen flex flex-col bg-gray-100 pt-16">
+      <div className="flex-grow">
       <AdminSidebar />
       <div className="md:ml-64 p-8">
         <h1 className="text-2xl font-bold text-gray-800 mb-6">
@@ -90,6 +92,9 @@ const ManageGrievance = () => {
           ))}
         </div>
       </div>
+      </div>
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

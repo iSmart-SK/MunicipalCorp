@@ -10,6 +10,7 @@ import {
   Home,
   Ruler
 } from "lucide-react";
+import Footer from "../../components/Footer";
 
 /* Toast */
 const showToast = (msg, type = "success") => {
@@ -98,7 +99,8 @@ const ManageProperties = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 pt-16">
+    <div className="min-h-screen flex flex-col bg-gray-100 pt-16">
+      <div className="flex-grow">
       <AdminSidebar />
 
       <div className="md:ml-64 p-8">
@@ -261,6 +263,9 @@ const ManageProperties = () => {
           </div>
         </div>
       )}
+      </div>
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

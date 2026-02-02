@@ -22,6 +22,9 @@ import ManageProperties from './pages/admin/ManageProperties';
 import TaxManage from './pages/admin/TaxManage';
 import ProtectedRoute from './ProtectedRoute';
 import Unauthorized from './Unauthorized';
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfUse from "./pages/TermsOfUse";
+import ContactUs from "./pages/ContactUs";
 
 function App() {
   return (
@@ -62,6 +65,9 @@ function App() {
           <Route path="/admin/payments" element={<TaxManage/>} />
           </Route>
 
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<TermsOfUse />} />
+        <Route path="/contact" element={<ContactUs />} />
           
         </Routes>
       </main>

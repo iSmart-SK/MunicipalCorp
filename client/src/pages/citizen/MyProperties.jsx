@@ -12,6 +12,7 @@ import {
   FileCheck,
 } from "lucide-react";
 import { reloadResources } from "i18next";
+import Footer from "../../components/Footer";
 
 const MyProperties = () => {
   const [properties, setProperties] = useState([]);
@@ -126,7 +127,8 @@ console.log("property owner name :",property.ownerName)
   
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
+      <div className="min-h-screen flex flex-col bg-gray-100 pt-16">
+      <div className="flex-grow">
       <CitizenSidebar />
 
       <div className="md:ml-64 p-6">
@@ -264,6 +266,9 @@ console.log("property owner name :",property.ownerName)
           <PropertyRegistration onCancel={() => setShowForm(false)} />
         )}
       </div>
+      </div>
+      <Footer />
+      
     </div>
   );
 };

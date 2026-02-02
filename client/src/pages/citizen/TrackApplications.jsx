@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import jsPDF from "jspdf";
 import TaxManage from "../admin/TaxManage";
+import Footer from "../../components/Footer";
 
 const TrackApplications = () => {
   const [apps, setApps] = useState([]);
@@ -178,7 +179,8 @@ const TrackApplications = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 pt-16">
+       <div className="min-h-screen flex flex-col bg-gray-100 pt-16">
+      <div className="flex-grow">
       <CitizenSidebar />
 
       <div className="md:ml-64 p-6">
@@ -350,6 +352,8 @@ const TrackApplications = () => {
           })}
         </div>
       </div>
+      </div>
+      <Footer />
     </div>
   );
 };

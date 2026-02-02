@@ -2,10 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import CitizenSidebar from "../../components/CitizenSidebar";
 import { Baby, Skull, FileText, ArrowRight, Droplet } from "lucide-react";
+import Footer from "../../components/Footer";
 
 const Services = () => {
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
+       <div className="min-h-screen flex flex-col bg-gray-100 pt-16">
+      <div className="flex-grow">
       <CitizenSidebar />
 
       <div className="md:ml-64 p-6">
@@ -75,6 +77,8 @@ const Services = () => {
           </div> */}
         </div>
       </div>
+      </div>
+      <Footer />
     </div>
   );
 };

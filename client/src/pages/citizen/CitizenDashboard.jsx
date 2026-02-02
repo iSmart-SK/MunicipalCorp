@@ -13,6 +13,7 @@ import {
   Calendar,
   ShieldCheck,
 } from "lucide-react";
+import Footer from "../../components/Footer";
 
 const CitizenDashboard = () => {
   const [userId, setUserId] = useState(localStorage.getItem("user_id"));
@@ -68,11 +69,7 @@ const CitizenDashboard = () => {
             !== "COMPLETED" ? Number(curr.yearlyTax  ) :  0),
           0
         );
-        // const waterTax = water.data.reduce(
-        //   (acc, curr) =>
-        //     acc + (curr.status === "UNPAID" ? Number(curr.billAmount) : 0),
-        //   0
-        // );
+       
         const activeAppsCount =
           birth.data.filter((a) => a.status === "PENDING").length +
           props.data.filter((a) => a.status === "PENDING").length +
@@ -130,7 +127,8 @@ const CitizenDashboard = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
+       <div className="min-h-screen flex flex-col bg-gray-100 pt-16">
+      <div className="flex-grow">
       <CitizenSidebar />
 
       <div className="md:ml-64 p-6 space-y-8">
@@ -260,20 +258,7 @@ const CitizenDashboard = () => {
                 </div>
               </Link>
 
-              {/* <Link
-                to="/citizen/water-bill"
-                className="group bg-white p-6 rounded-xl border border-gray-200 hover:border-blue-500 hover:shadow-lg transition flex items-center space-x-4"
-              >
-                <div className="bg-cyan-100 p-4 rounded-full text-cyan-600 group-hover:bg-cyan-600 group-hover:text-white transition">
-                  <Droplet className="w-6 h-6" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-800 group-hover:text-cyan-600">
-                    Water Bill
-                  </h4>
-                  <p className="text-xs text-gray-500">Pay Utility Charges</p>
-                </div>
-              </Link> */}
+            
               <Link
                 to="/citizen/apply/birth"
                 className="group bg-white p-6 rounded-xl border border-gray-200 hover:border-blue-500 hover:shadow-lg transition flex items-center space-x-4"
@@ -417,6 +402,8 @@ const CitizenDashboard = () => {
           </div>
         </div>
       </div>
+      </div>
+      <Footer />
     </div>
   );
 };

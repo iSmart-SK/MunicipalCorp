@@ -53,6 +53,7 @@ const AdminSidebar = () => {
           <span className="font-medium">Logout</span>
         </button>
       </div>
+   
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AdminSidebar from "../../components/AdminSidebar";
 import { Check, X, Search, FileText, Download } from "lucide-react";
+import Footer from "../../components/Footer";
 
 /* -----------------------------------------------------------
    SIMPLE TOAST NOTIFICATION SYSTEM
@@ -202,7 +203,8 @@ const ManageDeath1 = () => {
      - Reject Dialog
   ------------------------------------------------------------ */
   return (
-    <div className="min-h-screen bg-gray-100 pt-16">
+    <div className="min-h-screen flex flex-col bg-gray-100 pt-16">
+      <div className="flex-grow">
       <AdminSidebar />
 
       <div className="md:ml-64 p-8">
@@ -455,7 +457,11 @@ const ManageDeath1 = () => {
           </div>
         </div>
       )}
+      </div>
+       {/* Footer */}
+      <Footer />
     </div>
+    
   );
 };
 

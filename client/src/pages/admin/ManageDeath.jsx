@@ -7,6 +7,7 @@ import {
   Check,
   X,
 } from "lucide-react";
+import Footer from "../../components/Footer";
 
 // ---------------------------
 // Dummy Data (You can replace with API later)
@@ -324,6 +325,7 @@ export default function ManageDeath() {
             Next
           </button>
         </div>
+        
       </div>
       
     </div>

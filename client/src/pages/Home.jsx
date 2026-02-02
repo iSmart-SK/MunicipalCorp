@@ -4,7 +4,7 @@ import {
   FileText, IndianRupee, Activity, ArrowRight, 
   Megaphone, Calendar, Users, TrendingUp, CheckCircle, Bell 
 } from 'lucide-react';
-
+import Footer from '../components/Footer';
 const Home = () => {
   
   // Mock Data for Announcements
@@ -176,16 +176,7 @@ const Home = () => {
       </div>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-gray-400 py-4">
-        <div className="max-w-xl mx-auto px-4 text-center">
-           <div className="flex justify-center space-x-6 mb-8">
-             <Link to="#" className="hover:text-white">Privacy Policy</Link>
-             <Link to="#" className="hover:text-white">Terms of Use</Link>
-             <Link to="#" className="hover:text-white">Contact Us</Link>
-           </div>
-          <p>&copy; 2025 MahaNagar Municipal Corporation. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

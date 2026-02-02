@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import CitizenSidebar from "../../components/CitizenSidebar";
 import { Megaphone, Save, AlertTriangle } from "lucide-react";
+import Footer from "../../components/Footer";
 
 const LodgeGrievance = () => {
   const navigate = useNavigate();
@@ -32,7 +33,8 @@ const LodgeGrievance = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
+       <div className="min-h-screen flex flex-col bg-gray-100 pt-16">
+      <div className="flex-grow">
       <CitizenSidebar />
       <div className="md:ml-64 p-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-6">
@@ -100,6 +102,8 @@ const LodgeGrievance = () => {
           </form>
         </div>
       </div>
+      </div>
+      <Footer />
     </div>
   );
 };
