@@ -55,12 +55,11 @@ const Register = () => {
     setLoading(true);
 
     try {
-      // ✅ BACKEND-ALIGNED PAYLOAD
       const payload = {
-        name: formData.fullName,
+        fullName: formData.fullName,
         email: formData.email,
         password: formData.password,
-        mobnum: formData.mobileNo,
+        mobileNo: formData.mobileNo,
         aadharNumber: formData.aadharNo,
         address: formData.address,
       };
@@ -102,6 +101,7 @@ const Register = () => {
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
             {/* Full Name */}
             <div className="col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -118,7 +118,7 @@ const Register = () => {
                   type="text"
                   required
                   className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500"
-                  placeholder="   Shubham Kadam"
+                  placeholder="Shubham Kadam"
                   onChange={handleChange}
                 />
               </div>
@@ -131,8 +131,8 @@ const Register = () => {
               </label>
               <div className="relative">
                 {!formData.email && (
-                  <div className="absolute inset-y-0 left- pl-3 flex items-center pointer-events-none">
-                    <Mail className="h-5 w-5  text-gray-400" />
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Mail className="h-5 w-5 text-gray-400" />
                   </div>
                 )}
                 <input
@@ -140,7 +140,7 @@ const Register = () => {
                   type="email"
                   required
                   className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500"
-                  placeholder="    name@example.com"
+                  placeholder="name@example.com"
                   onChange={handleChange}
                 />
               </div>
@@ -163,7 +163,7 @@ const Register = () => {
                   maxLength="10"
                   required
                   className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500"
-                  placeholder="    9876543210"
+                  placeholder="9876543210"
                   onChange={handleChange}
                 />
               </div>
@@ -185,7 +185,7 @@ const Register = () => {
                   type="password"
                   required
                   className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500"
-                  placeholder="    ••••••••"
+                  placeholder="••••••••"
                   onChange={handleChange}
                 />
               </div>
@@ -207,7 +207,7 @@ const Register = () => {
                   type="password"
                   required
                   className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500"
-                  placeholder="   ••••••••"
+                  placeholder="••••••••"
                   onChange={handleChange}
                 />
               </div>
@@ -230,7 +230,7 @@ const Register = () => {
                   maxLength="12"
                   required
                   className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500"
-                  placeholder="    123456789012"
+                  placeholder="123456789012"
                   onChange={handleChange}
                 />
               </div>
@@ -252,7 +252,7 @@ const Register = () => {
                   rows="3"
                   required
                   className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500"
-                  placeholder="    Flat no, building, ward, city"
+                  placeholder="Flat no, building, ward, city"
                   onChange={handleChange}
                 ></textarea>
               </div>
@@ -262,9 +262,8 @@ const Register = () => {
           <button
             type="submit"
             disabled={loading}
-            className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 ${
-              loading ? "opacity-70 cursor-not-allowed" : ""
-            }`}
+            className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 ${loading ? "opacity-70 cursor-not-allowed" : ""
+              }`}
           >
             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
               <ArrowRight className="h-5 w-5 text-blue-200 group-hover:text-blue-100" />

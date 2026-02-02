@@ -2,6 +2,7 @@ package com.muncipal.controller;
 
 import java.util.List;
 
+import com.muncipal.dto.GrievanceStatusDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,6 @@ import com.muncipal.service.GrievanceService;
 
 @RestController
 @RequestMapping("/grievances")
-@CrossOrigin(origins = "http://localhost:5173")
 public class GrievanceController {
 
 	@Autowired
@@ -54,7 +54,7 @@ public class GrievanceController {
 	}
 	
 	@PatchMapping("/{id}")
-	ResponseEntity<?> updateStatusGrievance(@PathVariable Long id,@RequestBody StatusDTO status) {
+	ResponseEntity<?> updateStatusGrievance(@PathVariable Long id, @RequestBody GrievanceStatusDTO status) {
 		try {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT)
 					.body(grievanceService.updateGrievanceStatus(id,status.getStatus()));

@@ -2,6 +2,7 @@ package com.muncipal.service.impl;
 
 import java.util.List;
 
+import com.muncipal.entity.enums.GrievanceStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +37,7 @@ public class GrievanceServiceImpl implements GrievanceService {
 	}
 
 	@Override
-	public ApiResponse updateGrievanceStatus(Long id, Status st) {
+	public ApiResponse updateGrievanceStatus(Long id, GrievanceStatus st) {
 		Grievance g = grievanceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Invalid user id !!!!!!!"));
 		g.setStatus(st);
 		grievanceRepository.save(g);

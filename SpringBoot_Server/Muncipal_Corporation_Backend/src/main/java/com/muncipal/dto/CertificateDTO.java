@@ -1,6 +1,6 @@
 package com.muncipal.dto;
 
-import com.muncipal.entity.enums.Status;
+import com.muncipal.entity.enums.CertificateStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +14,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class CertificateDTO {
-	private Status status;
+
+	private CertificateStatus status;
 	private String reason;
 }
