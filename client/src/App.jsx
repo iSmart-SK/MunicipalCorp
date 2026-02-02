@@ -21,6 +21,7 @@ import PayWaterBill from './pages/citizen/PayWaterBill';
 import ManageProperties from './pages/admin/ManageProperties';
 import TaxManage from './pages/admin/TaxManage';
 import ProtectedRoute from './ProtectedRoute';
+import Unauthorized from './Unauthorized';
 
 function App() {
   return (
@@ -33,8 +34,10 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
+          <Route path="/unauthorized" element={<Unauthorized />} />
           {/* Citizen Routes */}
-          <Route element={<ProtectedRoute />}>
+          <Route element={<ProtectedRoute allowedRoles={["CITIZEN"] }/>}>
+
           <Route path="/citizen/dashboard" element={<CitizenDashboard />} />
           <Route path="/citizen/properties" element={<MyProperties />} />
           <Route path="/citizen/apply" element={<Services />} />
@@ -43,11 +46,13 @@ function App() {
           <Route path="/citizen/grievance" element={<LodgeGrievance />} />
           <Route path='/citizen/track' element={<TrackApplications />} />
           <Route path='/citizen/water-bill' element={<PayWaterBill />} />
-          
+          </Route>
 
 
 
           {/* Admin Routes */}
+          <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
+
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/births" element={<ManageBirth />} />
           <Route path="/admin/deaths" element={<ManageDeath />} />
@@ -56,6 +61,8 @@ function App() {
           <Route path="/admin/property" element={<ManageProperties/>} />
           <Route path="/admin/payments" element={<TaxManage/>} />
           </Route>
+
+          
         </Routes>
       </main>
     </div>
