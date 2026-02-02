@@ -1,5 +1,6 @@
 package com.muncipal.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.muncipal.entity.enums.ActInactStatus;
 import com.muncipal.entity.enums.UserRole;
 
@@ -23,11 +24,13 @@ import lombok.ToString;
 @Setter
 @ToString(exclude = {"password"})
 public class User extends BaseEntity{
-	
+
+	@JsonProperty("fullName")
 	private String name;
 	@Column(length = 50,unique = true)
 	private String email;
 	@Column(length=10, unique = true)
+	@JsonProperty("mobileNo")
 	private String mobnum;
 	@Column(length = 400,nullable = false)
 	private String password;

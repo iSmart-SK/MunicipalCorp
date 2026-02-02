@@ -1,5 +1,5 @@
 package com.muncipal.dto;
-import com.muncipal.entity.enums.*;
+
 import java.time.LocalDate;
 
 import jakarta.validation.constraints.*;
@@ -18,10 +18,10 @@ public class PropertyRegistrationRequest {
     private String mobile;
 
     @NotBlank
-    private String propertyType; // RESIDENTIAL / COMMERCIAL / MIXED
+    private String propertyType;
 
     @NotBlank
-    private String usageType; // SELF_OCCUPIED / RENTED / SHOP etc.
+    private String usageType;
 
     @NotNull
     @Min(1)
@@ -39,15 +39,7 @@ public class PropertyRegistrationRequest {
 
     @NotNull
     private LocalDate registrationDate;
-    
+
     @NotNull
-    private Status status;
-    
-    @NotNull
-    private int citizenId;
-    
-    private Status taxPayment; 
-    
-   
-    private double yearlyTax;
+    private Integer citizenId;
 }

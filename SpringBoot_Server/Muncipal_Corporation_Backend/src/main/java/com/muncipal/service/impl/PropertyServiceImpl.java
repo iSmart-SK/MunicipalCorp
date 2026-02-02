@@ -1,32 +1,30 @@
 package com.muncipal.service.impl;
 
-import com.muncipal.entity.enums.*;
-
-import java.net.Authenticator.RequestorType;
 import java.time.LocalDate;
 import java.util.List;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.muncipal.dto.PropertyRegistrationRequest;
 import com.muncipal.entity.Property;
+import com.muncipal.entity.enums.PaymentStatus;
+import com.muncipal.entity.enums.PropertyStatus;
 import com.muncipal.repository.PropertyRepository;
 import com.muncipal.service.PropertyService;
-
 
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class PropertyServiceImpl implements PropertyService {
 
     private final PropertyRepository propertyRepository;
-    
-    
 
     @Override
     public Property registerProperty(PropertyRegistrationRequest request) {
 
-        // 🔒 Business validations
         if (request.getBuiltUpArea() > request.getPlotArea()) {
             throw new IllegalArgumentException("Built-up area cannot exceed plot area");
         }
@@ -38,13 +36,17 @@ public class PropertyServiceImpl implements PropertyService {
         if (propertyRepository.existsByPropertyNumber(request.getPropertyNumber())) {
             throw new IllegalArgumentException("Property number already exists");
         }
-        
-        double taxAmount=PropertyTaxCalculator.calculateTax(request.getBuiltUpArea(), request.getPropertyType() , request.getUsageType());
-        System.out.println("amount to pay :" +taxAmount);
-        
+
+        double taxAmount = PropertyTaxCalculator.calculateTax(
+                request.getBuiltUpArea(),
+                request.getPropertyType(),
+                request.getUsageType()
+        );
+
         Property property = new Property();
         property.setOwnerName(request.getOwnerName());
         property.setMobile(request.getMobile());
+        property.setCitizenId(request.getCitizenId());
         property.setPropertyType(request.getPropertyType());
         property.setUsageType(request.getUsageType());
         property.setPlotArea(request.getPlotArea());
@@ -52,65 +54,58 @@ public class PropertyServiceImpl implements PropertyService {
         property.setSurveyNumber(request.getSurveyNumber());
         property.setPropertyNumber(request.getPropertyNumber());
         property.setRegistrationDate(request.getRegistrationDate());
-        property.setStatus(request.getStatus());
-        property.setCitizenId(request.getCitizenId());
-        property.setTaxPayment(request.getTaxPayment());
+
+        // ✅ Correct enums
+        property.setStatus(PropertyStatus.PENDING);
+        property.setTaxPayment(PaymentStatus.PENDING);
         property.setYearlyTax(taxAmount);
-        System.out.println(request.getTaxPayment());
-       
 
         return propertyRepository.save(property);
     }
-    
+
     @Override
     public List<Property> getPropertiesByCitizen(int citizenId) {
-
         return propertyRepository.findByCitizenIdAndStatus(
                 citizenId,
-                Status.COMPLETED
+                PropertyStatus.COMPLETED
         );
     }
 
-	@Override
-	public List<Property> getmyProperties(int citizenId) {
-		// TODO Auto-generated method stub
-		return propertyRepository.findByCitizenId(
-                citizenId
-                
-        );
-	}
+    @Override
+    public List<Property> getmyProperties(int citizenId) {
+        return propertyRepository.findByCitizenId(citizenId);
+    }
 
-	@Override
-	public List<Property> getAllProperies() {
-		// TODO Auto-generated method stub
-		return propertyRepository.findAll();
-	}
+    @Override
+    public List<Property> getAllProperies() {
+        return propertyRepository.findAll();
+    }
 
-	@Override
-	public Property updatePropertyStatus(Long id, Status status, String reason) {
+    @Override
+    public Property updatePropertyStatus(Long id, PropertyStatus status, String reason) {
 
-	    Property property = propertyRepository.findById(id)
-	        .orElseThrow(() -> new RuntimeException("Property not found with id: " + id));
+        Property property = propertyRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Property not found"));
 
-	    property.setStatus(status);
+        property.setStatus(status);
 
-	    if (status == Status.CANCELED) {
-	        property.setReason(reason);   // only for rejection
-	    } else {
-	        property.setReason(null);     // clear reason if approved
-	    }
+        if (status == PropertyStatus.CANCELED) {
+            property.setReason(reason);
+        } else {
+            property.setReason(null);
+        }
 
-	    return propertyRepository.save(property);
-	}
+        return propertyRepository.save(property);
+    }
 
-	@Override
-	public Property updatePropertyTaxStatus(Long Id) {
-		// TODO Auto-generated method stub
-		Status taxPayment = Status.COMPLETED;
-		int updated =propertyRepository.updateTaxStatus(taxPayment, Id);
-		return null;
-	}
+    @Override
+    public Property updatePropertyTaxStatus(Long id) {
 
+        Property property = propertyRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Property not found"));
 
-  
+        property.setTaxPayment(PaymentStatus.SUCCESSFULL);
+
+        return propertyRepository.save(property);
+    }
 }

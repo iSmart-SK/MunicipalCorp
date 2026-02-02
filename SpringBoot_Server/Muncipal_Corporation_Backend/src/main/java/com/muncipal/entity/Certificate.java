@@ -2,11 +2,11 @@ package com.muncipal.entity;
 
 import java.time.LocalDate;
 
+import com.muncipal.entity.enums.CertificateStatus;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.muncipal.entity.enums.Gender;
-import com.muncipal.entity.enums.Status;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -49,7 +49,7 @@ public class Certificate {
     
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Status status;
+    private CertificateStatus status;
 
     @Column(name = "event_place", nullable = false)
     private String eventPlace;

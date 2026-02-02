@@ -1,6 +1,6 @@
 package com.muncipal.dto;
 
-import com.muncipal.entity.enums.Status;
+import com.muncipal.entity.enums.PaymentStatus;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,7 +28,7 @@ public class PaymentDTO {
     private String currency;
 
     @NotNull
-    private Status status;
+    private PaymentStatus status;
 
     @NotBlank
     private String paymentMethod;
