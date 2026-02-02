@@ -243,13 +243,14 @@ const AdminDashboard = () => {
   // -----------------------------
   return (
     <div
-      className={`min-h-screen pt-16 ${
+      className={`min-h-screen flex flex-col pt-16 ${
         darkMode ? "bg-gray-900 text-black" : "bg-gray-100 text-gray-800"
       }`}
-    >
+    ><div className="flex-grow">
       <AdminSidebar />
 
       <div className="md:ml-64 p-8 space-y-8">
+        
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
          <h1
@@ -449,6 +450,7 @@ const AdminDashboard = () => {
             </div>
           </div>
         </div>
+      </div>
       </div>
          {/* Footer */}
       <Footer />

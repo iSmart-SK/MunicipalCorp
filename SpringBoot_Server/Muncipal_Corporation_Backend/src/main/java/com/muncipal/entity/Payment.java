@@ -55,9 +55,6 @@ public class Payment extends BaseEntity {
 	@Column(name="fee_type", nullable = false)
     private String feeType;
 
-	
-//    private String receiptNumber;
-//    private String errorCode;
-//    private String errorDescription;
+
 }
 

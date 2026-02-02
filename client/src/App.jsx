@@ -26,6 +26,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfUse from "./pages/TermsOfUse";
 import ContactUs from "./pages/ContactUs";
 
+
 function App() {
   return (
     <div className="flex flex-col min-h-screen">
@@ -71,6 +72,7 @@ function App() {
           
         </Routes>
       </main>
+      
     </div>
   );
 }

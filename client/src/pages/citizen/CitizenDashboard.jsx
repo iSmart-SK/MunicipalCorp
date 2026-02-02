@@ -127,11 +127,11 @@ const CitizenDashboard = () => {
   }, []);
 
   return (
-       <div className="min-h-screen flex flex-col bg-gray-100 pt-16">
-      <div className="flex-grow">
+       <div className="h-screen flex flex-col  bg-gray-100 pt-16">
+      <div className=" flex flex-1 overflow-hidden">
       <CitizenSidebar />
 
-      <div className="md:ml-64 p-6 space-y-8">
+      <div className="flex-1 md:ml-64 p-6 overflow-y-auto">
         {/* 1. WELCOME BANNER */}
         <div className="relative bg-gradient-to-r from-blue-700 to-blue-500 rounded-2xl p-8 text-white shadow-xl overflow-hidden">
           {/* Decorative Circles */}
