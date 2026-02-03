@@ -25,20 +25,21 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-                // CORS
+                // ✅ CORS MUST BE FIRST
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
+                // ✅ Stateless API
                 .csrf(csrf -> csrf.disable())
-
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
                 .authorizeHttpRequests(auth -> auth
 
+                        // ✅ PRE-FLIGHT (CRITICAL)
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // PUBLIC
+                        // 🔓 PUBLIC
                         .requestMatchers(
                                 "/user/login",
                                 "/user/register",
@@ -47,35 +48,35 @@ public class SecurityConfig {
                                 "/swagger-ui.html"
                         ).permitAll()
 
-                        //  ADMIN
-                        .requestMatchers(HttpMethod.GET, "/user").hasRole("ADMIN")
+                        // 🔴 ADMIN (PLACE FIRST)
+                        .requestMatchers(HttpMethod.GET,   "/user").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/user/**").hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.GET, "/certificateController/birth/pending").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/certificateController/death/pending").hasRole("ADMIN")
 
-                        .requestMatchers(HttpMethod.GET,   "/properties").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PATCH, "/properties/**").hasRole("ADMIN")
-
                         .requestMatchers(HttpMethod.GET,   "/certificateController/birth").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,   "/certificateController/death").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/certificateController/**").hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.GET,   "/properties").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/properties/**").hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.GET,   "/grievances").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,   "/grievances/all").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/grievances/**").hasRole("ADMIN")
 
-                        // CITIZEN
+                        // 🟢 CITIZEN (AFTER ADMIN)
                         .requestMatchers(HttpMethod.POST, "/certificateController").hasRole("CITIZEN")
                         .requestMatchers(HttpMethod.GET,  "/certificateController/birth/**").hasRole("CITIZEN")
                         .requestMatchers(HttpMethod.GET,  "/certificateController/death/**").hasRole("CITIZEN")
 
                         .requestMatchers(HttpMethod.GET, "/properties/citizen/**").hasRole("CITIZEN")
-                        .requestMatchers(HttpMethod.GET, "/properties/{id}").hasRole("CITIZEN")
+                        .requestMatchers(HttpMethod.GET, "/properties/*").hasRole("CITIZEN")
                         .requestMatchers(HttpMethod.PATCH,"/properties/taxUpdate/**").hasRole("CITIZEN")
 
                         .requestMatchers(HttpMethod.POST, "/grievances").hasRole("CITIZEN")
-                        .requestMatchers(HttpMethod.GET,  "/grievances/**").hasRole("CITIZEN")
+                        .requestMatchers(HttpMethod.GET,  "/grievances/*").hasRole("CITIZEN")
 
                         .requestMatchers(HttpMethod.POST, "/payment/create-order").hasRole("CITIZEN")
                         .requestMatchers(HttpMethod.POST, "/payment/verify").hasRole("CITIZEN")
@@ -83,12 +84,13 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
 
-                // JWT filter
+                // ✅ JWT AFTER CORS & AUTH RULES
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
+    // ✅ SINGLE SOURCE OF CORS TRUTH
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
