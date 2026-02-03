@@ -18,7 +18,7 @@ const AdminSidebar = () => {
     { name: 'Birth Applications', path: '/admin/births', icon: FileCheck },
     { name: 'Death Applications', path: '/admin/deaths1', icon: Skull },
     { name: 'Tax Payments', path: '/admin/payments', icon: CreditCard },
-    {name: 'Property Check', path: '/admin/property', icon: CreditCard },
+    { name: 'Property Check', path: '/admin/property', icon: CreditCard },
     { name: 'Manage Grievances', path: '/admin/grievances', icon: Megaphone },
   ];
 
@@ -27,41 +27,37 @@ const AdminSidebar = () => {
                 overflow-y-auto hidden md:flex flex-col
                 z-40 pb-16">
 
-  <div className="p-4 space-y-2 flex-grow">
-    <div className="px-4 py-2 mb-4 text-xs font-bold text-gray-500 uppercase tracking-wider">
-      Administration
-    </div>
+      <div className="p-4 space-y-2 flex-grow">
+        <div className="px-4 py-2 mb-4 text-xs font-bold text-gray-500 uppercase tracking-wider">
+          Administration
+        </div>
 
-    {navItems.map((item) => (
-      <Link
-        key={item.path}
-        to={item.path}
-        className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-          isActive(item.path)
-            ? 'bg-blue-600 text-white shadow-md'
-            : 'text-gray-400 hover:bg-gray-800 hover:text-white'
-        }`}
-      >
-        <item.icon className="w-5 h-5" />
-        <span className="font-medium">{item.name}</span>
-      </Link>
-    ))}
-    <div className="p-4 border-t border-gray-800 sticky bottom-0 bg-gray-900">
-    <button
-      onClick={handleLogout}
-      className="flex items-center space-x-3 px-4 py-3 w-full
+        {navItems.map((item) => (
+          <Link
+            key={item.path}
+            to={item.path}
+            className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${isActive(item.path)
+              ? 'bg-blue-600 text-white shadow-md'
+              : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+              }`}
+          >
+            <item.icon className="w-5 h-5" />
+            <span className="font-medium">{item.name}</span>
+          </Link>
+        ))}
+        <div className="p-4 border-t border-gray-800 sticky bottom-0 bg-gray-900">
+          <button
+            onClick={handleLogout}
+            className="flex items-center space-x-3 px-4 py-3 w-full
                  text-left text-red-400 hover:bg-red-800
                  rounded-lg transition"
-    >
-      <LogOut className="w-5 h-5" />
-      <span className="font-medium">Logout</span>
-    </button>
-  </div>
-  </div>
-  {/* Logout always visible */}
-  
-  
-</div>
+          >
+          </button>
+        </div>
+      </div>
+
+
+    </div>
 
   );
 };
