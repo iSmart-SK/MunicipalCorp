@@ -11,7 +11,6 @@ import {
   Loader,
   FileCheck,
 } from "lucide-react";
-import { reloadResources } from "i18next";
 import Footer from "../../components/Footer";
 
 const MyProperties = () => {

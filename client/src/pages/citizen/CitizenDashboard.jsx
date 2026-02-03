@@ -60,7 +60,7 @@ const CitizenDashboard = () => {
           axiosInstance.get(
             `/certificateController/death/${userId}`
           ),
-          axios.get(`/grievances/${userId}`),
+          axiosInstance.get(`/grievances/${userId}`),
         ]);
 
         // Calculate Stats
