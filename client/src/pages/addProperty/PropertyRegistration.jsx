@@ -4,39 +4,39 @@ import PropertyDetails from "./propertyDetails";
 import LegalDetails from "./legalDetails";
 import ReviewSubmit from "./reviewSubmit";
 import ProgressBar from "./ProgressBar";
-import axios from "axios";
+import axiosInstance from '../../api/axiosInstance';
 
 
 
-const PropertyRegistration = ({onCancel}) => {
+const PropertyRegistration = ({ onCancel }) => {
   const [step, setStep] = useState(1);
 
-const handleSubmitAfterReview = async(data) => {
-  console.log("Data received in PropertyRegistration:", data);
-try{  
-  const uid = localStorage.getItem("user_id");
+  const handleSubmitAfterReview = async (data) => {
+    console.log("Data received in PropertyRegistration:", data);
+    try {
+      const uid = localStorage.getItem("user_id");
 
-const payload = {
-    ...formData,
-    citizenId : uid,
-    status :"PENDING",
-    taxPayment :"PENDING",
-    appliedDate: new Date().toISOString().split('T')[0]
+      const payload = {
+        ...formData,
+        citizenId: uid,
+        status: "PENDING",
+        taxPayment: "PENDING",
+        appliedDate: new Date().toISOString().split('T')[0]
+      };
+
+      await axiosInstance.post('/properties', payload)
+
+    } catch (error) {
+      console.error("Unable to add property", error)
+      alert('failed to add PropertyDetails')
+    }
+
+
+    // Here you can:
+    // 1. Call backend API
+    // 2. Or send it to MyProperties
   };
-  
-await axios.post('http://localhost:9090/properties',payload)
-
-  }catch(error){
-console.error("Unable to add property",error)
-alert('failed to add PropertyDetails')
-  }
-
-
-  // Here you can:
-  // 1. Call backend API
-  // 2. Or send it to MyProperties
-};
-const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({
     ownerName: "",
     mobile: "",
     propertyType: "",
@@ -47,9 +47,9 @@ const [formData, setFormData] = useState({
     propertyNumber: "",
     registrationDate: ""
   });
-const [usageOptions, setUsageOptions] = useState([]);
+  const [usageOptions, setUsageOptions] = useState([]);
 
- const totalSteps = 4;
+  const totalSteps = 4;
 
   const nextStep = () => {
     setStep((prev) => Math.min(prev + 1, totalSteps));
@@ -62,13 +62,13 @@ const [usageOptions, setUsageOptions] = useState([]);
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-    const handlePropertyTypeChange = (e) => {
+  const handlePropertyTypeChange = (e) => {
     const type = e.target.value;
     setFormData((prev) => ({
-    ...prev,
-    propertyType: type,
-    usageType: "" // reset usage when property type changes
-  }));
+      ...prev,
+      propertyType: type,
+      usageType: "" // reset usage when property type changes
+    }));
     if (type === "RESIDENTIAL") {
       setUsageOptions(["SELF_OCCUPIED", "RENTED"]);
     } else if (type === "COMMERCIAL") {
@@ -85,15 +85,15 @@ const [usageOptions, setUsageOptions] = useState([]);
       setUsageOptions(["PART_RESIDENTIAL", "PART_COMMERCIAL"]);
     } else {
       setUsageOptions([]);
-    }  
-    
-};
+    }
 
-   
+  };
+
+
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded shadow">
-     <ProgressBar step={step} totalSteps={totalSteps} />
+      <ProgressBar step={step} totalSteps={totalSteps} />
 
       {step === 1 && (
         <OwnerDetails
@@ -105,15 +105,15 @@ const [usageOptions, setUsageOptions] = useState([]);
       )}
 
       {step === 2 && (
-  <PropertyDetails
-    formData={formData}
-    usageOptions={usageOptions}
-    handleChange={handleChange}
-    handlePropertyTypeChange={handlePropertyTypeChange}
-    nextStep={nextStep}
-    prevStep={prevStep}
-  />
-)}
+        <PropertyDetails
+          formData={formData}
+          usageOptions={usageOptions}
+          handleChange={handleChange}
+          handlePropertyTypeChange={handlePropertyTypeChange}
+          nextStep={nextStep}
+          prevStep={prevStep}
+        />
+      )}
 
       {step === 3 && (
         <LegalDetails
@@ -136,4 +136,4 @@ const [usageOptions, setUsageOptions] = useState([]);
 
 };
 
-export default PropertyRegistration ;
+export default PropertyRegistration;

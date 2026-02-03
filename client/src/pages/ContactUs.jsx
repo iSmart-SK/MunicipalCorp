@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 const ContactUs = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
-      
+
       {/* Main Content */}
       <main className="flex-grow pt-24 px-4">
         <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-md border border-gray-100">
@@ -67,7 +67,7 @@ const ContactUs = () => {
                   </h3>
                   <p className="text-gray-600">
                     MahaNagar Municipal Corporation,<br />
-                    City Center, Maharashtra
+                    City Center,PCMC, Pune, Maharashtra 411018
                   </p>
                 </div>
               </div>

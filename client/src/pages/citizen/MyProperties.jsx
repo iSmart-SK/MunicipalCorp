@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 import PropertyRegistration from "../addProperty/PropertyRegistration";
 import CitizenSidebar from "../../components/CitizenSidebar";
 import {
@@ -27,8 +27,8 @@ const MyProperties = () => {
         // const id = JSON.parse(localStorage.getItem('user')).id;
         const uid = localStorage.getItem("user_id");
         // For json-server, we just fetch the array.
-        const response = await axios.get(
-          `http://localhost:9090/properties/${uid}`
+        const response = await axiosInstance.get(
+          `/properties/${uid}`
         );
 
         setProperties(response.data);
@@ -45,8 +45,8 @@ const MyProperties = () => {
   // Placeholder for Razorpay Logic
   const handlePayTax = async (property) => {
     try {
-      const orderRes = await axios.post(
-        "http://localhost:9090/payment/create-order",
+      const orderRes = await axiosInstance.post(
+        "/payment/create-order",
         { amount: property.yearlyTax }, // ₹1 test
         {
           headers: {
@@ -64,45 +64,45 @@ const MyProperties = () => {
         propertyId: property.id,
         name: "Municipal Corporation",
         description: "Property Tax Payment",
-        order_id: orderId,method: {
-        card: true,
-        netbanking: true,
-        upi: true,
-        wallet: true
-    },
-    
+        order_id: orderId, method: {
+          card: true,
+          netbanking: true,
+          upi: true,
+          wallet: true
+        },
+
         handler: async function (response) {
-          console.log("response data :",response);
+          console.log("response data :", response);
           // api to store transaction details after verifying 
           //data in response in used to verify payment
-          const respData={
-            orderId:response.razorpay_order_id,
-            paymentId:response.razorpay_payment_id,
-            signature:response.razorpay_signature,
-            amount:options.amount,
+          const respData = {
+            orderId: response.razorpay_order_id,
+            paymentId: response.razorpay_payment_id,
+            signature: response.razorpay_signature,
+            amount: options.amount,
             propertyId: options.propertyId,
-            citizenId:localStorage.getItem("user_id"),
-            currency :options.currency,
-            feeType:"PROPERTY_TAX",
+            citizenId: localStorage.getItem("user_id"),
+            currency: options.currency,
+            feeType: "PROPERTY_TAX",
 
           }
-          try{
-          await axios.post("http://localhost:9090/payment/verify", respData
-          );
-         console.log("payment done successfully! and updating tax payment status");
-          
-          await axios.patch(`http://localhost:9090/properties/taxUpdate/${options.propertyId}`);
-          console.log("tax update Done" );
-          alert("Tax payment recorded successfully!");
-        
+          try {
+            await axiosInstance.post("/payment/verify", respData
+            );
+            console.log("payment done successfully! and updating tax payment status");
 
-      }
-        catch(err){
-          console.error("Payment verification failed", err);
-          alert("Payment verification failed");
-        }
-      
-      },
+            await axiosInstance.patch(`/properties/taxUpdate/${options.propertyId}`);
+            console.log("tax update Done");
+            alert("Tax payment recorded successfully!");
+
+
+          }
+          catch (err) {
+            console.error("Payment verification failed", err);
+            alert("Payment verification failed");
+          }
+
+        },
 
         prefill: {
           name: property.ownerName,
@@ -113,9 +113,9 @@ const MyProperties = () => {
           color: "#2563EB",
         },
       };
-console.log("Razorpay Options:",options )
-console.log("property id :",property.id)
-console.log("property owner name :",property.ownerName)
+      console.log("Razorpay Options:", options)
+      console.log("property id :", property.id)
+      console.log("property owner name :", property.ownerName)
 
       const rzp = new window.Razorpay(options);
       rzp.open();
@@ -124,151 +124,149 @@ console.log("property owner name :",property.ownerName)
       alert("Payment failed");
     }
   };
-  
+
 
   return (
-      <div className="min-h-screen flex flex-col bg-gray-100 pt-16">
+    <div className="min-h-screen flex flex-col bg-gray-100 pt-16">
       <div className="flex-grow">
-      <CitizenSidebar />
+        <CitizenSidebar />
 
-      <div className="md:ml-64 p-6">
-        {!showForm && (
-          <>
-            <div className="flex justify-between items-center mb-6">
-              <div>
-                <h1 className="text-2xl font-bold text-gray-800">
-                  My Properties
-                </h1>
-                <p className="text-gray-600">
-                  View your registered properties and pay pending taxes.
-                </p>
-              </div>
+        <div className="md:ml-64 p-6">
+          {!showForm && (
+            <>
+              <div className="flex justify-between items-center mb-6">
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-800">
+                    My Properties
+                  </h1>
+                  <p className="text-gray-600">
+                    View your registered properties and pay pending taxes.
+                  </p>
+                </div>
 
-              <button
-                onClick={() => setShowForm(true)}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition shadow-md"
-              >
-                + Register New Property
-              </button>
-            </div>
-
-            {/* Loading State */}
-            {loading && (
-              <div className="flex justify-center items-center h-64">
-                <Loader className="w-8 h-8 text-blue-600 animate-spin" />
-              </div>
-            )}
-
-            {/* Empty State */}
-            {!loading && properties.length === 0 && (
-              <div className="text-center py-20 bg-white rounded-xl shadow-sm">
-                <Building2 className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-xl font-medium text-gray-600">
-                  No Properties Found
-                </h3>
-                <p className="text-gray-500">
-                  Register a property to see it here.
-                </p>
-              </div>
-            )}
-
-            {/* Properties Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {properties.map((prop) => (
-                <div
-                  key={prop.id}
-                  className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition"
+                <button
+                  onClick={() => setShowForm(true)}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition shadow-md"
                 >
-                  {/* Card Header */}
-                  <div className="bg-gray-50 p-4 border-b flex justify-between items-center">
-                    <div className="flex items-center space-x-2">
-                      <div
-                        className={`p-2 rounded-lg ${
-                          prop.propertyType === "RESIDENTIAL"
+                  + Register New Property
+                </button>
+              </div>
+
+              {/* Loading State */}
+              {loading && (
+                <div className="flex justify-center items-center h-64">
+                  <Loader className="w-8 h-8 text-blue-600 animate-spin" />
+                </div>
+              )}
+
+              {/* Empty State */}
+              {!loading && properties.length === 0 && (
+                <div className="text-center py-20 bg-white rounded-xl shadow-sm">
+                  <Building2 className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                  <h3 className="text-xl font-medium text-gray-600">
+                    No Properties Found
+                  </h3>
+                  <p className="text-gray-500">
+                    Register a property to see it here.
+                  </p>
+                </div>
+              )}
+
+              {/* Properties Grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {properties.map((prop) => (
+                  <div
+                    key={prop.id}
+                    className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition"
+                  >
+                    {/* Card Header */}
+                    <div className="bg-gray-50 p-4 border-b flex justify-between items-center">
+                      <div className="flex items-center space-x-2">
+                        <div
+                          className={`p-2 rounded-lg ${prop.propertyType === "RESIDENTIAL"
                             ? "bg-blue-100 text-blue-600"
                             : "bg-orange-100 text-orange-600"
-                        }`}
-                      >
-                        <Building2 className="w-5 h-5" />
+                            }`}
+                        >
+                          <Building2 className="w-5 h-5" />
+                        </div>
+                        <span className="font-bold text-gray-700">
+                          {prop.propertyType}
+                        </span>
                       </div>
-                      <span className="font-bold text-gray-700">
-                        {prop.propertyType}
+
+                      <span className="text-xs font-mono bg-gray-200 text-gray-600 px-2 py-1 rounded">
+                        ID: {prop.id}
                       </span>
                     </div>
 
-                    <span className="text-xs font-mono bg-gray-200 text-gray-600 px-2 py-1 rounded">
-                      ID: {prop.id}
-                    </span>
-                  </div>
-
-                  {/* Card Body */}
-                  <div className="p-6">
-                    <div className="flex items-start space-x-3 mb-4">
-                      <MapPin className="w-5 h-5 text-gray-400 mt-1" />
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">
-                          Survey No: {prop.surveyNumber}
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          Property No: {prop.propertyNumber}
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          Owner: {prop.ownerName}
-                        </p>
+                    {/* Card Body */}
+                    <div className="p-6">
+                      <div className="flex items-start space-x-3 mb-4">
+                        <MapPin className="w-5 h-5 text-gray-400 mt-1" />
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">
+                            Survey No: {prop.surveyNumber}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            Property No: {prop.propertyNumber}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            Owner: {prop.ownerName}
+                          </p>
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="flex justify-between items-center text-sm text-gray-600 mb-6">
-                      <div className="flex items-center">
-                        <Calendar className="w-4 h-4 mr-1" />
-                        Registered: {prop.registrationDate}
+                      <div className="flex justify-between items-center text-sm text-gray-600 mb-6">
+                        <div className="flex items-center">
+                          <Calendar className="w-4 h-4 mr-1" />
+                          Registered: {prop.registrationDate}
+                        </div>
+                        <div>
+                          Plot: {prop.plotArea} | Built-up: {prop.builtUpArea}{" "}
+                          sqft
+                        </div>
                       </div>
-                      <div>
-                        Plot: {prop.plotArea} | Built-up: {prop.builtUpArea}{" "}
-                        sqft
-                      </div>
-                    </div>
 
-                    <div
-                      className={`p-4 rounded-lg flex justify-between items-center ${
-                        prop.status === "APPROVED"
+                      <div
+                        className={`p-4 rounded-lg flex justify-between items-center ${prop.status === "APPROVED"
                           ? "bg-red-50"
                           : "bg-yellow-50"
-                      }`}
-                    >
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-wide">
-                          Tax Amount
-                        </p>
-                        <p className="text-2xl font-bold text-gray-800">₹ {prop.yearlyTax}</p>
-                      </div>
+                          }`}
+                      >
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-wide">
+                            Tax Amount
+                          </p>
+                          <p className="text-2xl font-bold text-gray-800">₹ {prop.yearlyTax}</p>
+                        </div>
 
-                      {prop.status === "COMPLETED" && prop.taxPayment ==="PENDING"? (
-                        <button
-                          onClick={() => handlePayTax(prop)}
-                          className="flex items-center bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
-                        >
-                          Pay Now <ArrowRight className="w-4 h-4 ml-2" />
-                        </button>
-                      ) : (
-                        <span className="flex items-center bg-green-400 text-white px-4 py-2 rounded-lg hover:bg-green-300">
-                          Tax Paid
-                        </span>
-                      )}
+                        {prop.status === "COMPLETED" && prop.taxPayment === "PENDING" ? (
+                          <button
+                            onClick={() => handlePayTax(prop)}
+                            className="flex items-center bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+                          >
+                            Pay Now <ArrowRight className="w-4 h-4 ml-2" />
+                          </button>
+                        ) : (
+                          <span className="flex items-center bg-green-400 text-white px-4 py-2 rounded-lg hover:bg-green-300">
+                            Tax Paid
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </>
-        )}
-        {showForm && (
-          <PropertyRegistration onCancel={() => setShowForm(false)} />
-        )}
-      </div>
+                ))}
+              </div>
+            </>
+          )}
+          {showForm && (
+            <PropertyRegistration onCancel={() => setShowForm(false)} />
+          )}
+        </div>
       </div>
       <Footer />
-      
+
     </div>
   );
 };

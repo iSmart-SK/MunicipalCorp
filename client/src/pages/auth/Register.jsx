@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import axios from "axios";
+import axiosInstance from '../../api/axiosInstance';
 import {
   User,
   Mail,
@@ -64,8 +64,8 @@ const Register = () => {
         address: formData.address,
       };
 
-      const response = await axios.post(
-        "http://localhost:9090/user/register",
+      const response = await axiosInstance.post(
+        "/user/register",
         payload
       );
 
@@ -118,7 +118,7 @@ const Register = () => {
                   type="text"
                   required
                   className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500"
-                  placeholder="Shubham Kadam"
+                  placeholder="Enter Full Name"
                   onChange={handleChange}
                 />
               </div>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from '../../api/axiosInstance';
 import { Mail, Lock, ArrowRight, AlertCircle } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -36,7 +36,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:9090/user/login", {
+      const response = await axiosInstance.post("/user/login", {
         email: formData.email,
         password: formData.password,
       });
@@ -131,9 +131,8 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 flex items-center justify-center ${
-              loading ? "opacity-70 cursor-not-allowed" : ""
-            }`}
+            className={`w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 flex items-center justify-center ${loading ? "opacity-70 cursor-not-allowed" : ""
+              }`}
           >
             <ArrowRight className="w-5 h-5 mr-2" />
             {loading ? "Signing In..." : "Sign In"}

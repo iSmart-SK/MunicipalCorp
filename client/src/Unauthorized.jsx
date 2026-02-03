@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 const Unauthorized = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 px-4">
-      
+
       <div className="bg-white shadow-lg rounded-xl p-8 max-w-md w-full text-center">
-        
+
         <h1 className="text-4xl font-bold text-red-600 mb-2">
           403
         </h1>

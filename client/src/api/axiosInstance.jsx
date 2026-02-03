@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:9090";
+
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:9090",
+    baseURL: BASE_URL,
 });
 
 // Attach JWT automatically
@@ -25,7 +27,7 @@ axiosInstance.interceptors.response.use(
     (error) => {
         if (error.response && error.response.status === 401) {
             localStorage.removeItem("token");
-            window.location.href = "/login";
+            window.location.href = "/";
         }
         return Promise.reject(error);
     }
