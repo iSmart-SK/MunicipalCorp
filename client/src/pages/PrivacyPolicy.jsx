@@ -3,7 +3,7 @@ import Footer from "../components/Footer";
 const PrivacyPolicy = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
-      
+
       {/* Main Content */}
       <main className="flex-grow pt-24 px-4">
         <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-md border border-gray-100">
@@ -60,7 +60,7 @@ const PrivacyPolicy = () => {
             </section>
 
             <p className="text-sm text-gray-500 pt-4 border-t">
-              Last updated: January 2025
+              Last updated: February 2026
             </p>
           </div>
         </div>

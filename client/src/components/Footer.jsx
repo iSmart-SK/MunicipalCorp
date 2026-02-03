@@ -17,7 +17,7 @@ function Footer() {
           </Link>
         </div>
         <p className="text-sm">
-          © 2025 MahaNagar Municipal Corporation. All rights reserved.
+          © 2026 MahaNagar Municipal Corporation. All rights reserved.
         </p>
       </div>
     </footer>

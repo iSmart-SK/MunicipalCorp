@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  FileText, IndianRupee, Activity, ArrowRight, 
-  Megaphone, Calendar, Users, TrendingUp, CheckCircle, Bell 
+import {
+  FileText, IndianRupee, Activity, ArrowRight,
+  Megaphone, Calendar, Users, TrendingUp, CheckCircle, Bell
 } from 'lucide-react';
 import Footer from '../components/Footer';
 const Home = () => {
-  
+
   // Mock Data for Announcements
   const announcements = [
-    { id: 1, date: "08 Dec", text: "Property Tax payment deadline extended to 31st Dec 2025." },
+    { id: 1, date: "08 Dec", text: "Property Tax payment deadline extended to 31st April 2026." },
     { id: 2, date: "06 Dec", text: "Polio Vaccination Camp at City Hospital this Sunday." },
     { id: 3, date: "01 Dec", text: "New waste management rules effective from next month." },
   ];
@@ -23,12 +23,12 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-white pt-16">
-      
+
       {/* 1. HERO SECTION WITH GRADIENT */}
       <header className="relative bg-gradient-to-r from-blue-800 to-blue-600 text-white py-24 overflow-hidden">
         {/* Abstract Background Pattern */}
         <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/city-fields.png')]"></div>
-        
+
         <div className="relative max-w-7xl mx-auto px-4 text-center z-10">
           <div className="inline-block bg-blue-900 bg-opacity-50 px-4 py-1 rounded-full text-sm font-semibold mb-6 border border-blue-400">
             🏛️ Welcome to Digital MahaNagar
@@ -55,17 +55,17 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 flex items-center">
           <span className="bg-red-600 px-2 py-0.5 rounded text-xs font-bold mr-3 animate-pulse">LATEST</span>
           <marquee className="flex-grow font-medium tracking-wide">
-            📢 Water supply will be affected in Ward A tomorrow due to maintenance.  •  📢 Swachh Survekshan 2025 survey has started, please participate.  •  📢 Download the new MahaNagar mobile app for easier access.
+            📢 Water supply will be affected in Ward A tomorrow due to maintenance.  •  📢 Swachh Survekshan 2026 survey has started, please participate.  •  📢 Download the new MahaNagar mobile app for easier access.
           </marquee>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          
+
           {/* 3. MAIN SERVICES (Left 2/3rds) */}
           <div className="lg:col-span-2 space-y-12">
-            
+
             {/* Service Cards */}
             <section>
               <h2 className="text-3xl font-bold text-gray-800 mb-8 flex items-center">
@@ -95,44 +95,44 @@ const Home = () => {
                   <h3 className="text-xl font-bold text-gray-800">Grievance Redressal</h3>
                   <p className="text-gray-600 mt-2 text-sm">Report potholes, garbage, or street light issues.</p>
                 </Link>
-                
+
                 <div className="bg-purple-50 p-6 rounded-xl border border-purple-100 hover:shadow-lg transition group flex flex-col justify-center items-center text-center">
-                   <h3 className="text-xl font-bold text-purple-800 mb-2">View More</h3>
-                   <p className="text-gray-600 text-sm">Explore 20+ other services</p>
+                  <h3 className="text-xl font-bold text-purple-800 mb-2">View More</h3>
+                  <p className="text-gray-600 text-sm">Explore 20+ other services</p>
                 </div>
               </div>
             </section>
 
             {/* 4. CITY STATISTICS (Awareness) */}
             <section className="bg-gray-900 rounded-2xl p-8 text-white relative overflow-hidden">
-               <div className="absolute top-0 right-0 -mt-10 -mr-10 bg-white opacity-5 w-40 h-40 rounded-full"></div>
-               <h2 className="text-2xl font-bold mb-6 flex items-center">
-                 <TrendingUp className="mr-2" /> City at a Glance
-               </h2>
-               <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                 <div>
-                   <div className="text-3xl font-bold text-yellow-400">98%</div>
-                   <div className="text-xs text-gray-400 mt-1 uppercase tracking-wider">Tax Compliance</div>
-                 </div>
-                 <div>
-                   <div className="text-3xl font-bold text-green-400">12k+</div>
-                   <div className="text-xs text-gray-400 mt-1 uppercase tracking-wider">Trees Planted</div>
-                 </div>
-                 <div>
-                   <div className="text-3xl font-bold text-blue-400">450</div>
-                   <div className="text-xs text-gray-400 mt-1 uppercase tracking-wider">Roads Repaired</div>
-                 </div>
-                 <div>
-                   <div className="text-3xl font-bold text-red-400">24h</div>
-                   <div className="text-xs text-gray-400 mt-1 uppercase tracking-wider">Grievance SLA</div>
-                 </div>
-               </div>
+              <div className="absolute top-0 right-0 -mt-10 -mr-10 bg-white opacity-5 w-40 h-40 rounded-full"></div>
+              <h2 className="text-2xl font-bold mb-6 flex items-center">
+                <TrendingUp className="mr-2" /> City at a Glance
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div>
+                  <div className="text-3xl font-bold text-yellow-400">98%</div>
+                  <div className="text-xs text-gray-400 mt-1 uppercase tracking-wider">Tax Compliance</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-bold text-green-400">12k+</div>
+                  <div className="text-xs text-gray-400 mt-1 uppercase tracking-wider">Trees Planted</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-bold text-blue-400">450</div>
+                  <div className="text-xs text-gray-400 mt-1 uppercase tracking-wider">Roads Repaired</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-bold text-red-400">24h</div>
+                  <div className="text-xs text-gray-400 mt-1 uppercase tracking-wider">Grievance SLA</div>
+                </div>
+              </div>
             </section>
           </div>
 
           {/* 5. SIDEBAR: ANNOUNCEMENTS & BODY (Right 1/3rd) */}
           <div className="space-y-8">
-            
+
             {/* Notice Board */}
             <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
               <div className="bg-blue-800 text-white px-6 py-4 flex justify-between items-center">

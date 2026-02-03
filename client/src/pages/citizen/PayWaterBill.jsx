@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../../api/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 import CitizenSidebar from '../../components/CitizenSidebar';
 import { Droplet, Search, IndianRupee, CheckCircle, AlertCircle } from 'lucide-react';
@@ -19,8 +19,8 @@ const PayWaterBill = () => {
 
     try {
       // json-server filtering syntax: ?consumerNo=VALUE
-      const res = await axios.get(`http://localhost:8080/water_connections?consumerNo=${consumerNo}`);
-      
+      const res = await axiosInstance.get(`/water_connections?consumerNo=${consumerNo}`);
+
       if (res.data.length > 0) {
         setBill(res.data[0]);
         toast.success("Bill Found!");
@@ -28,7 +28,7 @@ const PayWaterBill = () => {
         toast.error("Invalid Consumer Number");
       }
     } catch (error) {
-      toast.error("Server Error",error);
+      toast.error("Server Error", error);
     } finally {
       setLoading(false);
     }
@@ -42,13 +42,13 @@ const PayWaterBill = () => {
 
     try {
       // Update status in DB
-      await axios.patch(`http://localhost:8080/water_connections/${bill.id}`, {
+      await axiosInstance.patch(`/water_connections/${bill.id}`, {
         status: 'PAID'
       });
 
       // Record transaction (Optional, for history)
       const user = JSON.parse(localStorage.getItem('user'));
-      await axios.post('http://localhost:8080/tax_payments', {
+      await axiosInstance.post('/tax_payments', {
         type: 'WATER',
         amount: bill.billAmount,
         citizenId: user.id,
@@ -59,7 +59,7 @@ const PayWaterBill = () => {
       toast.success("Payment Successful!");
       navigate('/citizen/dashboard');
     } catch (error) {
-      toast.error("Payment Failed",error);
+      toast.error("Payment Failed", error);
     }
   };
 
@@ -76,15 +76,15 @@ const PayWaterBill = () => {
           <div className="bg-white p-6 rounded-xl shadow-sm border mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-2">Water Connection / Consumer No</label>
             <form onSubmit={fetchBill} className="flex gap-2">
-              <input 
-                type="text" 
+              <input
+                type="text"
                 className="flex-grow border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
                 placeholder="Ex: WAT-1001"
                 value={consumerNo}
                 onChange={(e) => setConsumerNo(e.target.value)}
               />
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 disabled={loading}
                 className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition flex items-center font-medium"
               >
@@ -109,7 +109,7 @@ const PayWaterBill = () => {
                   </span>
                 )}
               </div>
-              
+
               <div className="p-6 space-y-4">
                 <div className="flex justify-between border-b pb-2">
                   <span className="text-gray-500">Consumer Name</span>
@@ -123,7 +123,7 @@ const PayWaterBill = () => {
                   <span className="text-gray-500">Due Date</span>
                   <span className="font-medium text-red-600">{bill.dueDate}</span>
                 </div>
-                
+
                 <div className="flex justify-between items-center pt-2">
                   <span className="text-lg font-bold text-gray-700">Total Amount</span>
                   <span className="text-3xl font-bold text-gray-900">₹ {bill.billAmount}</span>
@@ -131,7 +131,7 @@ const PayWaterBill = () => {
 
                 {/* Pay Button */}
                 {bill.status === 'UNPAID' && (
-                  <button 
+                  <button
                     onClick={handlePayment}
                     className="w-full mt-4 bg-gray-900 text-white py-3 rounded-lg font-bold hover:bg-gray-800 transition shadow-lg flex justify-center items-center"
                   >
