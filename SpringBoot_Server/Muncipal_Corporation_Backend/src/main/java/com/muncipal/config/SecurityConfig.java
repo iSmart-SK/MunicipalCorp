@@ -90,22 +90,35 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // ✅ SINGLE SOURCE OF CORS TRUTH
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of(
-                "http://localhost:5173",
-                "https://69819a3bf8107372177ec984--quiet-klepon-b43f8a.netlify.app"
-        ));
+        // 1. Allow specific origins
+        //config.setAllowedOrigins(List.of(
+        //        "http://localhost:5173", // Local React
+        //        "https://quiet-klepon-b43f8a.netlify.app" // Main Netlify URL (Use this one!)
+        //));
 
+        // OR: If you want to allow ALL Netlify preview URLs (safe for dev)
+         config.setAllowedOriginPatterns(List.of(
+                 "https://*.netlify.app",
+                 "http://localhost:5173"
+         ));
+
+        // 2. Allow all standard methods
         config.setAllowedMethods(List.of(
                 "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"
         ));
 
+        // 3. Allow all headers (Authorization, Content-Type, etc.)
         config.setAllowedHeaders(List.of("*"));
+
+        // 4. Expose headers if needed
+        config.setExposedHeaders(List.of("Authorization"));
+
+        // 5. Allow credentials
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source =
