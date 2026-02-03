@@ -242,222 +242,211 @@ const AdminDashboard = () => {
   // -----------------------------
   return (
     <div
-<<<<<<< HEAD
-      className={`min-h-screen pt-16 ${darkMode ? "bg-gray-900 text-black" : "bg-gray-100 text-gray-800"
+      className={`min-h-screen flex flex-col pt-16 ${darkMode ? "bg-gray-900 text-black" : "bg-gray-100 text-gray-800"
         }`}
-    >
-=======
-      className={`min-h-screen flex flex-col pt-16 ${
-        darkMode ? "bg-gray-900 text-black" : "bg-gray-100 text-gray-800"
-      }`}
     ><div className="flex-grow">
->>>>>>> 716a7efdfbae7ec5b4b57b940ac6a30c477e0e27
-      <AdminSidebar />
+        <AdminSidebar />
 
-      <div className="md:ml-64 p-8 space-y-8">
-        
-        {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <h1
-            className={`text-3xl font-bold ${darkMode ? "text-white" : "text-gray-900"
-              }`}> Admin Dashboard</h1>
-          <button
-            onClick={toggleDarkMode}
-            className="px-4 py-2 bg-gray-800 text-white rounded-lg shadow hover:bg-black transition"
-          >
-            {darkMode ? "Light Mode" : "Dark Mode"}
-          </button>
-        </div>
+        <div className="md:ml-64 p-8 space-y-8">
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border-b-4 border-green-500">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-gray-500 dark:text-gray-300 font-medium">
-                Total Tax Collected : <span className="text-green-500 w-6 h-6" > ₹ {stats.totalcompletdTax} </span>
-              </h3>
-              {/* <IndianRupee className="text-green-500 w-6 h-6" /> */}
-            </div>
-            <p className="text-gray-500 dark:text-gray-300 font-medium">Pending Tax :
-              <span className="text-3xl text-red-600 font-bold"> ₹ {stats.totalTax.toLocaleString()} !!!
-              </span>
-            </p>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border-b-4 border-blue-500">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-gray-500 dark:text-gray-300 font-medium">
-                Pending Birth Certs
-              </h3>
-              <FileText className="text-blue-500 w-6 h-6" />
-            </div>
-            <p className="text-3xl font-bold">{stats.pendingBirth}</p>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border-b-4 border-red-500">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-gray-500 dark:text-gray-300 font-medium">
-                Pending Death Certs
-              </h3>
-              <Activity className="text-red-500 w-6 h-6" />
-            </div>
-            <p className="text-3xl font-bold">{stats.pendingDeath}</p>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border-b-4 border-purple-500">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-gray-500 dark:text-gray-300 font-medium">
-                Registered Citizens
-              </h3>
-              <Users className="text-purple-500 w-6 h-6" />
-            </div>
-            <p className="text-3xl font-bold">{stats.totalCitizens}</p>
-          </div>
-        </div>
-
-        {/* Charts + Export Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Bar Chart */}
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
-            <StatsBarChart stats={events} />
-          </div>
-
-          {/* Pie Chart */}
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
-            <ComplaintPieChart data={grievanceCat} />
-          </div>
-        </div>
-
-        {/* User Management Table */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="font-medium text-gray-700 dark:text-gray-200">
-              Manage Users
-            </h3>
+          {/* Header */}
+          <div className="flex justify-between items-center mb-8">
+            <h1
+              className={`text-3xl font-bold ${darkMode ? "text-white" : "text-gray-900"
+                }`}> Admin Dashboard</h1>
             <button
-              onClick={() => exportCSV(users, "users.csv")}
-              className="flex items-center gap-1 px-2 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-sm"
+              onClick={toggleDarkMode}
+              className="px-4 py-2 bg-gray-800 text-white rounded-lg shadow hover:bg-black transition"
             >
-              <Download className="w-4 h-4" /> CSV
+              {darkMode ? "Light Mode" : "Dark Mode"}
             </button>
           </div>
 
-          <input
-            type="text"
-            placeholder="Search users..."
-            className="mb-4 w-full md:w-1/3 px-3 py-2 border rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
-            value={searchUser}
-            onChange={(e) => setSearchUser(e.target.value)}
-          />
-
-          <div className="overflow-x-auto">
-            <table className="min-w-full text-left">
-              <thead className="bg-gray-50 dark:bg-gray-700">
-                <tr>
-                  {["id", "name", "email", "role", "status"].map((field) => (
-                    <th
-                      key={field}
-                      onClick={() => {
-                        const newOrder =
-                          sortUserOrder === "asc" ? "desc" : "asc";
-                        setSortUserField(field);
-                        setSortUserOrder(newOrder);
-                      }}
-                      className="px-4 py-2 text-gray-500 dark:text-gray-200 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
-                    >
-                      {field.toUpperCase()}
-                    </th>
-                  ))}
-                  <th className="px-4 py-2 text-gray-500 dark:text-gray-200">
-                    ACTIONS
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {paginatedUsers.map((user) => (
-                  <tr
-                    key={user.id}
-                    className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
-                  >
-                    <td className="px-4 py-2">{user.id}</td>
-                    <td className="px-4 py-2">{user.name}</td>
-                    <td className="px-4 py-2">{user.email}</td>
-                    <td className="px-4 py-2">{user.role}</td>
-                    <td className="px-4 py-2">
-                      <span
-                        className={`px-2 py-1 rounded text-xs ${user.actStatus === "ACTIVE"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-red-100 text-red-800"
-                          }`}
-                      >
-                        {user.actStatus || "ACTIVE"}
-                      </span>
-                    </td>
-                    <td className="px-4 py-2">
-                      <button
-                        onClick={() =>
-                          toggleUserStatus(user.id, user.actStatus)
-                        }
-                        className={`px-3 py-1 rounded text-xs font-bold ${user.actStatus === "ACTIVE"
-                          ? "bg-red-500 text-white hover:bg-red-600"
-                          : "bg-green-500 text-white hover:bg-green-600"
-                          }`}
-                      >
-                        {user.actStatus === "ACTIVE"
-                          ? "Deactivate"
-                          : "Activate"}
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Table Pagination */}
-          <div className="flex flex-col md:flex-row justify-between items-center mt-4 space-y-2 md:space-y-0">
-            <div>
-              Rows per page:{" "}
-              <select
-                value={rowsPerPage}
-                onChange={(e) => {
-                  setRowsPerPage(Number(e.target.value));
-                  setCurrentPage(1);
-                }}
-                className="border px-2 py-1 rounded dark:bg-gray-700 dark:text-white"
-              >
-                {[5, 10, 20, 50].map((n) => (
-                  <option key={n} value={n}>
-                    {n}
-                  </option>
-                ))}
-              </select>
+          {/* Stats Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border-b-4 border-green-500">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-gray-500 dark:text-gray-300 font-medium">
+                  Total Tax Collected : <span className="text-green-500 w-6 h-6" > ₹ {stats.totalcompletdTax} </span>
+                </h3>
+                {/* <IndianRupee className="text-green-500 w-6 h-6" /> */}
+              </div>
+              <p className="text-gray-500 dark:text-gray-300 font-medium">Pending Tax :
+                <span className="text-3xl text-red-600 font-bold"> ₹ {stats.totalTax.toLocaleString()} !!!
+                </span>
+              </p>
             </div>
 
-            <div className="flex space-x-2">
-              {Array.from({ length: totalPages }, (_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrentPage(i + 1)}
-                  className={`px-3 py-1 rounded ${currentPage === i + 1
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
-                    }`}
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border-b-4 border-blue-500">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-gray-500 dark:text-gray-300 font-medium">
+                  Pending Birth Certs
+                </h3>
+                <FileText className="text-blue-500 w-6 h-6" />
+              </div>
+              <p className="text-3xl font-bold">{stats.pendingBirth}</p>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border-b-4 border-red-500">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-gray-500 dark:text-gray-300 font-medium">
+                  Pending Death Certs
+                </h3>
+                <Activity className="text-red-500 w-6 h-6" />
+              </div>
+              <p className="text-3xl font-bold">{stats.pendingDeath}</p>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border-b-4 border-purple-500">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-gray-500 dark:text-gray-300 font-medium">
+                  Registered Citizens
+                </h3>
+                <Users className="text-purple-500 w-6 h-6" />
+              </div>
+              <p className="text-3xl font-bold">{stats.totalCitizens}</p>
+            </div>
+          </div>
+
+          {/* Charts + Export Section */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Bar Chart */}
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
+              <StatsBarChart stats={events} />
+            </div>
+
+            {/* Pie Chart */}
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
+              <ComplaintPieChart data={grievanceCat} />
+            </div>
+          </div>
+
+          {/* User Management Table */}
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-medium text-gray-700 dark:text-gray-200">
+                Manage Users
+              </h3>
+              <button
+                onClick={() => exportCSV(users, "users.csv")}
+                className="flex items-center gap-1 px-2 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-sm"
+              >
+                <Download className="w-4 h-4" /> CSV
+              </button>
+            </div>
+
+            <input
+              type="text"
+              placeholder="Search users..."
+              className="mb-4 w-full md:w-1/3 px-3 py-2 border rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
+              value={searchUser}
+              onChange={(e) => setSearchUser(e.target.value)}
+            />
+
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-left">
+                <thead className="bg-gray-50 dark:bg-gray-700">
+                  <tr>
+                    {["id", "name", "email", "role", "status"].map((field) => (
+                      <th
+                        key={field}
+                        onClick={() => {
+                          const newOrder =
+                            sortUserOrder === "asc" ? "desc" : "asc";
+                          setSortUserField(field);
+                          setSortUserOrder(newOrder);
+                        }}
+                        className="px-4 py-2 text-gray-500 dark:text-gray-200 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
+                      >
+                        {field.toUpperCase()}
+                      </th>
+                    ))}
+                    <th className="px-4 py-2 text-gray-500 dark:text-gray-200">
+                      ACTIONS
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {paginatedUsers.map((user) => (
+                    <tr
+                      key={user.id}
+                      className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
+                    >
+                      <td className="px-4 py-2">{user.id}</td>
+                      <td className="px-4 py-2">{user.name}</td>
+                      <td className="px-4 py-2">{user.email}</td>
+                      <td className="px-4 py-2">{user.role}</td>
+                      <td className="px-4 py-2">
+                        <span
+                          className={`px-2 py-1 rounded text-xs ${user.actStatus === "ACTIVE"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
+                            }`}
+                        >
+                          {user.actStatus || "ACTIVE"}
+                        </span>
+                      </td>
+                      <td className="px-4 py-2">
+                        <button
+                          onClick={() =>
+                            toggleUserStatus(user.id, user.actStatus)
+                          }
+                          className={`px-3 py-1 rounded text-xs font-bold ${user.actStatus === "ACTIVE"
+                            ? "bg-red-500 text-white hover:bg-red-600"
+                            : "bg-green-500 text-white hover:bg-green-600"
+                            }`}
+                        >
+                          {user.actStatus === "ACTIVE"
+                            ? "Deactivate"
+                            : "Activate"}
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Table Pagination */}
+            <div className="flex flex-col md:flex-row justify-between items-center mt-4 space-y-2 md:space-y-0">
+              <div>
+                Rows per page:{" "}
+                <select
+                  value={rowsPerPage}
+                  onChange={(e) => {
+                    setRowsPerPage(Number(e.target.value));
+                    setCurrentPage(1);
+                  }}
+                  className="border px-2 py-1 rounded dark:bg-gray-700 dark:text-white"
                 >
-                  {i + 1}
-                </button>
-              ))}
+                  {[5, 10, 20, 50].map((n) => (
+                    <option key={n} value={n}>
+                      {n}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex space-x-2">
+                {Array.from({ length: totalPages }, (_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentPage(i + 1)}
+                    className={`px-3 py-1 rounded ${currentPage === i + 1
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                      }`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
-<<<<<<< HEAD
       {/* Footer */}
-=======
-      </div>
-         {/* Footer */}
->>>>>>> 716a7efdfbae7ec5b4b57b940ac6a30c477e0e27
       <Footer />
     </div>
   );
