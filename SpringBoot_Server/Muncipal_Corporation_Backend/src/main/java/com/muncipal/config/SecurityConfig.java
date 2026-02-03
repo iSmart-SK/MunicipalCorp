@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -22,15 +21,18 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-//        .cors(Customizer.withDefaults())
-                .csrf(csrf -> csrf.disable()
-                		)
+                // Disable CSRF (Stateless APIs)
+                .csrf(csrf -> csrf.disable())
+
+                // Stateless Session
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+
+                // Authorization Rules
                 .authorizeHttpRequests(auth -> auth
 
-                        // PUBLIC ENDPOINTS
+                        // 1. PUBLIC ENDPOINTS (Open to everyone)
                         .requestMatchers(
                                 "/user/login",
                                 "/user/register",
@@ -40,20 +42,22 @@ public class SecurityConfig {
 //                                "/**"
                         ).permitAll()
 
-                        // CITIZEN APIs
-                        .requestMatchers("/citizen/**").hasRole("CITIZEN")
+                        .requestMatchers(
+                                "/admin/**"
+                        ).hasRole("ADMIN")
 
-                        //ADMIN APIs
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers(
+                                "/citizen/**"
+                        ).hasRole("CITIZEN")
 
-                        // EVERYTHING ELSE
                         .anyRequest().authenticated()
                 )
+
+                // Add JWT Filter
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
-
 
     @Bean
     public AuthenticationManager authenticationManager(
