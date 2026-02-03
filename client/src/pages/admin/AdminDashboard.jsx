@@ -139,10 +139,10 @@ const AdminDashboard = () => {
   const fetchStats = async () => {
     try {
       const [usersReq, birthReq, deathReq, propReq] = await Promise.all([
-        axios.get("http://localhost:9090/user"),
-        axios.get("http://localhost:9090/certificateController/birth/pending"),
-        axios.get("http://localhost:9090/certificateController/death/pending"),
-        axios.get("http://localhost:9090/properties"),
+        axiosInstance.get("/user"),
+        axiosInstance.get("/certificateController/birth/pending"),
+        axiosInstance.get("/certificateController/death/pending"),
+        axiosInstance.get("/properties"),
       ]);
 
       const totalTax = propReq.data.reduce(
@@ -169,7 +169,7 @@ const AdminDashboard = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:9090/user");
+      const res = await axiosInstance.get("/user");
       setUsers(res.data);
     } catch (err) {
       console.error("Error fetching users", err);
@@ -200,7 +200,7 @@ const AdminDashboard = () => {
   const toggleUserStatus = async (userId, currentStatus) => {
     try {
       const newStatus = currentStatus === "ACTIVE" ? "INACTIVE" : "ACTIVE";
-      await axios.patch(`http://localhost:9090/user/${userId}`, {
+      await axiosInstance.patch(`/user/${userId}`, {
         status: newStatus,
       });
 
