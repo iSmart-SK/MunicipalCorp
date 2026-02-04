@@ -2,7 +2,7 @@ package com.muncipal.entity.enums;
 
 public enum GrievanceStatus {
     PENDING,
-    CANCELLED,
+    CANCELED,
     RESOLVED,
     COMPLETED,
     CANCELED
