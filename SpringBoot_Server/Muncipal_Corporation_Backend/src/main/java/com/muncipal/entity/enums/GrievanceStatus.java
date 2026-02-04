@@ -4,5 +4,7 @@ public enum GrievanceStatus {
     PENDING,
     CANCELLED,
     RESOLVED,
+    COMPLETED,
+    CANCELED
 
 }

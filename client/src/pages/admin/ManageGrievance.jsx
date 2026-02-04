@@ -17,7 +17,13 @@ const ManageGrievance = () => {
   const resolveIssue = async (id) => {
     await axiosInstance.patch(`/grievances/${id}`, {
       status: "COMPLETED",
-    });
+    },
+    {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }
+  );
     setIssues(
       issues.map((i) => (i.id === id ? { ...i, status: "COMPLETED" } : i))
     );
@@ -27,7 +33,14 @@ const ManageGrievance = () => {
   const cancelIssue = async (id) => {
     await axiosInstance.patch(`/grievances/${id}`, {
       status: "CANCELED",
-    });
+    },
+    {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }
+  
+  );
     setIssues(
       issues.map((i) => (i.id === id ? { ...i, status: "CANCELED" } : i))
     );
