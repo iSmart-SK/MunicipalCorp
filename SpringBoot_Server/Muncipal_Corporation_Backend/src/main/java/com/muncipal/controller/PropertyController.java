@@ -3,6 +3,8 @@ package com.muncipal.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.security.core.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +25,7 @@ public class PropertyController {
 
     @GetMapping
     public List<Property> getAllProperties() {
+    	
         return propertyService.getAllProperies();
     }
 
@@ -36,6 +39,7 @@ public class PropertyController {
 
     @GetMapping("/{citizenId}")
     public List<Property> getMyProperties(@PathVariable int citizenId) {
+    	
         return propertyService.getPropertiesByCitizen(citizenId);
     }
 
@@ -56,10 +60,22 @@ public class PropertyController {
         return ResponseEntity.ok(updated);
     }
 
+//    @PatchMapping("/taxUpdate/{id}")
+//    public ResponseEntity<Property> updateTaxStatus(@PathVariable Long id) {
+//
+//    	
+//        Property updated = propertyService.updatePropertyTaxStatus(id);
+//        return ResponseEntity.ok(updated);
+//    }
+    
     @PatchMapping("/taxUpdate/{id}")
-    public ResponseEntity<Property> updateTaxStatus(@PathVariable Long id) {
-
+    public ResponseEntity<Property> updateTaxStatus(
+            @PathVariable Long id,
+            @RequestBody(required = false) Map<String, Object> body
+    ) {
         Property updated = propertyService.updatePropertyTaxStatus(id);
         return ResponseEntity.ok(updated);
     }
+
+
 }
