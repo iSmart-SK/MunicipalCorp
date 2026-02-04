@@ -62,18 +62,18 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,   "/properties").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/properties/**").hasRole("ADMIN")
 
+                        .requestMatchers(HttpMethod.PATCH, "/grievances/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,   "/grievances").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,   "/grievances/all").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PATCH, "/grievances/**").hasRole("ADMIN")
 
                         // 🟢 CITIZEN (AFTER ADMIN)
                         .requestMatchers(HttpMethod.POST, "/certificateController").hasRole("CITIZEN")
                         .requestMatchers(HttpMethod.GET,  "/certificateController/birth/**").hasRole("CITIZEN")
                         .requestMatchers(HttpMethod.GET,  "/certificateController/death/**").hasRole("CITIZEN")
 
+                        .requestMatchers(HttpMethod.PATCH,"/properties/taxUpdate/**").hasRole("CITIZEN")
                         .requestMatchers(HttpMethod.GET, "/properties/citizen/**").hasRole("CITIZEN")
                         .requestMatchers(HttpMethod.GET, "/properties/*").hasRole("CITIZEN")
-                        .requestMatchers(HttpMethod.PATCH,"/properties/taxUpdate/**").hasRole("CITIZEN")
 
                         .requestMatchers(HttpMethod.POST, "/grievances").hasRole("CITIZEN")
                         .requestMatchers(HttpMethod.GET,  "/grievances/*").hasRole("CITIZEN")
