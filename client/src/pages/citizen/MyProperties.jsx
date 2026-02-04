@@ -90,7 +90,11 @@ const MyProperties = () => {
             );
             console.log("payment done successfully! and updating tax payment status");
 
-            await axiosInstance.patch(`/properties/taxUpdate/${options.propertyId}`);
+            await axiosInstance.patch(`/properties/taxUpdate/${options.propertyId}`, null, {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
             console.log("tax update Done");
             alert("Tax payment recorded successfully!");
 
